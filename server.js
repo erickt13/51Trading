@@ -1,6 +1,7 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+// if (process.env.NODE_ENV !== 'production') {
+//     require('dotenv').config();
+// }
+require('dotenv').config();
 
 const express = require('express')
 const app = express()
@@ -19,7 +20,7 @@ const connectDB = async () => {
       const conn = await mongoose.connect(process.env.MONGO_URI);
       console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
-      console.log(error);
+      console.log(error); 
       process.exit(1);
     }
   }
@@ -38,5 +39,5 @@ connectDB().then(() => {
         console.log("listening for requests");
     })
 })
-
+   
 console.log('Hello there, why are you here? booo this is another test')
