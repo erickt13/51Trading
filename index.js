@@ -41,4 +41,3 @@ connectDB().then(() => {
     })
 })
    
-console.log('Hello there, why are you here? booo this is another test')
