@@ -1,30 +1,10 @@
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
-// require('dotenv').config();
 
-// const express = require('express')
-// const app = express()
-// const expressLayouts = require('express-ejs-layouts')
-// const indexRouter = require('./routes/index')
-// const PORT = process.env.PORT || 3000
-// app.set('view engine', 'ejs')
-// app.set('views', __dirname + '/views')
-// app.set('layout', 'layouts/layout') 
-// app.use(expressLayouts)
-// app.use(express.static('public'))
-// const mongoose = require('mongoose')
 // mongoose.set('strictQuery', false)
 
-// const connectDB = async () => {
-//     try {
-//       const conn = await mongoose.connect(process.env.MONGO_URI);
-//       console.log(`MongoDB Connected: ${conn.connection.host}`);
-//     } catch (error) {
-//       console.log(error); 
-//       process.exit(1);
-//     }
-//   }
+
 // mongoose.connect(process.env.DATABASE_URL, {
 //     })
 //     const db = mongoose.connection
@@ -33,22 +13,20 @@ if (process.env.NODE_ENV !== 'production') {
 
 // app.use('/', indexRouter)
 
-// app.listen(PORT)
-
-// connectDB().then(() => {
-//     app.listen(PORT, () => {
-//         console.log("listening for requests");
-//     })
-// })
 
 // require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose')
 
 const app = express()
+app.use(express.json()); //body parser part code app.use(bodyparser.json()); //utilizes the body-parser package
+app.use(express.urlencoded()); //body parser part code - replaces app.use(bodyParser.urlencoded({extended: true}));
 const PORT = process.env.PORT || 3000
 const expressLayouts = require('express-ejs-layouts')
+
 const indexRouter = require('./routes/index')
+const productRouter = require('./routes/products') 
+
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout') 
@@ -67,6 +45,7 @@ const connectDB = async () => {
 
 //Routes go here
 app.use('/', indexRouter)
+app.use('/products', productRouter)
 
 //Connect to the database before listening
 connectDB().then(() => {
