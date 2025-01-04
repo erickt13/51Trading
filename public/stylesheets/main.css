@@ -1,0 +1,47 @@
+@import 'shared/buttons.css';
+@import 'shared/header.css';
+@import 'shared/variables.css';
+@import 'shared/fonts.css';
+@import 'shared/invoice.css';
+@import 'shared/form.css';
+@import 'shared/customer.css';
+@import 'shared/product.css';
+
+:root {
+    font-family: 'Lato';
+    font-size:16px;
+    /* color: var(--color-text-light); */
+    color:black
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    /* background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light)); */
+    /* background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light)); */
+    background-color:rgb(255, 255, 255);
+}
+
+.container {
+max-width: 1200px;
+height:100%;
+margin:auto;
+margin-bottom:3rem;
+background-color:white;
+}
+.inner-container{
+    margin:0 2rem;
+}
+
+.page-header {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.col-fifty {
+    width: 50%;
+    padding: 1rem;
+}
+

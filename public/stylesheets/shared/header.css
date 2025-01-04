@@ -1,0 +1,46 @@
+:root {
+    --nav-title-font-size: 2rem;
+    --nav-title-font-weight: bold;
+    --nav-link-font-weight: 300;
+}
+body {
+    height: 100%;
+    margin: 0;
+  }
+
+.header-title {
+    color: black;
+    text-decoration: none;
+    font-size: var(--nav-title-font-size);
+    font-weight: var(--nav-title-font-weight)
+}
+
+.header-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5rem;
+}
+
+.header-nav ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.header-nav ul li {
+    list-style: none;
+}
+
+.header-nav ul li a {
+    color: black;
+    text-decoration: none;
+    list-style: none;
+    font-weight: var(--nav-link-font-weight);
+    padding: 1rem;
+}
+
+.header-nav ul li a:hover, .header-title:hover {
+    color: #FF1A00;
+}

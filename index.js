@@ -17,21 +17,24 @@ if (process.env.NODE_ENV !== 'production') {
 // require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose')
-
 const app = express()
+const methodOverride = require('method-override')
 app.use(express.json()); //body parser part code app.use(bodyparser.json()); //utilizes the body-parser package
-app.use(express.urlencoded()); //body parser part code - replaces app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true})); //body parser part code - replaces app.use(bodyParser.urlencoded({extended: true}));
 const PORT = process.env.PORT || 3000
 const expressLayouts = require('express-ejs-layouts')
 
 const indexRouter = require('./routes/index')
 const productRouter = require('./routes/products') 
+const customerRouter = require('./routes/customers') 
+const invoiceRouter = require('./routes/invoices') 
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout') 
 app.use(expressLayouts)
 app.use(express.static('public'))
+app.use(methodOverride('_method'))
 
 const connectDB = async () => {
   try {
@@ -46,6 +49,8 @@ const connectDB = async () => {
 //Routes go here
 app.use('/', indexRouter)
 app.use('/products', productRouter)
+app.use('/customers', customerRouter)
+app.use('/invoices', invoiceRouter)
 
 //Connect to the database before listening
 connectDB().then(() => {

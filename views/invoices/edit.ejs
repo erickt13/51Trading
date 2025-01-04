@@ -1,0 +1,6 @@
+<h2 class="page-header invoiceId" data-invoiceId="<%= invoice.id %>">Edit Order Sheet</h2>
+<form action="/invoices/<%= invoice.id %>?_method=PUT" method="POST">
+    <%- include ('_form_fields') %>
+    <a class="btn btn-primary" href="/invoices/<%= invoice.id %>">Cancel</a>
+    <button class="btn btn-primary" type="submit">Create Invoice</button>
+</form>

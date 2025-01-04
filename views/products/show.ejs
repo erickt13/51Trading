@@ -1,0 +1,34 @@
+<h2 class="page-header"><%= product.description %></h2>
+
+<div>
+    <br>
+     <br>
+   
+</div>
+
+<table class="table-striped">
+    <thead>
+        <tr>
+            <th>MPN number</th>
+            <th>Bar Code</th>
+            <th>Description</th>
+            <th>Item Number</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><%= product.mpn %></td>
+            <td><svg id="id<%= product.mpn %>" class="barcode" data-mpn="<%= product.mpn %>"></svg></td>
+            <td><%= product.description %> </td>
+            <td><%= product.itemNumber %></td>
+            <td> <%= product.price %></td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<div class="btn-row">
+    <a class="btn btn-primary" href="/products/<%= product.id %>/edit">Edit</a>
+    <%- include('../partials/deleteForm', { url: `/products/${product.id}` }) %>
+</div>

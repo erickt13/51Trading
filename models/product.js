@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-    npm: {
+    mpn: {
         type: String,
-        required: true
+        required: false
     },
     itemNumber: {
-        type: Number,
+        type: String,
         required:true
     },
     description: {
@@ -15,9 +15,8 @@ const productSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        required: true
+        required: false
     }
-
 })
 
 module.exports = mongoose.model('Product', productSchema)

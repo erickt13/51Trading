@@ -1,10 +1,35 @@
-<h2>All Products</h2>
+<h2 class="page-header">Search Products</h2>
 <form action="/products" method="GET">
-    <label>Product</label>
-    <input type="text" name="npm" value= "<%= searchOptions.npm %>" >
-    <button type="submit">Search</button>
+    <div class="form-row">
+        <div class="form-item">
+            <label>Product</label>
+            <input type="text" name="description" value= "<%= searchOptions.description %>" >
+        </div>
+    </div>
+   <div class="form-row form-row-end">
+    <button class="btn btn-primary" type="submit">Search</button>
+   </div>
 </form>
 <br>
-<% products.forEach(product => { %>
- <div><span><%= product.npm %></span><br><span><%= product.description %></span></div><br>
-<% }) %>
+
+<table class="table-striped">
+    <thead>
+        <th>Product Description</th>
+        <th>MPN</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <% products.forEach(product => { %>
+            <tr>
+                <td><%= product.description %></td>
+                <!-- <td><svg id="id<%= product.mpn %>" class="barcode" data-mpn="<%= product.mpn %>"></svg></td> -->
+                <td><%= product.mpn %></td>
+                <td><div class="btn-row">
+                    <a class="btn btn-primary" href="/products/<%= product.id %>">View</a>
+                     <a class="btn btn-primary" href="/products/<%= product.id %>/edit">Edit</a>
+                    <%- include('../partials/deleteForm', { url: `/products/${product.id}` }) %>
+                </div></td>
+            </tr>
+        <%})%>
+    </tbody>
+</table>

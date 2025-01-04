@@ -1,0 +1,157 @@
+<div class="invoice-row">
+    <div class="col-fifty">
+        <h1>51 Trading Inc.</h1>
+        <table class="table-striped">
+            <tr>
+                <th>401 W 220th Street #15 <br> 
+                    Carson, CA 90745</th>
+                
+            </tr>
+        </table>
+    </div>
+    <div class="col-fifty">
+        <h1>Invoice</h1>
+        <table class="table-striped align-right">
+            <tr>
+                <th>Invoice #:</th>
+                <td><%= invoice.invoiceNumber %></td>
+            </tr>
+            <tr>
+                <th>Invoice Date:</th>
+                <td><%= invoice.date.toDateString() %></td>
+            </tr>
+            <tr>
+                <th>Ship Date:</th>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div>
+    <h1></h1>
+    <p></p>
+    <p></p> 
+</div>
+
+<div class="invoice-row">
+    <div class="col-fifty">
+        <table class="table-striped">
+            <tr>
+                <th>
+                    Bill to:
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <p><%= invoice.customer.companyName %> <br>
+                        <%= invoice.customer.address.street %> <br>
+                        <%= invoice.customer.address.city %> <%= invoice.customer.address.state %>, <%= invoice.customer.address.zipcode %> <%= invoice.customer.address.country %>
+                    </p>
+                    <p></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="col-fifty">
+        <table class="table-striped">
+            <tr>
+                <th>
+                    Ship to:
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        <%= invoice.customer.companyName %> <br>
+                        <%= invoice.customer.address.street %> <br>
+                        <%= invoice.customer.address.city %> <%= invoice.customer.address.state %>, <%= invoice.customer.address.zipcode %> <%= invoice.customer.address.country %>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="invoice-row">
+    <h1>Invoice Items</h1>
+</div>
+<div class="invoice-row">
+    <table class="table-striped">
+        <thead>
+            <tr>
+                <th>MPN</th>
+                <th>Item Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% invoice.items.forEach(item => { %>
+                <tr>
+                    <td><svg id="id<%= item.mpn %>" class="barcode" data-mpn="<%= item.mpn %>"></svg></td>
+                    
+                    <td><%= item.description %></td> 
+                    <td><%= item.quantity %></td>
+                    <td>$<%= parseFloat(item.price).toFixed(2) %></td> 
+                    <td>$<%= item.subTotal %></td> 
+                </tr>
+                <%  }) %>
+        </tbody>
+    </table>
+</div>
+<div class="invoice-row">
+    <h2>Invoice Summary:</h2>
+    <p>Total Amount: $<%= invoice.totalAmount %></p>
+</div>
+<div class="invoice-row">
+    <div>
+        <p>
+            Customer shall inspect all merchandise immediatelly upon receipt there of all claims for damages or shortages of merchandise, if any must be made in writing on original signed invoice when merchandise is delivered. 
+            Thank you for your business.
+        </p>
+    </div>
+</div>
+
+<h2 class="page-header" data-invoiceId = '<%= invoice.id %>' >Sign Invoice</h2>
+
+<div class="wrapper">
+  <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+</div>
+
+<!-- hidden signature input field -->
+<div class="form-row">
+    <div class="form-item">
+        <input type="hidden" name="signature" id="signatureInput" value="<%= invoice.signature %>">
+    </div>
+</div>
+
+<div>
+  <button class="btn btn-primary" id="save">Save</button>
+  <button class="btn btn-primary" id="clear">Clear</button>
+</div>
+
+<div id="signatureWrapper">
+  <img id="customerSignature" src="<%= invoice.signature %>" alt="customer signature">
+</div>
+
+<!-- <div class="invoice-row">
+    <div>
+        <h2>Customer Signature:</h2>
+        <img src="<%= invoice.signature %>" alt="customer signature">
+    </div>
+</div> -->
+
+<div class="invoice-row">
+    <div class="btn-row">
+        <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
+        <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
+    </div>
+</div>
+
+
+
+
+

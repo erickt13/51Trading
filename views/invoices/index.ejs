@@ -1,0 +1,37 @@
+<h2 class="page-header">Search Invoices</h2>
+
+<form action="/invoices" method="GET">
+    <div class="form-row">
+        <div class="form-item">
+            <label>Invoice Number</label>
+            <input type="text" name="invoiceNumber" value= "<%= searchOptions.invoiceNumber %>" >
+        </div>
+    </div>
+   <div class="btn-row">
+    <button class="btn btn-primary" type="submit">Search</button>
+   </div>
+   
+</form>
+<br>
+<table class="table-striped">
+    <thead>
+        <th>Invoice Number</th>
+        <th>Company</th>
+        <th>Date</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <% invoices.forEach(invoice => { %>
+            <tr>
+                <td><%= invoice.invoiceNumber %></td>
+                <td><%= invoice.customer.companyName %></td>
+                <td><%= invoice.date.toDateString() %></td>
+                <td><div class="btn-row">
+                    <a class="btn btn-primary" href="/invoices/<%= invoice.id %>">View</a>
+                    <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
+                    <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
+                </div></td>
+            </tr>
+        <%})%>
+    </tbody>
+</table>

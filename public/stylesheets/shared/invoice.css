@@ -1,0 +1,129 @@
+.invoice-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    /* align-items:center; */
+}
+
+.align-right {
+  text-align: right;
+}
+
+table {
+  width: 100%;
+  border-radius: 10px;
+  /* max-width: 100%; */
+  /* table-layout: fixed; */
+}
+#source-header {
+  width: 10%;
+}
+#notes-header {
+  width: 30%;
+}
+#mpn-header {
+  width: 5%;
+}
+#description-header {
+  width: 30%;
+}
+#price-header {
+  width: 10%;
+}
+#quantity-header {
+  width: 10%;
+}
+#amount-header {
+  width: 10%;
+}
+#status-header {
+  width: 5%;
+}
+#action-header {
+  width: 10%;
+}
+table, td, th {
+  border-bottom: 1px solid rgb(156 163 175);
+  border-spacing: 0;
+  border-collapse: collapse;
+  padding: .4rem;
+}
+td {
+  text-align: center;
+}
+
+#source-header:hover, #status-header:hover {
+  cursor: pointer;
+  color: var(--color-btn-primary-text);
+  background-color: var(--color-btn-primary-background-dark);
+}
+
+/* signature pad */
+
+.wrapper {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-bottom:20px;
+    background-color:white;
+  }
+  img {
+    position: relative;
+    left: 0;
+    top: 0;
+  }
+  
+  .signature-pad {
+   border: 1px solid rgb(95, 95, 95);
+    position: relative;
+    left: 0;
+    top: 0;
+    width:400px;
+    height:200px;
+    
+  }
+
+  #signatureWrapper {
+    position:relative;
+    margin:10px 0px 10px 0px;
+  }
+
+  checkbox.done {
+    display: inline-block; 
+    background-color: white;
+    width: 10px;
+    height: 10px;
+}
+
+
+/* tr.table-row {
+  background-color:white;
+} */
+
+
+
+tr.table-row.done {
+  background-color: #d4edda;  /* Light green background for 'done' rows */
+  text-decoration: line-through;  /* Strike-through for text */
+  color: #155724;  /* Dark green text color for completed tasks */
+}
+
+table.table-striped thead tr {
+  background-color: #4b7de7; /* Slightly darker gray for even rows */
+}
+
+table.table-striped thead tr {
+  color: #ffffff; /* Slightly darker gray for even rows */
+}
+
+table.table-striped tbody tr:nth-child(odd) {
+  background-color: #e0e0e0; /* Slightly darker gray for even rows */
+}
+
+
+

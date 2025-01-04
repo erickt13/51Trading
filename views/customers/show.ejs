@@ -1,0 +1,56 @@
+<h2 class="page-header"><%= customer.companyName %> Contact Information</h2>
+
+
+
+<table class="table-striped">
+    <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+            <th>Fax Number</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><%= customer.companyName %></td>
+            <td><%= customer.phoneNumber %></td>
+            <td> <p><%= customer.address.street %> <br>
+                <%= customer.address.city %> <%= customer.address.state %> <%= customer.address.zipcode %> </td>
+            <td><%= customer.faxNumber %></td>
+            <td> <%= customer.email %></td>
+        </tr>
+    </tbody>
+</table><br>
+
+
+        <% if (customerInvoices.length > 0) { %>
+            <h2 class="page-header"><%= customer.companyName %> Invoices</h2>
+            <table class="table-striped">
+                <thead>
+                    <th>Invoice Number</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <% customerInvoices.forEach(invoice => { %>
+                        <tr>
+                            <td><p><%= invoice.invoiceNumber %></p></td>
+                            <td><p><%= invoice.date.toDateString() %></p></td>
+                            <td><div class="btn-row">
+                                <a class="btn btn-primary" href="/invoices/<%= invoice.id %>">View</a>
+                                <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
+                                <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
+                            </div></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+       <% } %> 
+    <br><br>
+
+<div class="form-row form-row-end btn-row">
+    <a class="btn btn-primary" href="/customers/<%= customer.id %>/edit">Edit</a>
+    <%- include('../partials/deleteForm', { url: `/customers/${customer.id}` }) %>
+</div>

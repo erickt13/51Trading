@@ -1,0 +1,8 @@
+<h2 class="page-header">Edit Customer</h2>
+<form action="/customers/<%= customer.id %>?_method=PUT" method="POST">
+    <%- include ('_form_fields') %>
+    <div class="form-row form-row-end btn-row">
+        <a class="btn btn-danger" class="btn btn-primary" href="/customers/<%= customer.id %>">Cancel</a>
+        <button class="btn btn-primary" type="submit">Update</button>
+    </div>
+</form>

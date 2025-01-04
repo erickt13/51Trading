@@ -1,0 +1,59 @@
+:root {
+    --color-btn-primary-background: hsl(var(--color-base-hue), 100%, 83%);
+    --color-btn-primary-background-dark: hsl(var(--color-base-hue), 50%, 73%);
+    --color-btn-primary-text:  hsl(var(--color-base-hue), 50%, 20%);
+    --color-btn-danger-background: hsl(var(--color-danger-hue), 100%, 83%);
+    --color-btn-danger-background-dark: hsl(var(--color-danger-hue), 50%, 73%);
+    --color-btn-danger-text:  hsl(var(--color-base-hue), 50%, 20%);
+    --color-btn-border: white;
+}
+
+.btn {
+    border: none;
+    border-radius: .5rem;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    font-family: 'lato';
+    cursor:pointer;
+    text-decoration:none;
+    text-align: center;
+}
+
+.btn-primary{
+    /* color: var(--color-btn-primary-text); */
+    color: white;
+    /* background-color: var(--color-btn-primary-background); */
+    background-color: rgb(30, 64, 175);
+}
+
+.btn-primary:hover{
+    /* color: var(--color-btn-primary-text); */
+    background-color: rgb(60, 102, 241);
+}
+
+
+.btn-danger{
+    /* color: var(--color-btn-danger-text);
+    background-color: var(--color-btn-danger-background); */
+    color: white;
+    background-color: rgb(210, 8, 8);
+}
+
+
+.btn-danger:hover{
+    /* color: var(--color-btn-primary-text); */
+    background-color:  rgb(241, 11, 11);
+}
+
+.btn-row {
+    display: flex;
+    /* align-items: flex-start; */
+    justify-content: center;
+}
+.btn-row > * {
+    margin-left: 1rem;
+}
+
+.btn-row > *:first-child {
+    margin-left: 0rem;
+}

@@ -1,0 +1,13 @@
+<h2 class="page-header">New Order Sheet</h2>
+<form action="/invoices" method="POST">
+    <%- include ('_form_fields') %> <br><br>
+    <div class="btn-row">
+        <a class="btn btn-primary" href="/invoices">Cancel</a>
+        <button class="btn btn-primary" type="submit">Create Invoice</button>
+    </div>
+</form>
+<script>
+    // Pass the JSON object to the client side to access with javascript.
+    const params = <%- JSON.stringify(params) %>; // the red underline below is syntax highlighting. code still works.
+    // console.log(params);
+</script>
