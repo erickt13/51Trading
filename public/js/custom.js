@@ -1,5 +1,14 @@
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.header-nav > ul');
+    console.log(hamburger);
+    console.log(navMenu);
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    })
+
     // Check if signature pad canvas exists
     const canvas = document.getElementById("signature-pad");
     if (!canvas) {
@@ -50,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // fetch updating the signature
         // https://peterapp.onrender.com production
         // http://localhost:3000 development
-        fetch(`https://peterapp.onrender.com/invoices/${invoiceId}/signature`, {
+        fetch(`http://localhost:3000/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -119,7 +128,7 @@ const clickProduct2 = (e) => {
      }
      console.log(e.target.id);
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`http://localhost:3000/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -162,7 +171,7 @@ const clickProduct = (e) => {
     }
 
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${productId}/addproductbyid`, {
+    fetch(`http://localhost:3000/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
