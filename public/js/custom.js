@@ -48,7 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         signaturePad.clear();
 
         // fetch updating the signature
-        fetch(`http://localhost:3000/invoices/${invoiceId}/signature`, {
+        // https://peterapp.onrender.com production
+        // http://localhost:3000 development
+        fetch(`https://peterapp.onrender.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -117,7 +119,7 @@ const clickProduct2 = (e) => {
      }
      console.log(e.target.id);
     // fetch data from the server
-    fetch(`http://localhost:3000/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`https://peterapp.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -160,7 +162,7 @@ const clickProduct = (e) => {
     }
 
     // fetch data from the server
-    fetch(`http://localhost:3000/invoices/${productId}/addproductbyid`, {
+    fetch(`https://peterapp.onrender.com/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
