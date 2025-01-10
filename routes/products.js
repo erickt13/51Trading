@@ -35,7 +35,7 @@ router.get('/', async (req,res) => {
         searchOptions.description = new RegExp(req.query.description, 'i')
     }
     try {
-        const products = await Product.find(searchOptions).sort({ description: 1 }) // 1 for ascending, -1 for descending
+        const products = await Product.find(searchOptions).limit(20).sort({ description: 1 }) // 1 for ascending, -1 for descending
         res.render('products/index', {
             products: products, 
             searchOptions: req.query

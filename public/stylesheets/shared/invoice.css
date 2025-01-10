@@ -12,6 +12,7 @@
 
 table {
   width: 100%;
+  overflow-x: auto;
   border-radius: 10px;
   /* max-width: 100%; */
   /* table-layout: fixed; */
@@ -51,6 +52,9 @@ table, td, th {
 }
 td {
   text-align: center;
+}
+td.description, td.notes {
+  min-width: 300px;
 }
 
 #source-header:hover, #status-header:hover {
@@ -125,5 +129,9 @@ table.table-striped tbody tr:nth-child(odd) {
   background-color: #e0e0e0; /* Slightly darker gray for even rows */
 }
 
+div#productList {
+  overflow-x: auto; /* Adds horizontal scrolling to the container */
+  max-width: 100%;
+}
 
 

@@ -125,7 +125,7 @@ router.get('/:id/edit', async (req, res) => {
     
     try {
         const customers = await Customer.find({})
-        const products = await Product.find({})
+        const products = await Product.find({}).limit(10).sort({ description: 1 })
         const invoice = await Invoice.findById(req.params.id).populate('customer')
      
         res.render('invoices/edit', {
@@ -262,7 +262,7 @@ router.delete('/:id', async (req, res) => {
 async function renderNewPage(res, invoice, hasError = false) {
     try {
         const customers = await Customer.find({})
-        const products = await Product.find({}).sort({ description: 1 }) // 1 for ascending, -1 for descending
+        const products = await Product.find({}).limit(10).sort({ description: 1 }) // 1 for ascending, -1 for descending
         params = {
             customers: customers,
             products: products,

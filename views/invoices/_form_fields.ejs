@@ -59,22 +59,22 @@
                 <th id="notes-header">Notes</th>
                 <th id="mpn-header">MPN</th>
                 <th id="mpn-header">Product Id</th>
-                <th id="description-header">Item Description</th>
+                <th id="description-header">Description</th>
                 <th id="price-header">Price</th>
                 <th id="quantity-header">Quantity</th>
                 <th id="amount-header">Amount</th>
                 <th id="status-header">Done Status</th>
                 <th id="action-header">Action</th>
-                <!-- add a table row for each item in the arrat of items -->
+                <!-- add a table row for each item in the array of items -->
         </thead>
         <tbody class="tableBody">
             <% invoice.items.forEach((item, index) => { %>
                 <tr class="table-row <%= item.status ? 'done' : '' %>">  <!-- use ternary operator to check input.status if true or false / done or " " -->
                    <td><input class="source" id="<%= item.source %>"  type="text" name="items[<%= index %>][source]" value="<%= item.source %>"></td>
-                   <td><input class="notes" id="<%= item.notes %>"  type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
+                   <td class="notes"><input class="notes" id="<%= item.notes %>"  type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
                    <td><input class="mpn" id="<%= item.id %>"  type="text" readonly name="items[<%= index %>][mpn]" value="<%= item.mpn %>"></td>
                    <td><input class="productId" id="<%= item.productId  %>"  type="text" readonly name="items[<%= index %>][productId]" value="<%= item.productId %>"></td>
-                   <td><input class="description" id="<%= item._id %>"  type="text" readonly name="items[<%= index %>][description]" value="<%= item.description %>"></td>
+                   <td class="description"><input class="description" id="<%= item._id %>"  type="text" readonly name="items[<%= index %>][description]" value="<%= item.description %>"></td>
                    <td><input class="price" type="text"  readonly data-<%= item.productId %>price="<%= item.price%>" name="items[<%= index %>][price]" value="<%= parseFloat(item.price).toFixed(2) %>"></td>
                    <td><input class="quantity" type="number" placeholder="1" name="items[<%= index %>][quantity]" data-<%= item.productId %>qty="<%= item.quantity %>" value="<%= item.quantity %>"></td>
                    <td><input class="subTotal" type="text" readonly name="items[<%= index %>][subTotal]"  data-<%= item.productId %>subtotal="<%= item.id %>" value="<%= item.subTotal %>"></td>
