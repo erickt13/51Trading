@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Counter = require('../models/counter');
 
 const invoiceSchema = new Schema({
   invoiceNumber: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   customer: {
@@ -66,4 +67,28 @@ const invoiceSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Invoice', invoiceSchema)
+invoiceSchema.pre('save', async function(next) {
+  if (!this.invoiceNumber) {
+    try {
+      const counter = await Counter.findOneAndUpdate(
+        { _id: 'invoiceNumber' },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+      );
+      
+      const padding = '0000';
+      const year = new Date().getFullYear();
+      const sequence = (padding + counter.seq).slice(-padding.length);
+      this.invoiceNumber = `INV-${year}-${sequence}`;
+      
+      next();
+    } catch (error) {
+      console.error('Error in invoice pre-save middleware:', error);
+      next(error);
+    }
+  } else {
+    next();
+  }
+});
+
+module.exports = mongoose.model('Invoice', invoiceSchema);

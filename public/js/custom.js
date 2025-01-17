@@ -1,9 +1,28 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Check if scanned MPN Input exists
+    const scannedMpnInput = document.querySelector("#selectedMPN");
+    if (!scannedMpnInput) {
+        return; // Exit if scanned MPN Input doesn't exist
+    }
+    scannedMpnInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            console.log('You have hit Enter on your keypad and the MPN is: ' + scannedMpnInput.value);
+            console.log(e.key);
+            clickProduct2(e);
+        } else {
+            // All other keys work normally
+            return true;
+          }
+    })
+})
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.header-nav > ul');
-    console.log(hamburger);
-    console.log(navMenu);
+
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
@@ -13,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById("signature-pad");
     if (!canvas) {
         return; // Exit if canvas doesn't exist
+
     }
 
     // Only try to get invoice ID if the canvas exists
@@ -108,9 +128,12 @@ function bcRender() {
 
 bcRender();
 
+
+
 const clickProduct2 = (e) => {
     e.preventDefault();
      // this just gets the MPN from the selected product to use it in the for loop to compare to the product.id which is also the mpn.
+     
      let scannedMPN = document.querySelector("#selectedMPN").value;
      let productSelect = document.querySelector("#selectedProduct");
      let selectIndex = productSelect.selectedIndex;
@@ -124,19 +147,19 @@ const clickProduct2 = (e) => {
        console.log (productMPN);
      } else if (e.target.id === "addProductMPN"){
        productMPN = scannedMPN;
-       console.log(productMPN);
+       console.log('the scanned MPN ID is: ' + productMPN);
      }
-     console.log(e.target.id);
+     
     // fetch data from the server
     fetch(`https://peterapp.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-        },
+        }, 
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+            console.log("the scanned product to add is: " + data._id + data.description);
             if (data.errorMessage) {
                 // alert(data.errorMessage);
                 console.log(data.errorMessage);
@@ -163,11 +186,8 @@ const clickProduct = (e) => {
     if (e.target.id === "addProduct") {
     productMPN = selectedProduct.dataset.mpn;
     producId = selectedProduct.value;
-    console.log(productId);
-    console.log(productMPN);
     } else if (e.target.id === "addProductMPN"){
       productMPN = scannedMPN;
-      console.log(productMPN);
     }
 
     // fetch data from the server
@@ -181,7 +201,7 @@ const clickProduct = (e) => {
         .then((data) => {
             // console.log(data); // this gives back the product
             //get the products that are on the invoice product list.
-            console.log(data);
+            
             addItem(data, productId);
         })
         .catch((error) => console.error("Fetch error:", error));
@@ -193,12 +213,13 @@ function addItem(data, productId){
   products = document.querySelectorAll(".productId");
   const productsArray = Array.from(products);
   let productIndex = productsArray.length;
-  console.log(productsArray);
+//   console.log(productsArray);
+
 
   for (i = 0; i < products.length; i++) {
-      if (productId === productsArray[i].id) {
+      if (data._id === productsArray[i].id) {
           //get the duplicate elements
-          console.log('the duplicate id is: ' + productId);
+        //   console.log('the duplicate id is: ' + productId);
           let duplicatePrice = document.querySelector("[data-" + data._id + "price]");
           let duplicateQty = document.querySelector("[data-" + data._id + "qty]");
           let duplicateSubTotal = document.querySelector("[data-" + data._id + "subtotal]");
@@ -386,21 +407,22 @@ productList.addEventListener("click", function (e) {
     }
 });
 
-// Add event listener to the container of the product list
-productList.addEventListener("change", function (e) {
-    // Check if the element that changed is the quantity element
-    if (e.target && e.target.matches(".quantity")) {
-        // get the price quantity and subTotal
-        const price = e.target.previousElementSibling.value;
-        const quantity = e.target.value;
-        const subTotal = e.target.nextElementSibling;
-        let productTotal = 0;
-        productTotal = parseFloat(price * quantity);
-        subTotal.value = productTotal.toFixed(2);
+// // Add event listener to the container of the product list
+// productList.addEventListener("change", function (e) {
+//     // Check if the element that changed is the quantity element
+//     if (e.target && e.target.matches(".quantity")) {
+//         // get the price quantity and subTotal
+//         const price = e.target.previousElementSibling;
+//         console.log('this is a test');
+//         const quantity = e.target.value;
+//         const subTotal = e.target.nextElementSibling;
+//         let productTotal = 0;
+//         productTotal = parseFloat(price * quantity);
+//         subTotal.value = productTotal.toFixed(2);
 
-        addTotal();
-    }
-});
+//         addTotal();
+//     }
+// });
 
 // Add event listener to the container of the product list
 productList.addEventListener("change", function (e) {

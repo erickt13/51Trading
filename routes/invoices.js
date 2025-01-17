@@ -35,6 +35,7 @@ router.get('/:mpn/addproductbympn', async (req, res) => {
 
         // Find the product by mpn
         const product = await Product.findOne({ mpn: mpn });
+        
 
         if (!product) {
             return res.json({ errorMessage: 'Product not found' });
@@ -74,9 +75,8 @@ router.get('/new', async (req,res) => {
 
 // Create new invoice route
 router.post('/', async (req,res) => {
-    const { invoiceNumber, customer, items, date, totalAmount, signature } = req.body; // Destructure the request body
-    const invoice = new Invoice({
-        invoiceNumber,
+    const { customer, items, date, totalAmount, signature } = req.body; // Destructure the request body
+    const invoice = new Invoice({ 
         customer,
         items: items || [], // Initialize items as an empty array
         totalAmount, // Initialize totalAmount
@@ -164,7 +164,6 @@ router.put('/:id', async (req, res) => {
         
         // console.log(invoiceItems);
 
-        invoice.invoiceNumber = req.body.invoiceNumber;
         invoice.customer = req.body.customer;
         invoice.signature = invoice.signature;
         invoice.totalAmount = req.body.totalAmount; 

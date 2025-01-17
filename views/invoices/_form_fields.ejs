@@ -1,9 +1,5 @@
 <div class="form-row">
     <div class="form-item">
-        <label for="invoiceNumber">Invoice Number</label>
-        <input type="text" name="invoiceNumber" id="invoiceNumber" value="<%= invoice.invoiceNumber %>"><br>
-    </div>
-    <div class="form-item">
         <label for="customer">Customer</label>
         <select id="customer" name="customer" >
             <% customers.forEach(customer => { %>
@@ -14,6 +10,9 @@
                 <% } %>
             <% }) %>
         </select>
+    </div>
+    <div class="form-item">
+       
     </div>
 </div>
 <div class="form-row">
@@ -37,13 +36,13 @@
 <div class="form-row">
     <div class="form-item">
         <div class="btn-row">
-            <button class="btn btn-primary" id="addProduct">Add Product</button><br />
+            <button type="button" class="btn btn-primary" id="addProduct">Add Product</button><br />
         </div>
     </div>
     <div class="form-item">
         <div class="form-item">
             <div class="btn-row">
-                <button class="btn btn-primary" id="addProductMPN">Add Product</button><br />
+                <button type="button" class="btn btn-primary" id="addProductMPN">Add Product</button><br />
             </div>
         </div>
     </div>
