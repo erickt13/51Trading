@@ -61,6 +61,11 @@ const invoiceSchema = new Schema({
     default: Date.now,
     required: true
   },
+  shipDate: {
+    type: Date,
+    default: Date.now,
+    required: false
+  },
   signature: {
     type: String,
     required: false

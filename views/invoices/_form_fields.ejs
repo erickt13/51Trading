@@ -12,8 +12,23 @@
         </select>
     </div>
     <div class="form-item">
-       
+        <div class="form-row">
+            <div class="form-item">
+                <label for="date">Invoice Date</label>
+                <!-- Books Index/Create/New Routes - Node.js/Express/MongoDB Course #3  -->
+                <input type="date" id="invoiceDate" name="date" value="<%= invoice.date == null ? '' : invoice.date.toISOString().split('T')[0]; %>"></input>
+            </div>
+            <div class="form-item">
+                <label for="date">Ship Date</label>
+                <input type="date" id="shipDate" name="shipDate" value="<%= invoice.shipDate == null ? '' : invoice.shipDate.toISOString().split('T')[0]; %>"></input>
+            </div>
+        </div>
     </div>
+    
+</div>
+
+<div class="form-row">
+    
 </div>
 <div class="form-row">
     <div class="form-item">

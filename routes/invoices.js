@@ -40,12 +40,6 @@ router.get('/:mpn/addproductbympn', async (req, res) => {
         if (!product) {
             return res.json({ errorMessage: 'Product not found' });
         }
-         
-
-        // return res.status(200).json({
-        //     message: 'Product found',
-        //     product: product
-        // });
 
         return res.status(200).json(product);
 
@@ -75,27 +69,15 @@ router.get('/new', async (req,res) => {
 
 // Create new invoice route
 router.post('/', async (req,res) => {
-    const { customer, items, date, totalAmount, signature } = req.body; // Destructure the request body
+    const { customer, items, date, shipDate, totalAmount, signature } = req.body; // Destructure the request body
     const invoice = new Invoice({ 
         customer,
         items: items || [], // Initialize items as an empty array
         totalAmount, // Initialize totalAmount
         date: date ? new Date(date) : Date.now(), // Ensure date is a Date object
+        shipDate: shipDate ? new Date(shipDate) : Date.now(), // Ensure date is a Date object
         signature: "#"
     });
-
-    // console.log(invoice);
-
-    // const invoiceItems = items.map(item => ({
-    //     source: item.source,
-    //     notes: item.notes,
-    //     mpn: item.mpn,
-    //     description: item.description,
-    //     quantity: parseInt(item.quantity, 10),
-    //     price: parseFloat(item.price), 
-    //     subTotal: parseFloat(item.subTotal),
-    //     status: item.status
-    // }));
 
     try {
         const newInvoice = await invoice.save();
@@ -127,6 +109,10 @@ router.get('/:id/edit', async (req, res) => {
         const customers = await Customer.find({})
         const products = await Product.find({}).limit(10).sort({ description: 1 })
         const invoice = await Invoice.findById(req.params.id).populate('customer')
+
+        // Format the dates to YYYY-MM-DD for rendering in the form
+        // let formattedDate = invoice.date.toISOString().split('T')[0];  // 'YYYY-MM-DD'
+        // let formattedShipDate = invoice.shipDate ? invoice.shipDate.toISOString().split('T')[0] : '';
      
         res.render('invoices/edit', {
             invoice : invoice,
@@ -161,10 +147,11 @@ router.put('/:id', async (req, res) => {
             subTotal: parseFloat(item.subTotal),
             status: item.status
         }));
-        
-        // console.log(invoiceItems);
 
         invoice.customer = req.body.customer;
+        // invoice.date = req.body.date;
+        invoice.date = req.body.date ? new Date(req.body.date) : Date.now(); // Ensure date is a Date object
+        invoice.shipDate = req.body.shipDate ? new Date(req.body.shipDate) : Date.now(); // Ensure date is a Date object
         invoice.signature = invoice.signature;
         invoice.totalAmount = req.body.totalAmount; 
         invoice.items = invoiceItems; 

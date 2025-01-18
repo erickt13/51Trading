@@ -18,11 +18,11 @@
             </tr>
             <tr>
                 <th>Invoice Date:</th>
-                <td><%= invoice.date.toDateString() %></td>
+                <td><%= invoice.date.toISOString().split('T')[0]; %></td>
             </tr>
             <tr>
                 <th>Ship Date:</th>
-                <td></td>
+                <td><%= invoice.shipDate.toISOString().split('T')[0]; %></td>
             </tr>
         </table>
     </div>
