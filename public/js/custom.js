@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
-        fetch(`http://localhost:3000/products/${searchedProduct}/search/`, {
+        fetch(`https://peterapp.onrender.com/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // fetch updating the signature
         // https://peterapp.onrender.com production
         // http://localhost:3000 development
-        fetch(`http://localhost:3000/invoices/${invoiceId}/signature`, {
+        fetch(`https://peterapp.onrender.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -237,7 +237,7 @@ const addProduct2 = (e) => {
      }
      
     // fetch data from the server
-    fetch(`http://localhost:3000/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`https://peterapp.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -279,7 +279,7 @@ const addProduct = (e) => {
     }
 
     // fetch data from the server
-    fetch(`http://localhost:3000/invoices/${productId}/addproductbyid`, {
+    fetch(`https://peterapp.onrender.com/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
