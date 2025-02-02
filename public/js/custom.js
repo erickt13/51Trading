@@ -10,13 +10,104 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             console.log('You have hit Enter on your keypad and the MPN is: ' + scannedMpnInput.value);
             console.log(e.key);
-            clickProduct2(e);
+            addProduct2(e);
         } else {
             // All other keys work normally
             return true;
           }
     })
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const copyInvoiceBtn = document.querySelector('#copyInvoiceBtn');
+   
+
+    if (!copyInvoiceBtn) {
+        return;
+    }
+
+    copyInvoiceBtn.addEventListener('click', copyInvoice);
+
+})
+
+const copyInvoice = (e) => {
+    console.log('this is a copy test');
+    const invoiceId = document.querySelector('h2.page-header').dataset.invoiceid;
+    console.log(invoiceId);
+    fetch(`/invoices/${invoiceId}/copy`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+        // Add body if you need to send data
+        // body: JSON.stringify({ customer: newCustomerId })
+      })
+      .then((response) => response.json() )
+      .then((data) => {
+        // console.log(data);
+        window.location.href = `/invoices/${data._id}`;
+      })    
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+   const searchProductInput = document.querySelector('#searchProductInput');
+   const searchProductBtn = document.querySelector('#searchProductBtn')
+   let searchResults = document.querySelector("select#selectedProduct");
+   console.log(searchResults);
+
+   if (!searchProductInput || !searchProductBtn || !searchResults) {
+    console.log("select input not found");
+    return; // Exit if scanned MPN Input doesn't exist
+    }
+
+    searchProductBtn.addEventListener('click', getSearchResults);
+    searchProductInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            getSearchResults(e);
+        } else {
+            // All other keys work normally
+            return true;
+          }
+    });
+})
+
+    const getSearchResults = (e) => {
+        e.preventDefault();
+        let searchedProduct = searchProductInput.value;
+        let searchResults = document.querySelector("select#selectedProduct");
+        fetch(`http://localhost:3000/products/${searchedProduct}/search/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            
+            if (data.errorMessage) {
+                // alert(data.errorMessage);
+                console.log(data.errorMessage);
+                return;
+            } else {
+                searchResults.innerHTML = "";
+                data.products.forEach(product => {
+                    option = document.createElement("option");
+                    option.label = product.description;
+                    option.dataset.id = product._id;
+                    option.dataset.itemnumber = product.itemNumber;
+                    option.dataset.mpn = product.mpn;
+                    option.value = product._id;
+                    searchResults.appendChild(option);
+                })
+               
+                console.log(data);
+            }
+        });
+    }
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -32,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById("signature-pad");
     if (!canvas) {
         return; // Exit if canvas doesn't exist
-
     }
 
     // Only try to get invoice ID if the canvas exists
@@ -79,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // fetch updating the signature
         // https://peterapp.onrender.com production
         // http://localhost:3000 development
-        fetch(`https://peterapp.onrender.com/invoices/${invoiceId}/signature`, {
+        fetch(`http://localhost:3000/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -107,10 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
 let productList = document.querySelector("#productList");
-let addProduct = document.querySelector("#addProduct");
-// let productTemplate = `This is a test`
+let addProductButton = document.querySelector("#addProduct");
 
 function bcRender() {
     let svg = document.querySelectorAll(".barcode");
@@ -128,9 +216,7 @@ function bcRender() {
 
 bcRender();
 
-
-
-const clickProduct2 = (e) => {
+const addProduct2 = (e) => {
     e.preventDefault();
      // this just gets the MPN from the selected product to use it in the for loop to compare to the product.id which is also the mpn.
      
@@ -151,7 +237,7 @@ const clickProduct2 = (e) => {
      }
      
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`http://localhost:3000/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -171,7 +257,7 @@ const clickProduct2 = (e) => {
         });
 };
 
-const clickProduct = (e) => {
+const addProduct = (e) => {
     e.preventDefault();
 
     // this just gets the MPN from the selected product to use it in the for loop to compare to the product.id which is also the mpn.
@@ -179,19 +265,21 @@ const clickProduct = (e) => {
     let productSelect = document.querySelector("#selectedProduct");
     let selectIndex = productSelect.selectedIndex;
     let productId = document.querySelector("#selectedProduct").value;
+    
     // let invoiceId = document.querySelector(".invoiceId").dataset.invoiceid;
     let selectedProduct = productSelect[selectIndex];
+    let productItemNumber = selectedProduct.dataset.itemnumber;
     let productMPN;
 
     if (e.target.id === "addProduct") {
     productMPN = selectedProduct.dataset.mpn;
-    producId = selectedProduct.value;
+    
     } else if (e.target.id === "addProductMPN"){
       productMPN = scannedMPN;
     }
 
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${productId}/addproductbyid`, {
+    fetch(`http://localhost:3000/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -213,20 +301,20 @@ function addItem(data, productId){
   products = document.querySelectorAll(".productId");
   const productsArray = Array.from(products);
   let productIndex = productsArray.length;
-//   console.log(productsArray);
-
+  //   console.log(productsArray);
 
   for (i = 0; i < products.length; i++) {
       if (data._id === productsArray[i].id) {
           //get the duplicate elements
-        //   console.log('the duplicate id is: ' + productId);
+          console.log('the duplicate id is: ' + productId);
           let duplicatePrice = document.querySelector("[data-" + data._id + "price]");
           let duplicateQty = document.querySelector("[data-" + data._id + "qty]");
           let duplicateSubTotal = document.querySelector("[data-" + data._id + "subtotal]");
           //add quantity and calculate sub total
           duplicateQty.value = Number(duplicateQty.value) + 1;
-          productTotal = Number(duplicatePrice.value) * duplicateQty.value;
-          duplicateSubTotal.value = productTotal.toFixed(2);
+          console.log(duplicatePrice)
+          productTotal = duplicatePrice.value * duplicateQty.value;
+          duplicateSubTotal.value = productTotal;
 
           addTotal();
           return;
@@ -242,7 +330,7 @@ function addItem(data, productId){
   actions.classList.add("actions");
 
   // Create 8 td elements and add form inputs to them
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 11; i++) {
       const td = document.createElement("td");
 
       // Customize the input based on the index (use switch)
@@ -273,16 +361,25 @@ function addItem(data, productId){
               input.value = data.mpn;
               input.readOnly = true;
               break;
-            case 3: // product Id 
-            input = document.createElement("input");
-            input.type = "text";
-            input.name = `items[${productIndex}][productId]`; // array name notation
-            input.classList.add("productId");
-            input.id = data._id;
-            input.value = data._id;
-            input.readOnly = true;
-        break;
-          case 4: // description
+          case 3: // Item Number 
+              input = document.createElement("input");
+              input.type = "text";
+              input.name = `items[${productIndex}][itemNumber]`; // array name notation
+              input.classList.add("itemNumber");
+              input.id = data.itemNumber;
+              input.value = data.itemNumber;
+              input.readOnly = true;
+              break;
+          case 4: // product Id 
+              input = document.createElement("input");
+              input.type = "text";
+              input.name = `items[${productIndex}][productId]`; // array name notation
+              input.classList.add("productId");
+              input.id = data._id;
+              input.value = data._id;
+              input.readOnly = true;
+              break;
+          case 5: // description
               input = document.createElement("input");
               input.type = "text";
               input.name = `items[${productIndex}][description]`; // array name notation
@@ -291,16 +388,16 @@ function addItem(data, productId){
               input.value = data.description;
               input.readOnly = true;
               break;
-          case 5: // price
+          case 6: // price
               input = document.createElement("input");
               input.type = "text";
               input.dataset[data._id + "price"] = data._id;
               input.name = `items[${productIndex}][price]`; // array name notation
               input.classList.add("price");
-              input.value = data.price;
+              input.value = parseFloat(data.price).toFixed(2);
               input.readOnly = true;
               break;
-          case 6: // quantity
+          case 7: // quantity
               input = document.createElement("input");
               input.type = "number";
               input.name = `items[${productIndex}][quantity]`; // array name notation
@@ -309,7 +406,7 @@ function addItem(data, productId){
               input.placeholder = 1;
               input.value = parseFloat(1);
               break;
-          case 7: // sub total
+          case 8: // sub total
               input = document.createElement("input");
               input.type = "text";
               input.dataset[data._id + "subtotal"] = data._id;
@@ -318,19 +415,17 @@ function addItem(data, productId){
               input.readOnly = true;
 
               const price = parseFloat(data.price);
-              const quantity = parseFloat(1);
-
-            //   console.log(price);
-            //   console.log(quantity);
+              const quantity = 1;
 
               if (isNaN(price) || isNaN(quantity)) {
                   console.error("Invalid input: price or quantity is not a valid number.");
               } else {
-                  input.value = price * quantity;
+                const subtotal = (price * quantity).toFixed(2);
+                  input.value = subtotal;
                   // console.log = (input.value);
               }
               break;
-          case 8: // done button
+          case 9: // done button
               input = document.createElement("input");
               input.type = "checkbox";
               input.name = `items[${productIndex}][status]`;
@@ -342,7 +437,7 @@ function addItem(data, productId){
               td.appendChild(input);
               // td.appendChild(label);
               break;
-          case 9: // remove button
+          case 10: // remove button
               input = document.createElement("button");
               input.type = "button";
               input.classList.add("btn");
@@ -359,7 +454,7 @@ function addItem(data, productId){
       row.appendChild(td);
       tableBody.appendChild(row);
   }
-  // only need this if you are rendering barcode in the edig page.
+  // only need this if you are rendering barcode in the edit page.
   // renderBarcode();
 }
 
@@ -380,10 +475,8 @@ function renderBarcode(){
   JsBarcode(upcId, mpn, { format: "ean13" });
 }
 
-addProduct.addEventListener("click", clickProduct);
-addProductMPN.addEventListener("click", clickProduct2);
-
-
+addProductButton.addEventListener("click", addProduct);
+addProductMPN.addEventListener("click", addProduct2);
 
 // Add event listener to the container of the product list
 productList.addEventListener("click", function (e) {
@@ -407,35 +500,18 @@ productList.addEventListener("click", function (e) {
     }
 });
 
-// // Add event listener to the container of the product list
-// productList.addEventListener("change", function (e) {
-//     // Check if the element that changed is the quantity element
-//     if (e.target && e.target.matches(".quantity")) {
-//         // get the price quantity and subTotal
-//         const price = e.target.previousElementSibling;
-//         console.log('this is a test');
-//         const quantity = e.target.value;
-//         const subTotal = e.target.nextElementSibling;
-//         let productTotal = 0;
-//         productTotal = parseFloat(price * quantity);
-//         subTotal.value = productTotal.toFixed(2);
-
-//         addTotal();
-//     }
-// });
-
 // Add event listener to the container of the product list
 productList.addEventListener("change", function (e) {
     // Check if the element that changed is the quantity element
     if (e.target && e.target.matches(".quantity")) {
         // get the price quantity and subTotal
         const tableRow = e.target.closest(".table-row");
-        const price = tableRow.querySelector(".price").value;
-        const quantity = e.target.value;
+        const price = parseFloat(tableRow.querySelector(".price").value); 
+        const quantity = parseInt(e.target.value, 10);  
         const subTotal = tableRow.querySelector(".subTotal");
         let productTotal = 0;
-        productTotal = parseFloat(price * quantity);
-        subTotal.value = productTotal.toFixed(2);
+        productTotal = price * quantity;
+        subTotal.value = parseFloat(productTotal).toFixed(2);
 
         addTotal();
     }
@@ -466,12 +542,13 @@ function addTotal() {
     let total = document.querySelector("#totalSum");
     let sum = 0;
     if (amounts.length === 0) {
-        total.value = 0.0;
+        total.value = "0.00";
+        return;
     }
     amounts.forEach(function (item) {
-        sum += parseFloat(item.value);
-        total.value = sum.toFixed(2);
+        sum += parseFloat(item.value) || 0;
     });
+    total.value = sum.toFixed(2);
 }
 
 // sorting of columns start here
@@ -510,5 +587,5 @@ document.getElementById("source-header").addEventListener("click", () => {
 
 // Add click event listener for Done Status column sorting
 document.getElementById("status-header").addEventListener("click", () => {
-    sortTable(8, true); // 6 is the index for the "Done Status" column (checkbox)
+    sortTable(9, true); // 6 is the index for the "Done Status" column (checkbox)
 });

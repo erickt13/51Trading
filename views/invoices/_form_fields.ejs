@@ -28,50 +28,44 @@
 </div>
 
 <div class="form-row">
-    
-</div>
-<div class="form-row">
+    <div class="form-item">
+        <label>Search Product</label>
+        <input type="text" id="searchProductInput" name="description" value= " " >
+        <div class="form-row">
+            <button id="searchProductBtn" class="btn btn-primary" type="button">Search</button>
+        </div>
+    </div>
     <div class="form-item">
         <div id='datatest' data-mydata="<%= products %>"></div>
-        <label for="selectedProduct">Select Product Description</label>
+        <label for="selectedProduct">Search Results</label>
         <select id="selectedProduct" name="selectedProduct" >
-            <% products.forEach(product => { %>
-                <option label= "<%= product.description %>" data-id = '<%= product.id %>' data-mpn = '<%= product.mpn %>' value="<%= product.id %>"></option>
-            <% }) %>
+            <option value="" disabled selected>Select Search Results Here</option>
         </select>
-    </div>
-    <div class="form-item">
-        <div id='datatest' data-mydata="<%= products %>"></div>
-        <label for="selectedMPN">Scan Product MPN</label>
-        <input type='text' id="selectedMPN" name="selectedMPN"></input>
-    </div>
-   
-</div>
-
-<div class="form-row">
-    <div class="form-item">
         <div class="btn-row">
             <button type="button" class="btn btn-primary" id="addProduct">Add Product</button><br />
         </div>
     </div>
     <div class="form-item">
-        <div class="form-item">
-            <div class="btn-row">
-                <button type="button" class="btn btn-primary" id="addProductMPN">Add Product</button><br />
-            </div>
+        <div id='datatest' data-mydata="<%= products %>"></div>
+        <label for="selectedMPN">Scan Product MPN</label>
+        <input type='text' id="selectedMPN" name="selectedMPN"></input>
+        <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="addProductMPN">Add Product</button><br />
         </div>
     </div>
+   
 </div>
 
 <h2>Product List</h2>
 
 <div id="productList">
-    <table>
+    <table class="invoice-table">
         <thead>
             <tr>
                 <th id="source-header">Source</th>
                 <th id="notes-header">Notes</th>
                 <th id="mpn-header">MPN</th>
+                <th id="mpn-header">Item Number</th>
                 <th id="mpn-header">Product Id</th>
                 <th id="description-header">Description</th>
                 <th id="price-header">Price</th>
@@ -83,18 +77,19 @@
         </thead>
         <tbody class="tableBody">
             <% invoice.items.forEach((item, index) => { %>
-                <tr class="table-row <%= item.status ? 'done' : '' %>">  <!-- use ternary operator to check input.status if true or false / done or " " -->
-                   <td><input class="source" id="<%= item.source %>"  type="text" name="items[<%= index %>][source]" value="<%= item.source %>"></td>
-                   <td class="notes"><input class="notes" id="<%= item.notes %>"  type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
-                   <td><input class="mpn" id="<%= item.id %>"  type="text" readonly name="items[<%= index %>][mpn]" value="<%= item.mpn %>"></td>
-                   <td><input class="productId" id="<%= item.productId  %>"  type="text" readonly name="items[<%= index %>][productId]" value="<%= item.productId %>"></td>
-                   <td class="description"><input class="description" id="<%= item._id %>"  type="text" readonly name="items[<%= index %>][description]" value="<%= item.description %>"></td>
-                   <td><input class="price" type="text"  readonly data-<%= item.productId %>price="<%= item.price%>" name="items[<%= index %>][price]" value="<%= parseFloat(item.price).toFixed(2) %>"></td>
-                   <td><input class="quantity" type="number" placeholder="1" name="items[<%= index %>][quantity]" data-<%= item.productId %>qty="<%= item.quantity %>" value="<%= item.quantity %>"></td>
-                   <td><input class="subTotal" type="text" readonly name="items[<%= index %>][subTotal]"  data-<%= item.productId %>subtotal="<%= item.id %>" value="<%= item.subTotal %>"></td>
-                   <td><input type="checkbox" name="items[<%= index %>][status]" value="<%= item.status %>" class="done" id="doneCheckbox_<%= index %>" <%= item.status ? 'checked' : '' %>></td> <!-- use retnary operator to check input.status if true or false / done or " " -->
-                   <td><button type="button" class="btn btn-danger">Remove</button></td>
-                </tr>
+                <tr class="table-row <%= !!item.status ? 'done' : '' %>">
+                    <td><input class="source" id="<%= item.source %>" type="text" name="items[<%= index %>][source]" value="<%= item.source %>"></td>
+                    <td class="notes"><input class="notes" id="<%= item.notes %>" type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
+                    <td><input class="mpn" id="<%= item.id %>" type="text" readonly name="items[<%= index %>][mpn]" value="<%= item.mpn %>"></td>
+                    <td><input class="itemNumber" id="<%= item.itemNumber %>" type="text" readonly name="items[<%= index %>][itemNumber]" value="<%= item.itemNumber %>"></td>
+                    <td><input class="productId" id="<%= item.productId %>" type="text" readonly name="items[<%= index %>][productId]" value="<%= item.productId %>"></td>
+                    <td class="description"><input class="description" id="<%= item._id %>" type="text" readonly name="items[<%= index %>][description]" value="<%= item.description %>"></td>
+                    <td><input class="price" type="text"  readonly data-<%= item.productId %>price="<%= item.price%>" name="items[<%= index %>][price]" value="<%= parseFloat(item.price).toFixed(2) %>"></td>
+                    <td><input class="quantity" type="number" placeholder="1" name="items[<%= index %>][quantity]" data-<%= item.productId %>qty="<%= item.quantity %>" value="<%= item.quantity %>"></td>
+                    <td><input class="subTotal" type="text" readonly name="items[<%= index %>][subTotal]" data-<%= item.productId %>subtotal="<%= item.id %>" value="<%= parseFloat(item.subTotal).toFixed(2) %>"></td>
+                    <td><input type="checkbox" name="items[<%= index %>][status]" value="true" class="done" id="doneCheckbox_<%= index %>" <%= item.status ? 'checked' : '' %>></td>
+                    <td><button type="button" class="btn btn-danger">Remove</button></td>
+                 </tr>
                <% }) %>
         </tbody>
     </table>
@@ -108,7 +103,7 @@
         <label for="totalSum">Total</label> 
         <div class="form-row">
             <div class="form-item">
-                <input type="text" id="totalSum" readonly name="totalAmount" value="<%= invoice.totalAmount %>">
+                <input type="text" id="totalSum" readonly name="totalAmount" value="<%= parseFloat(invoice.totalAmount).toFixed(2) %>">
             </div>
         </div>
     </div>

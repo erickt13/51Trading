@@ -2,21 +2,77 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     /* align-items:center; */
 }
 
+.invoice-item {
+  display:flex;
+  flex-direction: column; 
+  flex-grow:1;
+  flex-basis: 0;
+  /* padding: 2rem; */
+  /* margin-left: 2rem; */
+}
+
+.small-print {
+  font-size: 10px;
+}
+
+/* Disable browser's default print header and footer */
+@media print {
+  @page {
+    margin: 0;
+  }
+
+  /* You can also hide elements if they are unnecessary for printing */
+  header, footer {
+    display: none;
+  }
+
+  /* If there's a specific area you don't want to print, hide it */
+  .no-print {
+    display: none;
+  }
+
+  /* Customize other styles for the print version if needed */
+  body {
+    font-size: 12pt;  /* Adjust text size for print */
+  }
+}
+
+.align-left {
+  align-items: flex-start;
+}
+
 .align-right {
-  text-align: right;
+  align-items: flex-end;
+}
+
+.border {
+  border: 1px solid rgb(156 163 175);
+}
+
+.margin-bottom {
+  margin-bottom: 2rem;
+}
+
+.padding {
+  padding: 5px;
+}
+
+
+
+.fifty {
+  width: 50%;
 }
 
 table {
   width: 100%;
   overflow-x: auto;
   border-radius: 10px;
-  /* max-width: 100%; */
-  /* table-layout: fixed; */
 }
+
 #source-header {
   width: 10%;
 }
@@ -45,10 +101,13 @@ table {
   width: 10%;
 }
 table, td, th {
-  border-bottom: 1px solid rgb(156 163 175);
+  border: 1px solid rgb(156 163 175);
   border-spacing: 0;
   border-collapse: collapse;
   padding: .4rem;
+}
+table.no-border > tbody > tr > th{
+  border: none;
 }
 td {
   text-align: center;
@@ -61,6 +120,10 @@ td.description, td.notes {
   cursor: pointer;
   color: var(--color-btn-primary-text);
   background-color: var(--color-btn-primary-background-dark);
+}
+
+input.subTotal {
+  min-width: 70px;
 }
 
 /* signature pad */
@@ -132,6 +195,11 @@ table.table-striped tbody tr:nth-child(odd) {
 div#productList {
   overflow-x: auto; /* Adds horizontal scrolling to the container */
   max-width: 100%;
+}
+
+
+table.no-border thead tr th{
+border:none;
 }
 
 

@@ -41,6 +41,29 @@ router.get('/', async (req,res) => {
             searchOptions: req.query
             
         })
+        console.log(products);
+    } catch (err){
+        res.redirect('/')
+    }
+})
+
+// Search Product fetch route
+router.get('/:description/search', async (req,res) => {
+    let searchOptions = {}
+    const { description } = req.params;
+    if (req.params.description != null && req.params.description != '') {
+        searchOptions.description = new RegExp(req.params.description, 'i')
+    }
+    try {
+        const products = await Product.find(searchOptions).limit(50).sort({ description: 1 }) // 1 for ascending, -1 for descending
+        res.json({
+            products: products,
+            searchOptions: req.query
+        })
+        
+        console.log(description);
+        console.log(searchOptions.description);
+        console.log(products);
     } catch (err){
         res.redirect('/')
     }
@@ -75,6 +98,7 @@ router.post('/', async (req,res) => {
 router.get('/:id', async (req, res) => {
     try {
          const product = await Product.findById(req.params.id)
+         console.log(product);
          res.render('products/show', {
             product: product
          })
@@ -102,7 +126,7 @@ router.put('/:id', async (req, res) => {
         product.mpn = req.body.mpn
         product.itemNumber = req.body.itemNumber
         product.description = req.body.description
-        product.price = parseFloat(req.body.price).toFixed(2); 
+        product.price = Math.round(parseFloat(req.body.price) * 100) / 100;
         await product.save()
         res.redirect(`/products/${product.id}`)
     } catch {

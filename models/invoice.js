@@ -18,6 +18,10 @@ const invoiceSchema = new Schema({
       type: String,
       required: false
     },
+    itemNumber: {
+      type: String,
+      required: true
+    },
     description: {
       type: String,
       required: true
