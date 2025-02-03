@@ -16,7 +16,15 @@
 }
 
 .small-print {
-  font-size: 10px;
+  font-size: 8px;
+}
+
+.hide {
+  display:none;
+}
+
+.show {
+  display: block;
 }
 
 /* Disable browser's default print header and footer */
@@ -65,7 +73,10 @@
 
 .fifty {
   width: 50%;
+  min-width: 300px;
 }
+
+
 
 table {
   width: 100%;
@@ -120,6 +131,14 @@ td.description, td.notes {
   cursor: pointer;
   color: var(--color-btn-primary-text);
   background-color: var(--color-btn-primary-background-dark);
+}
+
+input.productId {
+  min-width: 210px;
+}
+
+input.price {
+  min-width: 65px;
 }
 
 input.subTotal {
@@ -193,8 +212,9 @@ table.table-striped tbody tr:nth-child(odd) {
 }
 
 div#productList {
-  overflow-x: auto; /* Adds horizontal scrolling to the container */
-  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* This makes the scroll smooth on mobile devices */
+  width: 100%; /* You can set a fixed width if needed */
 }
 
 

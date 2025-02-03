@@ -20,6 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    const signInvoiceBtn = document.querySelector('#signInvoiceBtn');
+    const signInvoiceContainer = document.querySelector('#signInvoiceContainer')
+   
+
+    if (!signInvoiceBtn || !signInvoiceContainer) {
+        return;
+    }
+
+    signInvoiceBtn.addEventListener('click', signInvoice);
+
+})
+
+const signInvoice = (e) => {
+    console.log('invoice signing pad opened');
+    signInvoiceContainer.classList.remove('hide');
+    signInvoiceContainer.classList.add('show');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
     const copyInvoiceBtn = document.querySelector('#copyInvoiceBtn');
    
 
@@ -56,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
    const searchProductInput = document.querySelector('#searchProductInput');
    const searchProductBtn = document.querySelector('#searchProductBtn')
    let searchResults = document.querySelector("select#selectedProduct");
-   console.log(searchResults);
+//    console.log(searchResults);
 
    if (!searchProductInput || !searchProductBtn || !searchResults) {
     console.log("select input not found");
@@ -79,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
-        fetch(`https://peterapp.onrender.com/products/${searchedProduct}/search/`, {
+        fetch(`http://localhost:3000/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -145,9 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById("save");
     const cancelButton = document.getElementById("clear");
     const signatureInput = document.getElementById("signatureInput");
+    const signInvoiceContainer = document.querySelector('#signInvoiceContainer');
 
     // Verify all required elements exist
-    if (!saveButton || !cancelButton || !signatureInput || !customerSignatureImage) {
+    if (!saveButton || !cancelButton || !signatureInput || !customerSignatureImage || !signInvoiceContainer) {
         console.error('Required elements not found');
         return;
     }
@@ -169,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // fetch updating the signature
         // https://peterapp.onrender.com production
         // http://localhost:3000 development
-        fetch(`https://peterapp.onrender.com/invoices/${invoiceId}/signature`, {
+        fetch(`http://localhost:3000/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -188,6 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error("Error:", error);
         });
+
+        signInvoiceContainer.classList.remove("show");
+        signInvoiceContainer.classList.add("hide");
+
     });
 
     // Add clear button event listener
@@ -237,7 +262,7 @@ const addProduct2 = (e) => {
      }
      
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`http://localhost:3000/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -279,7 +304,7 @@ const addProduct = (e) => {
     }
 
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${productId}/addproductbyid`, {
+    fetch(`http://localhost:3000/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

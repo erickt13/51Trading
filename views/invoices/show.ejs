@@ -95,39 +95,37 @@
             </tbody>
         </table>
     </div>
+
+    <!-- The container for the signature feature -->
    
+    <div id="signInvoiceContainer" class="hide">
+        <h2 class="page-header no-print" data-invoiceId = '<%= invoice.id %>' >Sign Invoice</h2>
     
-    <h2 class="page-header no-print" data-invoiceId = '<%= invoice.id %>' >Sign Invoice</h2>
-    
-    <div class="wrapper no-print">
-      <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
-    </div>
-    
-    <!-- hidden signature input field -->
-    <div class="form-row no-print">
-        <div class="form-item">
-            <input type="hidden" name="signature" id="signatureInput" value="<%= invoice.signature %>">
+        <div class="wrapper no-print">
+          <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+        </div>
+        
+        <!-- hidden signature input field -->
+        <div class="form-row no-print">
+            <div class="form-item">
+                <input type="hidden" name="signature" id="signatureInput" value="<%= invoice.signature %>">
+            </div>
+        </div>
+        
+        <div class="no-print">
+          <button class="btn btn-primary" id="save">Save</button>
+          <button class="btn btn-primary" id="clear">Clear</button>
         </div>
     </div>
-    
-    <div class="no-print">
-      <button class="btn btn-primary" id="save">Save</button>
-      <button class="btn btn-primary" id="clear">Clear</button>
-    </div>
-    
+
     <div id="signatureWrapper no-print">
-      <img id="customerSignature" src="<%= invoice.signature %>" alt="customer signature">
+        <img id="customerSignature" src="<%= invoice.signature %>" alt="customer signature">
     </div>
     
-    <!-- <div class="invoice-row">
-        <div>
-            <h2>Customer Signature:</h2>
-            <img src="<%= invoice.signature %>" alt="customer signature">
-        </div>
-    </div> -->
     
     <div class="invoice-row no-print">
         <div class="btn-row">
+            <button id="signInvoiceBtn" class="btn btn-primary" type="button">Sign Invoice</button>
             <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
             <button id="copyInvoiceBtn" class="btn btn-primary" type="button">Copy Invoice</button>
             <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
