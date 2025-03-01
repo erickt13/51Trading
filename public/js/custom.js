@@ -450,7 +450,7 @@ function addItem(data, productItemNumber){
               input.type = "number";
               input.name = `items[${productIndex}][quantity]`; // array name notation
             //   input.dataset[data.itemNumber + "qty"] = data.itemNumber;
-              input.setAttribute(`data-${data.itemNumber}quantity`, data.itemNumber);
+              input.setAttribute(`data-${data.itemNumber}qty`, data.itemNumber);
               input.classList.add("quantity");
               input.placeholder = 1;
               input.value = parseFloat(1);
