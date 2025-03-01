@@ -71,7 +71,7 @@ const copyInvoice = (e) => {
     console.log('this is a copy test');
     const invoiceId = document.querySelector('h2.page-header').dataset.invoiceid;
     console.log(invoiceId);
-    fetch(`/invoices/${invoiceId}/copy`, {
+    fetch(`https://five1trading.onrender.com/invoices/${invoiceId}/copy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
-        fetch(`http://localhost:3000/products/${searchedProduct}/search/`, {
+        fetch(`https://five1trading.onrender.com/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // https://localhost:3000/ production
         // https://five1trading.com/ production
         //  development
-        fetch(`https://fve1trading.com/invoices/${invoiceId}/signature`, {
+        fetch(`https://fve1trading.onrender.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -280,7 +280,7 @@ const addProduct2 = (e) => {
      }
      
     // fetch data from the server
-    fetch(`https://fve1trading.com/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`https://five1trading.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -324,7 +324,7 @@ const addProduct = (e) => {
     }
 
     // fetch data from the server
-    fetch(`https://fve1trading.com/invoices/${productId}/addproductbyid`, {
+    fetch(`https://five1trading.onrender.com/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
