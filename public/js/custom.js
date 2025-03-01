@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // fetch updating the signature
         // https://localhost:3000/ production
-        // https://fiftyonetrading.com/ production
+        // https://five1trading.com/ production
         //  development
         fetch(`https://fve1trading.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
