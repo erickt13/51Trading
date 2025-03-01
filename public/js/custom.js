@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
-        fetch(`https://fiftyonetrading.com/products/${searchedProduct}/search/`, {
+        fetch(`http://localhost:3000/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // https://localhost:3000/ production
         // https://fiftyonetrading.com/ production
         //  development
-        fetch(`https://fiftyonetrading.com/invoices/${invoiceId}/signature`, {
+        fetch(`https://fve1trading.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -280,7 +280,7 @@ const addProduct2 = (e) => {
      }
      
     // fetch data from the server
-    fetch(`https://fiftyonetrading.com/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`https://fve1trading.com/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -324,7 +324,7 @@ const addProduct = (e) => {
     }
 
     // fetch data from the server
-    fetch(`https://fiftyonetrading.com/invoices/${productId}/addproductbyid`, {
+    fetch(`https://fve1trading.com/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
