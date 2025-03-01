@@ -53,7 +53,6 @@ router.get('/:mpn/addproductbympn', async (req, res) => {
 router.get('/:id/addproductbyid', async (req,res) => {
 
     try {
-        const invoice = await Invoice.findById(req.params.id); // get the invoice from req query string
         const product = await Product.findById(req.params.id); // get the selected product from req query string
         res.json(product) // Send the product to the client via json.
     
@@ -171,7 +170,7 @@ router.put('/:id', async (req, res) => {
             notes: item.notes,
             mpn: item.mpn,
             itemNumber: item.itemNumber,
-            productId: item.productId,
+            // productId: item.productId,
             description: item.description,
             quantity: parseInt(item.quantity, 10),
             price: parseFloat(item.price), 

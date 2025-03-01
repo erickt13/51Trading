@@ -1,3 +1,4 @@
+//
 document.addEventListener('DOMContentLoaded', () => {
 
     // Check if scanned MPN Input exists
@@ -8,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     scannedMpnInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            console.log('You have hit Enter on your keypad and the MPN is: ' + scannedMpnInput.value);
-            console.log(e.key);
+            // console.log('You have hit Enter on your keypad and the MPN is: ' + scannedMpnInput.value);
+            // console.log(e.key);
             addProduct2(e);
         } else {
             // All other keys work normally
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
     })
 })
-
+// sign invoice event listener
 document.addEventListener('DOMContentLoaded', () => {
 
     const signInvoiceBtn = document.querySelector('#signInvoiceBtn');
@@ -37,7 +38,7 @@ const signInvoice = (e) => {
     signInvoiceContainer.classList.remove('hide');
     signInvoiceContainer.classList.add('show');
 }
-
+// Copy Invoice event listener
 document.addEventListener('DOMContentLoaded', () => {
 
     const copyInvoiceBtn = document.querySelector('#copyInvoiceBtn');
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     copyInvoiceBtn.addEventListener('click', copyInvoice);
 
 })
-
+// print invoice event listener
 document.addEventListener('DOMContentLoaded', () => {
     const printInvoiceBtn = document.querySelector('#printInvoiceBtn')
 
@@ -65,7 +66,7 @@ const printInvoice = (e) => {
     console.log('invoice is being printed!');
     window.print();
 }
-
+// copy invoice event listener
 const copyInvoice = (e) => {
     console.log('this is a copy test');
     const invoiceId = document.querySelector('h2.page-header').dataset.invoiceid;
@@ -85,7 +86,7 @@ const copyInvoice = (e) => {
       })    
 }
 
-
+// search product event listener
 document.addEventListener('DOMContentLoaded', () => {
 
    const searchProductInput = document.querySelector('#searchProductInput');
@@ -114,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
-        fetch(`https://peterapp.onrender.com/products/${searchedProduct}/search/`, {
+        fetch(`https://fiftyonetrading.com/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -138,8 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     option.value = product._id;
                     searchResults.appendChild(option);
                 })
-               
-                console.log(data);
+                
             }
         });
     }
@@ -203,9 +203,10 @@ document.addEventListener('DOMContentLoaded', () => {
         signaturePad.clear();
 
         // fetch updating the signature
-        // https://peterapp.onrender.com production
+        // https://localhost:3000/ production
+        // https://fiftyonetrading.com/ production
         //  development
-        fetch(`https://peterapp.onrender.com/invoices/${invoiceId}/signature`, {
+        fetch(`https://fiftyonetrading.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -219,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            console.log("Updated signature response:", data);
+            // console.log("Updated signature response:", data);
         })
         .catch(error => {
             console.error("Error:", error);
@@ -267,17 +268,19 @@ const addProduct2 = (e) => {
     //  let invoiceId = document.querySelector(".invoiceId").dataset.invoiceid;
      let selectedProduct = productSelect[selectIndex];
      let productMPN;
+     let productItemNumber;
  
      if (e.target.id === "addProduct") {
        productMPN = selectedProduct.dataset.mpn;
-       console.log (productMPN);
+       productItemNumber = selectedProduct.dataset.itemnumber;
+       console.log ('The selected product Item Number is: ' + productItemNumber);
      } else if (e.target.id === "addProductMPN"){
        productMPN = scannedMPN;
        console.log('the scanned MPN ID is: ' + productMPN);
      }
      
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`https://fiftyonetrading.com/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -313,13 +316,15 @@ const addProduct = (e) => {
 
     if (e.target.id === "addProduct") {
     productMPN = selectedProduct.dataset.mpn;
+    productItemNumber = selectedProduct.dataset.itemnumber;
+    console.log ('The selected product Id is : ' + productId);
     
     } else if (e.target.id === "addProductMPN"){
       productMPN = scannedMPN;
     }
 
     // fetch data from the server
-    fetch(`https://peterapp.onrender.com/invoices/${productId}/addproductbyid`, {
+    fetch(`https://fiftyonetrading.com/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -327,29 +332,31 @@ const addProduct = (e) => {
     })
         .then((response) => response.json())
         .then((data) => {
-            // console.log(data); // this gives back the product
+            console.log(data); // this gives back the product
             //get the products that are on the invoice product list.
             
-            addItem(data, productId);
+            addItem(data, productItemNumber);
+            
         })
         .catch((error) => console.error("Fetch error:", error));
 };
 
 // addProduct was already defined for the button
-function addItem(data, productId){
+function addItem(data, productItemNumber){
+    console.log("inside addItem " + productItemNumber);
   // This method returns a NodeList of all elements that match the specified selector
-  products = document.querySelectorAll(".productId");
+  products = document.querySelectorAll(".itemNumber");
   const productsArray = Array.from(products);
   let productIndex = productsArray.length;
   //   console.log(productsArray);
 
   for (i = 0; i < products.length; i++) {
-      if (data._id === productsArray[i].id) {
+      if (data.itemNumber === productsArray[i].id) {
           //get the duplicate elements
-          console.log('the duplicate id is: ' + productId);
-          let duplicatePrice = document.querySelector("[data-" + data._id + "price]");
-          let duplicateQty = document.querySelector("[data-" + data._id + "qty]");
-          let duplicateSubTotal = document.querySelector("[data-" + data._id + "subtotal]");
+          console.log('the duplicate item number is: ' + productItemNumber);
+          let duplicatePrice = document.querySelector("[data-" + data.itemNumber + "price]");
+          let duplicateQty = document.querySelector("[data-" + data.itemNumber + "qty]");
+          let duplicateSubTotal = document.querySelector("[data-" + data.itemNumber + "subtotal]");
           //add quantity and calculate sub total
           duplicateQty.value = Number(duplicateQty.value) + 1;
           console.log(duplicatePrice)
@@ -370,7 +377,7 @@ function addItem(data, productId){
   actions.classList.add("actions");
 
   // Create 8 td elements and add form inputs to them
-  for (let i = 0; i < 11; i++) {
+  for (let i = 0; i < 10; i++) {
       const td = document.createElement("td");
 
       // Customize the input based on the index (use switch)
@@ -410,16 +417,16 @@ function addItem(data, productId){
               input.value = data.itemNumber;
               input.readOnly = true;
               break;
-          case 4: // product Id 
-              input = document.createElement("input");
-              input.type = "text";
-              input.name = `items[${productIndex}][productId]`; // array name notation
-              input.classList.add("productId");
-              input.id = data._id;
-              input.value = data._id;
-              input.readOnly = true;
-              break;
-          case 5: // description
+        //   case 4: // product Id 
+        //       input = document.createElement("input");
+        //       input.type = "text";
+        //       input.name = `items[${productIndex}][productId]`; // array name notation
+        //       input.classList.add("productId");
+        //       input.id = data._id;
+        //       input.value = data._id;
+        //       input.readOnly = true;
+        //       break;
+          case 4: // description
               input = document.createElement("input");
               input.type = "text";
               input.name = `items[${productIndex}][description]`; // array name notation
@@ -428,7 +435,7 @@ function addItem(data, productId){
               input.value = data.description;
               input.readOnly = true;
               break;
-          case 6: // price
+          case 5: // price
               input = document.createElement("input");
               input.type = "text";
               input.dataset[data._id + "price"] = data._id;
@@ -437,7 +444,7 @@ function addItem(data, productId){
               input.value = parseFloat(data.price).toFixed(2);
               input.readOnly = true;
               break;
-          case 7: // quantity
+          case 6: // quantity
               input = document.createElement("input");
               input.type = "number";
               input.name = `items[${productIndex}][quantity]`; // array name notation
@@ -446,7 +453,7 @@ function addItem(data, productId){
               input.placeholder = 1;
               input.value = parseFloat(1);
               break;
-          case 8: // sub total
+          case 7: // sub total
               input = document.createElement("input");
               input.type = "text";
               input.dataset[data._id + "subtotal"] = data._id;
@@ -465,7 +472,7 @@ function addItem(data, productId){
                   // console.log = (input.value);
               }
               break;
-          case 9: // done button
+          case 8: // done button
               input = document.createElement("input");
               input.type = "checkbox";
               input.name = `items[${productIndex}][status]`;
@@ -477,7 +484,7 @@ function addItem(data, productId){
               td.appendChild(input);
               // td.appendChild(label);
               break;
-          case 10: // remove button
+          case 9: // remove button
               input = document.createElement("button");
               input.type = "button";
               input.classList.add("btn");
@@ -627,5 +634,5 @@ document.getElementById("source-header").addEventListener("click", () => {
 
 // Add click event listener for Done Status column sorting
 document.getElementById("status-header").addEventListener("click", () => {
-    sortTable(9, true); // 6 is the index for the "Done Status" column (checkbox)
+    sortTable(8, true); // 6 is the index for the "Done Status" column (checkbox)
 });

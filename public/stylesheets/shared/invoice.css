@@ -91,16 +91,19 @@ table {
   width: 30%;
 }
 #mpn-header {
-  width: 5%;
+  width: 10%;
+}
+#itemnumber-header {
+  width: 10%;
 }
 #description-header {
   width: 30%;
 }
 #price-header {
-  width: 10%;
+  width: 5%;
 }
 #quantity-header {
-  width: 10%;
+  width: 5%;
 }
 #amount-header {
   width: 10%;
