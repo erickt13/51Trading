@@ -438,7 +438,7 @@ function addItem(data, productItemNumber){
           case 5: // price
               input = document.createElement("input");
               input.type = "text";
-              input.dataset[data._id + "price"] = data._id;
+              input.dataset[data._id + "price"] = data.itemNumber;
               input.name = `items[${productIndex}][price]`; // array name notation
               input.classList.add("price");
               input.value = parseFloat(data.price).toFixed(2);
@@ -448,7 +448,7 @@ function addItem(data, productItemNumber){
               input = document.createElement("input");
               input.type = "number";
               input.name = `items[${productIndex}][quantity]`; // array name notation
-              input.dataset[data._id + "qty"] = data._id;
+              input.dataset[data._id + "qty"] = data.itemNumber;
               input.classList.add("quantity");
               input.placeholder = 1;
               input.value = parseFloat(1);
@@ -456,7 +456,7 @@ function addItem(data, productItemNumber){
           case 7: // sub total
               input = document.createElement("input");
               input.type = "text";
-              input.dataset[data._id + "subtotal"] = data._id;
+              input.dataset[data._id + "subtotal"] = data.itemNumber;
               input.name = `items[${productIndex}][subTotal]`; // array name notation
               input.classList.add("subTotal");
               input.readOnly = true;
