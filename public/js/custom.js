@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // https://localhost:3000/ production
         // https://five1trading.com/ production
         //  development
-        fetch(`https://fve1trading.onrender.com/invoices/${invoiceId}/signature`, {
+        fetch(`https://five1trading.onrender.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
