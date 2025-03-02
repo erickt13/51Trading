@@ -10,15 +10,10 @@
         <div class="invoice-item">
             <h2>Invoice</h2>
             <div class="invoice-row">
-                <div class="invoice-item align-right">
-                    <p><b>Invoice #: <br>
-                        Invoice Date: <br>
-                        Ship Date:</b></p>
-                </div>
-                <div class="invoice-item alilgn-left">
-                    <p><%= invoice.invoiceNumber %><br>
-                        <%= invoice.date.toISOString().split('T')[0]; %><br>
-                        <%= invoice.shipDate.toISOString().split('T')[0]; %></p>
+                <div class="invoice-item">
+                    <p><b>Invoice #:</b>     <%= invoice.invoiceNumber %><br>
+                        <b>Invoice Date:</b> <%= invoice.date.toISOString().split('T')[0]; %><br>
+                        <b>Ship Date:</b>    <%= invoice.shipDate.toISOString().split('T')[0]; %></b></p>
                 </div>
             </div>
         </div>

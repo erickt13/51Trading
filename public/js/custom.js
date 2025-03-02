@@ -203,8 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
         signaturePad.clear();
 
         // fetch updating the signature
-        // https://localhost:3000/ production
-        // https://five1trading.com/ production
+        // http://localhost:3000/ production
+        // https://five1trading.onrender.com/ production
         //  development
         fetch(`https://five1trading.onrender.com/invoices/${invoiceId}/signature`, {
             method: "PUT",

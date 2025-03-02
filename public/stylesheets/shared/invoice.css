@@ -6,13 +6,13 @@
     /* align-items:center; */
 }
 
+
+
 .invoice-item {
   display:flex;
   flex-direction: column; 
   flex-grow:1;
   flex-basis: 0;
-  /* padding: 2rem; */
-  /* margin-left: 2rem; */
 }
 
 .small-print {
@@ -48,6 +48,41 @@
     font-size: 12pt;  /* Adjust text size for print */
   }
 }
+/* Extra small devices (phones) */
+@media only screen and (max-width: 575.98px) { 
+  .invoice-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .invoice-item {
+    margin-bottom: 10px;
+    align-items: center;
+  }
+}
+
+/* Small devices (large phones, portrait tablets) */
+@media only screen and (min-width: 576px) and (max-width: 767.98px) {
+
+ }
+
+/* Medium devices (landscape tablets) */
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+
+ }
+
+/* Large devices (laptops/desktops) */
+@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
+
+ }
+
+/* Extra large devices (large desktops) */
+@media only screen and (min-width: 1200px) {
+
+ }
+
 
 .align-left {
   align-items: flex-start;
@@ -73,7 +108,7 @@
 
 .fifty {
   width: 50%;
-  min-width: 300px;
+  min-width: 260px;
 }
 
 
