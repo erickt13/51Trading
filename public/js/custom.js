@@ -1,4 +1,5 @@
-//
+  // http://localhost:3000/ production
+  // https://five1trading.onrender.com/ production
 document.addEventListener('DOMContentLoaded', () => {
 
     // Check if scanned MPN Input exists
@@ -203,8 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         signaturePad.clear();
 
         // fetch updating the signature
-        // http://localhost:3000/ production
-        // https://five1trading.onrender.com/ production
+      
         //  development
         fetch(`https://five1trading.onrender.com/invoices/${invoiceId}/signature`, {
             method: "PUT",
