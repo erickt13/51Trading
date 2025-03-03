@@ -397,6 +397,7 @@ function addItem(data, productItemNumber){
               input.classList.add("notes");
               input.placeholder = "Enter Notes Here";
               input.value = "Notes";
+              td.classList.add('notes');
               break;
           case 2: // mpn 
               input = document.createElement("input");
@@ -417,15 +418,6 @@ function addItem(data, productItemNumber){
               input.value = data.itemNumber;
               input.readOnly = true;
               break;
-        //   case 4: // product Id 
-        //       input = document.createElement("input");
-        //       input.type = "text";
-        //       input.name = `items[${productIndex}][productId]`; // array name notation
-        //       input.classList.add("productId");
-        //       input.id = data._id;
-        //       input.value = data._id;
-        //       input.readOnly = true;
-        //       break;
           case 4: // description
               input = document.createElement("input");
               input.type = "text";
@@ -434,6 +426,7 @@ function addItem(data, productItemNumber){
               input.classList.add("description");
               input.value = data.description;
               input.readOnly = true;
+              td.classList.add('description');
               break;
           case 5: // price
               input = document.createElement("input");
