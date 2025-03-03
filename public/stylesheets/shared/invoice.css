@@ -6,7 +6,10 @@
     /* align-items:center; */
 }
 
-
+.fifty {
+  width: 50%;
+  min-width: 260px;
+}
 
 .invoice-item {
   display:flex;
@@ -52,7 +55,7 @@
 @media only screen and (max-width: 575.98px) { 
   .invoice-row {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1rem;
@@ -60,6 +63,10 @@
   .invoice-item {
     margin-bottom: 10px;
     align-items: center;
+  }
+  .fifty {
+    width: 100%;
+    min-width:100%;
   }
 }
 
@@ -106,10 +113,7 @@
 
 
 
-.fifty {
-  width: 50%;
-  min-width: 260px;
-}
+
 
 
 
