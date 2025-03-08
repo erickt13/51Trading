@@ -26,7 +26,7 @@
                 <td><%= invoice.invoiceNumber %></td>
                 <td><%= invoice.customer.companyName %></td>
                 <td><%= invoice.date.toDateString() %></td>
-                <td><div class="btn-row">
+                <td><div class="btn-row no-margin">
                     <a class="btn btn-primary" href="/invoices/<%= invoice.id %>">View</a>
                     <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
                     <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>

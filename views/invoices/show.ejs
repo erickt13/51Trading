@@ -63,33 +63,47 @@
             </table>
         </div>
     </div>
-    
-    <div class="invoice-row">
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Description</th>
-                    <th>MPN</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% invoice.items.forEach(item => { %>
+    <div class="table-container">
+        <div class="invoice-row">
+            <table>
+                <thead>
                     <tr>
-                        <td><%= item.itemNumber %></td>
-                        <td><%= item.description %></td> 
-                        <td><svg id="id<%= item.mpn %>" class="barcode" data-mpn="<%= item.mpn %>"></svg></td>
-                        <td><%= item.quantity %></td>
-                        <td>$<%= parseFloat(item.price).toFixed(2) %></td> 
-                        <td>$<%= parseFloat(item.subTotal).toFixed(2) %></td> 
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>MPN</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Amount</th>
                     </tr>
-                    <%  }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% invoice.items.forEach(item => { %>
+                        <tr>
+                            <td><%= item.itemNumber %></td>
+                            <td><%= item.description %></td> 
+                            <td><svg id="id<%= item.mpn %>" class="barcode" data-mpn="<%= item.mpn %>"></svg></td>
+                            <td><%= item.quantity %></td>
+                            <td>$<%= parseFloat(item.price).toFixed(2) %></td> 
+                            <td>$<%= parseFloat(item.subTotal).toFixed(2) %></td> 
+                        </tr>
+                        <%  }) %>
+                </tbody>
+            </table>
+        </div>
     </div>
+   
+
+    <div class="invoice-row border padding disclaimer">
+        <div class="invoice-item">
+            <p class="small-print">
+                Customer shall inspect all merchandise immediatelly upon receipt there of all claims for damages or shortages of merchandise, if any must be made in writing on original signed invoice when merchandise is delivered. The total amount of the invoice must be paid in full within 30 days of its invoice date.
+                Thank you for your business.
+            </p>
+        </div>
+        <div class="invoice-item align-right">
+            <p><b>Total Amount:</b> $<%= parseFloat(invoice.totalAmount).toFixed(2) %></p>
+        </div>
+    </div>    
 
     <!-- The container for the signature feature -->
    
@@ -130,17 +144,6 @@
 
 </div>
 
-<div class="invoice-row border padding disclaimer">
-    <div class="invoice-item">
-        <p class="small-print">
-            Customer shall inspect all merchandise immediatelly upon receipt there of all claims for damages or shortages of merchandise, if any must be made in writing on original signed invoice when merchandise is delivered. The total amount of the invoice must be paid in full within 30 days of its invoice date.
-            Thank you for your business.
-        </p>
-    </div>
-    <div class="invoice-item align-right">
-        <p><b>Total Amount:</b> $<%= parseFloat(invoice.totalAmount).toFixed(2) %></p>
-    </div>
-</div>
 
 
 

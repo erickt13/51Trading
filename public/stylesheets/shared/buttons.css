@@ -17,7 +17,6 @@
     cursor:pointer;
     text-decoration:none;
     text-align: center;
-    margin-top: 10px;
 }
 
 .btn-primary{
@@ -50,6 +49,10 @@
     display: flex;
     /* align-items: flex-start; */
     justify-content: center;
+    margin-top: 2rem;
+}
+.no-margin {
+    margin-top: 0rem;
 }
 .btn-row > * {
     margin-left: 1rem;

@@ -6,6 +6,10 @@
     /* align-items:center; */
 }
 
+.table-container {
+  flex: 1;  /* This allows the table to take up the remaining space */
+}
+
 .fifty {
   width: 50%;
   min-width: 260px;
@@ -16,6 +20,7 @@
   flex-direction: column; 
   flex-grow:1;
   flex-basis: 0;
+  text-align: center;
 }
 
 .small-print {
@@ -36,6 +41,25 @@
     margin: 0;
   }
 
+  /* Ensure the table and fine print take the full height of the page */
+  .table-container {
+    page-break-inside: auto;
+  }
+
+  /* Add a page break if the table exceeds the page size */
+  .table-container {
+    page-break-after: always;
+  }
+
+  /* Prevent page breaks in the middle of the table */
+  table {
+    page-break-inside: avoid;
+  }
+
+  table, td, th{
+    padding: .2rem;
+  }
+
   /* You can also hide elements if they are unnecessary for printing */
   header, footer {
     display: none;
@@ -48,8 +72,15 @@
 
   /* Customize other styles for the print version if needed */
   body {
-    font-size: 12pt;  /* Adjust text size for print */
+    font-size: 8pt;  /* Adjust text size for print */
   }
+
+  .disclaimer {
+    position: absolute;
+    bottom: 20px;
+    /* width: 100%; */
+  }
+
 }
 /* Extra small devices (phones) */
 @media only screen and (max-width: 575.98px) { 

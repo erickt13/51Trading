@@ -11,6 +11,9 @@
             <% }) %>
         </select>
     </div>
+</div>
+
+<div class="form-row">
     <div class="form-item">
         <div class="form-row">
             <div class="form-item">
@@ -24,17 +27,20 @@
             </div>
         </div>
     </div>
-    
 </div>
 
 <div class="form-row">
     <div class="form-item">
         <label>Search Product</label>
         <input type="text" id="searchProductInput" name="description" value= "" >
-        <div class="form-row">
+        <div class="btn-row">
             <button id="searchProductBtn" class="btn btn-primary" type="button">Search</button>
         </div>
     </div>
+</div>
+
+<div class="form-row">
+    
     <div class="form-item">
         <div id='datatest' data-mydata="<%= products %>"></div>
         <label for="selectedProduct">Search Results</label>
@@ -88,7 +94,7 @@
                     <td><input class="quantity" type="number" placeholder="1" name="items[<%= index %>][quantity]" data-<%= item.itemNumber %>qty="<%= item.quantity %>" value="<%= item.quantity %>"></td>
                     <td><input class="subTotal" type="text" readonly name="items[<%= index %>][subTotal]" data-<%= item.itemNumber %>subtotal="<%= item.id %>" value="<%= parseFloat(item.subTotal).toFixed(2) %>"></td>
                     <td><input type="checkbox" name="items[<%= index %>][status]" value="true" class="done" id="doneCheckbox_<%= index %>" <%= item.status ? 'checked' : '' %>></td>
-                    <td><button type="button" class="btn btn-danger">Remove</button></td>
+                    <td><button type="button" class="btn btn-danger">X</button></td>
                  </tr>
                <% }) %>
         </tbody>

@@ -485,7 +485,7 @@ function addItem(data, productItemNumber){
               input.type = "button";
               input.classList.add("btn");
               input.classList.add("btn-danger");
-              input.innerHTML = "Remove";
+              input.innerHTML = "X";
               break;
       }
       addTotal();

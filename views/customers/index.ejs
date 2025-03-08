@@ -20,7 +20,7 @@
         <% customers.forEach(customer => { %>
             <tr>
                 <td><%= customer.companyName %></td>
-                <td><div class="btn-row">
+                <td><div class="btn-row no-margin">
                     <a class="btn btn-primary" href="/customers/<%= customer.id %>">View</a>
                     <a class="btn btn-primary" href="/customers/<%= customer.id %>/edit">Edit</a>
                     <%- include('../partials/deleteForm', { url: `/customers/${customer.id}` }) %>

@@ -24,7 +24,7 @@
                 <td><%= product.description %></td>
                 <!-- <td><svg id="id<%= product.mpn %>" class="barcode" data-mpn="<%= product.mpn %>"></svg></td> -->
                 <td><%= product.mpn %></td>
-                <td><div class="btn-row">
+                <td><div class="btn-row no-margin">
                     <a class="btn btn-primary" href="/products/<%= product.id %>">View</a>
                      <a class="btn btn-primary" href="/products/<%= product.id %>/edit">Edit</a>
                     <%- include('../partials/deleteForm', { url: `/products/${product.id}` }) %>
