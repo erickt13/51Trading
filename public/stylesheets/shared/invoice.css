@@ -95,6 +95,14 @@
 }
 /* Extra small devices (phones) */
 @media only screen and (max-width: 575.98px) { 
+
+  thead { 
+        display: table-header-group; 
+    }
+
+    tfoot { 
+        display: table-footer-group; 
+    }
   .invoice-row {
     display: flex;
     flex-direction: row;
