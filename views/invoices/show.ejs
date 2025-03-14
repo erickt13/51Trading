@@ -88,12 +88,23 @@
                         </tr>
                         <%  }) %>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><p class="small-print">
+                            Customer shall inspect all merchandise immediatelly upon receipt there of all claims for damages or shortages of merchandise, if any must be made in writing on original signed invoice when merchandise is delivered. The total amount of the invoice must be paid in full within 30 days of its invoice date.
+                            Thank you for your business.
+                        </p></td>
+                        <td colspan="3"><p><b>Total Amount:</b> $<%= parseFloat(invoice.totalAmount).toFixed(2) %></p></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
-   
 
-    <div class="invoice-row border padding disclaimer">
+    <div class="early-break-spacer"></div>
+    </div>
+
+    <!-- <div class="invoice-row border padding disclaimer">
         <div class="invoice-item">
             <p class="small-print">
                 Customer shall inspect all merchandise immediatelly upon receipt there of all claims for damages or shortages of merchandise, if any must be made in writing on original signed invoice when merchandise is delivered. The total amount of the invoice must be paid in full within 30 days of its invoice date.
@@ -103,7 +114,7 @@
         <div class="invoice-item align-right">
             <p><b>Total Amount:</b> $<%= parseFloat(invoice.totalAmount).toFixed(2) %></p>
         </div>
-    </div>    
+    </div>     -->
 
     <!-- The container for the signature feature -->
    

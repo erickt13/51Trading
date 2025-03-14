@@ -37,22 +37,27 @@
 
 /* Disable browser's default print header and footer */
 @media print {
-  @page {
+
+  body {
     margin: 0;
+    padding: 0;
+  }
+
+  @page {
+    /* margin-bottom: 10px; */
+    margin: 0.5in; /* Standard margins on all sides */
+    margin-bottom: 0.5in; /* Extra space at bottom for footer */
   }
 
   /* Ensure the table and fine print take the full height of the page */
   .table-container {
-    page-break-inside: auto;
-  }
-
-  /* Add a page break if the table exceeds the page size */
-  .table-container {
-    page-break-after: always;
+    width: 100%;
+    position: relative;
+    /* border: 1px solid rgb(156 163 175); */
   }
 
   /* Prevent page breaks in the middle of the table */
-  table {
+  table tr{
     page-break-inside: avoid;
   }
 
@@ -76,9 +81,15 @@
   }
 
   .disclaimer {
-    position: absolute;
-    bottom: 20px;
-    /* width: 100%; */
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    /* background-color: white; Ensure text is readable */
+    border-top: 1px solid #ddd;
+    height: 60px; /* Set appropriate height for your footer */
   }
 
 }
