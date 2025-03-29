@@ -3,6 +3,9 @@ const router = express.Router()
 const Invoice = require('../models/invoice')
 const Customer = require('../models/customer')
 const Product = require('../models/product')
+const PDFDocument = require('pdfkit');
+const { createCanvas } = require('canvas');
+const JsBarcode = require('jsbarcode');
 
  
 // All invoices route
@@ -124,6 +127,229 @@ router.get('/:id/edit', async (req, res) => {
         console.log(error)
     }
 })
+
+// Route to generate PDF
+router.get('/:id/pdf', async (req, res) => {
+    try {
+      // Fetch invoice data from MongoDB
+      const invoice = await Invoice.findById(req.params.id)
+        .populate('customer')
+        .exec();
+      
+      if (!invoice) {
+        return res.status(404).send('Invoice not found');
+      }
+      
+      console.log('Invoice data loaded:', invoice.invoiceNumber);
+      console.log('Number of items:', invoice.items.length);
+      
+      // Create a new PDF document
+      const doc = new PDFDocument({
+        size: 'A4',
+        margin: 50,
+        bufferPages: true // Enable page buffering
+      });
+      
+      // Set response headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=Invoice-${invoice.invoiceNumber}.pdf`);
+      
+      // Pipe PDF to response
+      doc.pipe(res);
+      
+      let startY = doc.y;
+      // Company header
+      doc.fontSize(18).font('Helvetica-Bold').text('51 Trading Inc.');
+      doc.fontSize(10).font('Helvetica').text('401 W 220th Street #15');
+      doc.text('Carson, CA 90745');
+      
+      // Invoice header
+      doc.y = startY;
+      doc.x = 300;
+      doc.fontSize(18).font('Helvetica-Bold').text('Invoice', { align: 'right' });
+      doc.fontSize(10).font('Helvetica-Bold').text(`Invoice #: ${invoice.invoiceNumber}`, { align: 'right' });
+      doc.text(`Invoice Date: ${invoice.date.toISOString().split('T')[0]}`, { align: 'right' });
+      doc.text(`Ship Date: ${invoice.shipDate.toISOString().split('T')[0]}`, { align: 'right' });
+      doc.moveDown();
+     
+      // Bill To and Ship To sections
+      let billshipY = doc.y;
+      // Bill To
+     
+      doc.x = 50
+      doc.font('Helvetica-Bold').text('Bill to:');
+      doc.font('Helvetica')
+        .text(invoice.customer.companyName)
+        .text(invoice.customer.address.street)
+        .text(`${invoice.customer.address.city} ${invoice.customer.address.state}, ${invoice.customer.address.zipcode} ${invoice.customer.address.country}`)
+        .text(invoice.customer.phoneNumber)
+        .text(invoice.customer.faxNumber);
+      
+      // Ship To (positioned to the right)
+      doc.y = billshipY;
+      doc.x = 410;
+      doc.font('Helvetica-Bold').text('Ship to:');
+      doc.font('Helvetica')
+        .text(invoice.customer.companyName)
+        .text(invoice.customer.address.street)
+        .text(`${invoice.customer.address.city} ${invoice.customer.address.state}, ${invoice.customer.address.zipcode} ${invoice.customer.address.country}`)
+        .text(invoice.customer.phoneNumber)
+        .text(invoice.customer.faxNumber);
+      
+      // Reset position for table
+      doc.x = 50;
+      doc.moveDown(2);
+      
+      console.log('Starting table at y position:', doc.y);
+      
+      // Function to generate barcode
+      const generateBarcodeBuffer = async (text) => {
+        const canvas = createCanvas(200, 50); // Reduced height
+        JsBarcode(canvas, text, {
+          format: 'CODE128',
+          width: 1.5,
+          height: 16, // Shorter barcode height
+          displayValue: false, // Remove text display
+          margin: 0
+        });
+        return canvas.toBuffer('image/png');
+      };
+      
+      // Function to draw the table header
+      const drawTableHeader = (y) => {
+        // Define table layout
+        const columnPositions = [50, 110, 300, 400, 440, 500]; // X positions
+        
+        // Draw table headers
+        doc.font('Helvetica-Bold').fontSize(10);
+        doc.text('Item', columnPositions[0], y);
+        doc.text('Description', columnPositions[1], y);
+        doc.text('Barcode', columnPositions[2], y); // Changed from 'MPN' to 'Barcode'
+        doc.text('Qty', columnPositions[3], y);
+        doc.text('Price', columnPositions[4], y);
+        doc.text('Amount', columnPositions[5], y);
+        
+        // Draw header line
+        doc.moveTo(50, y + 15)
+           .lineTo(550, y + 15)
+           .stroke();
+        
+        return y + 25; // Return the new y position
+      };
+      
+      // Function to draw the table footer
+      const drawTableFooter = (y) => {
+        // Draw footer line
+        doc.moveTo(50, y)
+           .lineTo(550, y)
+           .stroke();
+        y += 15;
+        
+        // Draw table footer
+        doc.font('Helvetica').fontSize(8);
+        
+        // Left side - disclaimer
+        doc.text('Customer shall inspect all merchandise immediately upon receipt thereof. All claims for damages or shortages of merchandise, if any must be made in writing on original signed invoice when merchandise is delivered. The total amount of the invoice must be paid in full within 30 days of its invoice date.', 
+          50, y, { width: 300 });
+        
+        // Right side - total amount
+        doc.fontSize(10).font('Helvetica-Bold');
+        doc.text(`Total Amount: $${parseFloat(invoice.totalAmount).toFixed(2)}`, 
+          350, y, { width: 200, align: 'right' });
+        
+        return y + 40; // Return the new y position
+      };
+      
+      // Define table layout
+      const tableTop = doc.y;
+      const columnPositions = [50, 110, 300, 400, 440, 500]; // X positions
+      
+      // Draw initial table header
+      let y = drawTableHeader(tableTop);
+      
+      // Generate barcode buffers in advance to avoid promise issues
+      const barcodeBuffers = {};
+      for (const item of invoice.items) {
+        if (item.mpn) {
+          barcodeBuffers[item.mpn] = await generateBarcodeBuffer(item.mpn);
+        }
+      }
+      
+      // Draw table rows
+      doc.font('Helvetica').fontSize(8);
+      for (let index = 0; index < invoice.items.length; index++) {
+        const item = invoice.items[index];
+        console.log(`Drawing row ${index+1}:`, item.itemNumber);
+        
+        // Calculate row height including barcode
+        const textHeight = doc.heightOfString(item.description, { width: 200 });
+        const rowTextHeight = Math.max(textHeight, 12);
+        const barcodeHeight = 16; // Height for barcode
+        
+        // Check if we need a new page
+        if (y + rowTextHeight > 700) {
+          // Draw footer on current page
+          drawTableFooter(y);
+          
+          // Add a new page
+          doc.addPage();
+          y = 50;
+          
+          // Draw header on new page
+          y = drawTableHeader(y);
+        }
+        
+        // Draw row data
+        doc.font('Helvetica').fontSize(8);
+        doc.text(item.itemNumber, columnPositions[0], y);
+        doc.text(item.description, columnPositions[1], y, { width: 200 });
+        
+        // Instead of text MPN, display barcode directly
+        if (item.mpn && barcodeBuffers[item.mpn]) {
+          doc.image(barcodeBuffers[item.mpn], columnPositions[2], y, { width: 80 });
+        }
+        
+        doc.text(item.quantity.toString(), columnPositions[3], y);
+        doc.text(`$${parseFloat(item.price).toFixed(2)}`, columnPositions[4], y);
+        doc.text(`$${parseFloat(item.subTotal).toFixed(2)}`, columnPositions[5], y);
+        
+        // Move to next row, accounting for text height or barcode height, whichever is larger
+        y += Math.max(rowTextHeight, barcodeHeight);
+      }
+      
+      console.log('Table complete, drawing footer at y position:', y);
+      
+      // Draw final footer if needed
+      if (y > 700) {
+        doc.addPage();
+        y = 50;
+      }
+      
+      y = drawTableFooter(y);
+      
+      // Add signature if exists
+      if (invoice.signature) {
+        y += 20;
+        doc.fontSize(10).text('Customer Signature:', 50, y);
+        y += 15;
+        
+        // Convert data URL to image
+        if (invoice.signature.startsWith('data:image')) {
+          const signatureData = invoice.signature.split(',')[1];
+          doc.image(Buffer.from(signatureData, 'base64'), 50, y, { width: 200 });
+        }
+      }
+      
+      console.log('PDF generation complete');
+      
+      // Finalize the PDF
+      doc.end();
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      res.status(500).send('Error generating PDF: ' + error.message);
+    }
+  });
 
 // In your invoice routes file
 router.post('/:id/copy', async (req, res) => {

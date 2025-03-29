@@ -35,8 +35,46 @@
   display: block;
 }
 
+.header, .header-space,
+              .footer, .footer-space {
+                width:100%;
+                height: 100px;
+                background-color:grey;
+                padding:10px;
+              }
+              .header {
+                position: fixed;
+                top: 0;
+              }
+              .footer {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+              }
+
+tfoot, tfoot > tr, tfoot > tr > td {
+  box-sizing: border-box;
+  height: 60px;
+  padding:10px;
+  border:0px;
+}
+
+.footer {
+  display:none;
+}
+
 /* Disable browser's default print header and footer */
 @media print {
+
+  .footer {
+    display:flex;
+  }
+
+  /* Hide footer and other elements */
+  footer, header, .print-date-time, .print-url {
+    display: none !important;
+}
 
   body {
     margin: 0;
@@ -44,9 +82,11 @@
   }
 
   @page {
+
+   
     /* margin-bottom: 10px; */
-    margin: 0.5in; /* Standard margins on all sides */
-    margin-bottom: 0.5in; /* Extra space at bottom for footer */
+    margin: 0.25in; /* Standard margins on all sides */
+    margin-bottom: 0.25in; /* Extra space at bottom for footer */
   }
 
   /* Ensure the table and fine print take the full height of the page */
@@ -62,7 +102,7 @@
   }
 
   table, td, th{
-    padding: .2rem;
+    padding: .1rem;
   }
 
   /* You can also hide elements if they are unnecessary for printing */
@@ -80,16 +120,26 @@
     font-size: 8pt;  /* Adjust text size for print */
   }
 
+  tfoot > tr {
+    box-sizing: border-box;
+    height: 60px;
+    padding:10px;
+    border:0px;
+  }
+
   .disclaimer {
+    box-sizing: border-box;
     width: 100%;
-    position: fixed;
-    bottom: 0px;
-    left: 0;
-    right: 0;
     padding: 10px;
     /* background-color: white; Ensure text is readable */
-    border-top: 1px solid #ddd;
+    border: 1px solid #ddd;
     height: 60px; /* Set appropriate height for your footer */
+  }
+  .disclaimerp {
+    width:70%
+  }
+  .disclaimert {
+    width:30%
   }
 
 }
@@ -160,12 +210,6 @@
 .padding {
   padding: 5px;
 }
-
-
-
-
-
-
 
 table {
   width: 100%;
