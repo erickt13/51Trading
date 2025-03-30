@@ -49,6 +49,28 @@
     outline:none;
 }
 
+input.notes, input.source, input.quantity {
+    border-radius:0;
+    border-top:none;
+    border-left:none;
+    border-right:none;
+    border-bottom: none;
+    background-color: #f0f0f0;
+}
+
+input:focus {
+    background-color: #e0e0e0;  /* Highlight when focused */
+  }
+
+input.mpn, input.itemNumber, input.description, input.price, input.subTotal {
+    border-radius:0;
+    border-top:none;
+    border-left:none;
+    border-right:none;
+    border-bottom: none;
+    
+}
+
 .form-item input:focus, .form-item select:focus {
     border-color: var(--form-input-border-color-light);
     /* box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); */
