@@ -248,8 +248,13 @@ table {
   border-radius: 5px;
   box-shadow: 0 0 20px rgba(0 0 0 .15);
 }
+
 td, th {
-  border: 1px solid rgb(156 163 175);
+  border: 1px solid transparent;  /* Set all borders to transparent */
+  border-top: 1px solid rgb(156 163 175);     /* Apply top border */
+  border-bottom: 1px solid rgb(156 163 175);  /* Apply bottom border */
+  border-left: none;              /* No left border */
+  border-right: none;        
   border-spacing: 0;
   padding: .2rem;
 }
@@ -349,6 +354,10 @@ tr.table-row.done {
 
 table.table-striped thead tr {
   background-color: #4b7de7; /* Slightly darker gray for even rows */
+}
+
+table.invoice-table thead tr {
+  background-color: #d2d2d2; /* Slightly darker gray for even rows */
 }
 
 table.table-striped thead tr {
