@@ -219,6 +219,11 @@ router.get('/:id/pdf', async (req, res) => {
       const drawTableHeader = (y) => {
         // Define table layout
         const columnPositions = [50, 110, 300, 400, 440, 500]; // X positions
+
+        // Draw header line
+        doc.moveTo(50, y-8)
+           .lineTo(550, y-8)
+           .stroke();
         
         // Draw table headers
         doc.font('Helvetica-Bold').fontSize(10);

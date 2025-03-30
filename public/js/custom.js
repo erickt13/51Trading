@@ -249,7 +249,13 @@ function bcRender() {
         let mpn = item.dataset.mpn;
 
         if (mpn !== "" && mpn !== null) {
-            JsBarcode(upcId, mpn, { format: "ean13" });
+            // JsBarcode(upcId, mpn, { format: "ean13" });
+            JsBarcode(upcId, mpn, {
+                format: 'CODE128',
+                width: 1.5,
+                height: 20, // Shorter barcode height
+                displayValue: false, // Remove text display
+                margin: 0 });
         }
         
     });
@@ -515,7 +521,12 @@ function renderBarcode(){
   let mpn = svg.dataset.mpn; //mpn number to render the barcode
 
   // render the svg barcode in the upcId div with the mpn number
-  JsBarcode(upcId, mpn, { format: "ean13" });
+  JsBarcode(upcId, mpn, {
+    format: 'CODE128',
+    width: 1.5,
+    height: 20, // Shorter barcode height
+    displayValue: false, // Remove text display
+    margin: 0 });
 }
 
 addProductButton.addEventListener("click", addProduct);

@@ -80,9 +80,9 @@
         <tbody class="tableBody">
             <% invoice.items.forEach((item, index) => { %>
                 <tr class="table-row <%= !!item.status ? 'done' : '' %>">
-                    <td><input class="source" id="<%= item.source %>" type="text" name="items[<%= index %>][source]" value="<%= item.source %>"></td>
+                    <td class="source"><input class="source" id="<%= item.source %>" type="text" name="items[<%= index %>][source]" value="<%= item.source %>"></td>
                     <td class="notes"><input class="notes" id="<%= item.notes %>" type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
-                    <td><input class="mpn" id="<%= item.id %>" type="text" readonly name="items[<%= index %>][mpn]" value="<%= item.mpn %>"></td>
+                    <td class="mpn"><input class="mpn" id="<%= item.id %>" type="text" readonly name="items[<%= index %>][mpn]" value="<%= item.mpn %>"></td>
                     <td><input class="itemNumber" id="<%= item.itemNumber %>" type="text" readonly name="items[<%= index %>][itemNumber]" value="<%= item.itemNumber %>"></td>
                     <!-- <td><input class="productId" id="<%= item.productId %>" type="text" readonly name="items[<%= index %>][productId]" value="<%= item.productId %>"></td> -->
                     <td class="description"><input class="description" id="<%= item._id %>" type="text" readonly name="items[<%= index %>][description]" value="<%= item.description %>"></td>

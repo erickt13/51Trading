@@ -211,12 +211,6 @@ tfoot, tfoot > tr, tfoot > tr > td {
   padding: 5px;
 }
 
-table {
-  width: 100%;
-  overflow-x: auto;
-  border-radius: 10px;
-}
-
 #source-header {
   width: 10%;
 }
@@ -247,20 +241,36 @@ table {
 #action-header {
   width: 10%;
 }
-table, td, th {
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0 0 0 .15);
+}
+td, th {
   border: 1px solid rgb(156 163 175);
   border-spacing: 0;
-  border-collapse: collapse;
-  padding: .4rem;
+  padding: .2rem;
 }
 table.no-border > tbody > tr > th{
   border: none;
 }
 td {
   text-align: center;
+  font-size: 0.9em;
+}
+th {
+  font-size: 1em;
 }
 td.description, td.notes {
   min-width: 300px;
+}
+td.source {
+  min-width: 60px;
+}
+td.mpn {
+  min-width: 100px;
 }
 
 #source-header:hover, #status-header:hover {
@@ -271,7 +281,9 @@ td.description, td.notes {
 
 input.productId {
   min-width: 210px;
+
 }
+
 
 input.price {
   min-width: 65px;

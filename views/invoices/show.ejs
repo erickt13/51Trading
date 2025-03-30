@@ -132,7 +132,6 @@
             <button id="signInvoiceBtn" class="btn btn-primary" type="button">Sign</button>
             <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
             <button id="copyInvoiceBtn" class="btn btn-primary" type="button">Copy</button>
-            <button id="printInvoiceBtn" class="btn btn-primary" type="button">Print</button>
             <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/pdf">Download PDF</a>
             <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
         </div>
