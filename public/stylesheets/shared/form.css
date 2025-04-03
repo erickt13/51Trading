@@ -49,6 +49,13 @@
     outline:none;
 }
 
+input[type="date"] {
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none; /* Helps with iOS styling */
+    margin: 0; /* Remove any default margins */
+  }
+
 input.notes, input.source, input.quantity {
     border-radius:0;
     border-top:none;
