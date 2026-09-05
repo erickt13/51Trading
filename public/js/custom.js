@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // console.log('You have hit Enter on your keypad and the MPN is: ' + scannedMpnInput.value);
             // console.log(e.key);
             addProduct2(e);
+            scannedMpnInput.value = ''; // Clears the field for the next scan
         } else {
             // All other keys work normally
             return true;
@@ -72,7 +73,7 @@ const copyInvoice = (e) => {
     console.log('this is a copy test');
     const invoiceId = document.querySelector('h2.page-header').dataset.invoiceid;
     console.log(invoiceId);
-    fetch(`https://five1trading.onrender.com/invoices/${invoiceId}/copy`, {
+    fetch(`/invoices/${invoiceId}/copy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -116,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
-        fetch(`https://five1trading.onrender.com/products/${searchedProduct}/search/`, {
+        fetch(`/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -206,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // fetch updating the signature
       
         //  development
-        fetch(`https://five1trading.onrender.com/invoices/${invoiceId}/signature`, {
+        fetch(`/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -238,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+const addProductMPN = document.querySelector("#addProductMPN"); // Added variable definition
 let productList = document.querySelector("#productList");
 let addProductButton = document.querySelector("#addProduct");
 
@@ -286,7 +288,7 @@ const addProduct2 = (e) => {
      }
      
     // fetch data from the server
-    fetch(`https://five1trading.onrender.com/invoices/${scannedMPN}/addproductbympn`, {
+    fetch(`/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -330,7 +332,7 @@ const addProduct = (e) => {
     }
 
     // fetch data from the server
-    fetch(`https://five1trading.onrender.com/invoices/${productId}/addproductbyid`, {
+    fetch(`/invoices/${productId}/addproductbyid`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -396,16 +398,8 @@ function addItem(data, productItemNumber){
               input.placeholder = "Source";
               input.value = "Source";
               break;
-          case 1: // notes
-              input = document.createElement("input");
-              input.type = "text";
-              input.name = `items[${productIndex}][notes]`; // array name notation
-              input.classList.add("notes");
-              input.placeholder = "Enter Notes Here";
-              input.value = "Notes";
-              td.classList.add('notes');
-              break;
-          case 2: // mpn 
+          
+          case 1: // mpn 
               input = document.createElement("input");
               input.type = "text";
               input.dataset[data.mpn + "mpn"] = data.mpn;
@@ -415,7 +409,7 @@ function addItem(data, productItemNumber){
               input.value = data.mpn;
               input.readOnly = true;
               break;
-          case 3: // Item Number 
+          case 2: // Item Number 
               input = document.createElement("input");
               input.type = "text";
               input.name = `items[${productIndex}][itemNumber]`; // array name notation
@@ -424,7 +418,7 @@ function addItem(data, productItemNumber){
               input.value = data.itemNumber;
               input.readOnly = true;
               break;
-          case 4: // description
+          case 3: // description
               input = document.createElement("input");
               input.type = "text";
               input.name = `items[${productIndex}][description]`; // array name notation
@@ -434,7 +428,7 @@ function addItem(data, productItemNumber){
               input.readOnly = true;
               td.classList.add('description');
               break;
-          case 5: // price
+          case 4: // price
               input = document.createElement("input");
               input.type = "text";
             //   input.dataset[data.itemNumber + "price"] = data.itemNumber;
@@ -444,7 +438,7 @@ function addItem(data, productItemNumber){
               input.value = parseFloat(data.price).toFixed(2);
               input.readOnly = true;
               break;
-          case 6: // quantity
+          case 5: // quantity
               input = document.createElement("input");
               input.type = "number";
               input.name = `items[${productIndex}][quantity]`; // array name notation
@@ -454,7 +448,7 @@ function addItem(data, productItemNumber){
               input.placeholder = 1;
               input.value = parseFloat(1);
               break;
-          case 7: // sub total
+          case 6: // sub total
               input = document.createElement("input");
               input.type = "text";
             //   input.dataset[data.itemNumber + "subtotal"] = data.itemNumber;
@@ -474,6 +468,16 @@ function addItem(data, productItemNumber){
                   // console.log = (input.value);
               }
               break;
+        case 7: // notes
+            input = document.createElement("input");
+            input.type = "text";
+            input.name = `items[${productIndex}][notes]`; // array name notation
+            input.classList.add("notes");
+            input.placeholder = "Enter Notes Here";
+            input.value = "Notes";
+            td.classList.add('notes');
+            break;
+
           case 8: // done button
               input = document.createElement("input");
               input.type = "checkbox";
@@ -528,6 +532,7 @@ function renderBarcode(){
     displayValue: false, // Remove text display
     margin: 0 });
 }
+
 
 addProductButton.addEventListener("click", addProduct);
 addProductMPN.addEventListener("click", addProduct2);

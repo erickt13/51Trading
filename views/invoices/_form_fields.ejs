@@ -65,7 +65,6 @@
         <thead>
             <tr>
                 <th id="source-header">Source</th>
-                <th id="notes-header">Notes</th>
                 <th id="mpn-header">MPN</th>
                 <th id="mpn-header">Item Number</th>
                 <!-- <th id="mpn-header">Product Id</th> -->
@@ -73,6 +72,7 @@
                 <th id="price-header">Price</th>
                 <th id="quantity-header">Quantity</th>
                 <th id="amount-header">Amount</th>
+                <th id="notes-header">Notes</th>
                 <th id="status-header">Done Status</th>
                 <th id="action-header">Action</th>
                 <!-- add a table row for each item in the array of items -->
@@ -81,7 +81,6 @@
             <% invoice.items.forEach((item, index) => { %>
                 <tr class="table-row <%= !!item.status ? 'done' : '' %>">
                     <td class="source"><input class="source" id="<%= item.source %>" type="text" name="items[<%= index %>][source]" value="<%= item.source %>"></td>
-                    <td class="notes"><input class="notes" id="<%= item.notes %>" type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
                     <td class="mpn"><input class="mpn" id="<%= item.id %>" type="text" readonly name="items[<%= index %>][mpn]" value="<%= item.mpn %>"></td>
                     <td><input class="itemNumber" id="<%= item.itemNumber %>" type="text" readonly name="items[<%= index %>][itemNumber]" value="<%= item.itemNumber %>"></td>
                     <!-- <td><input class="productId" id="<%= item.productId %>" type="text" readonly name="items[<%= index %>][productId]" value="<%= item.productId %>"></td> -->
@@ -89,6 +88,7 @@
                     <td><input class="price" type="text"  readonly data-<%= item.itemNumber %>price="<%= item.price%>" name="items[<%= index %>][price]" value="<%= parseFloat(item.price).toFixed(2) %>"></td>
                     <td><input class="quantity" type="number" placeholder="1" name="items[<%= index %>][quantity]" data-<%= item.itemNumber %>qty="<%= item.quantity %>" value="<%= item.quantity %>"></td>
                     <td><input class="subTotal" type="text" readonly name="items[<%= index %>][subTotal]" data-<%= item.itemNumber %>subtotal="<%= item.id %>" value="<%= parseFloat(item.subTotal).toFixed(2) %>"></td>
+                    <td class="notes"><input class="notes" id="<%= item.notes %>" type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
                     <td><input type="checkbox" name="items[<%= index %>][status]" value="true" class="done" id="doneCheckbox_<%= index %>" <%= item.status ? 'checked' : '' %>></td>
                     <td><button type="button" class="btn btn-danger">X</button></td>
                  </tr>
