@@ -28,7 +28,7 @@ const indexRouter = require('./routes/index')
 const productRouter = require('./routes/products') 
 const customerRouter = require('./routes/customers') 
 const invoiceRouter = require('./routes/invoices') 
-const bulkInsertRouter = require('./routes/bulkInsert');
+const bulkinsertRouter = require('./routes/bulkinsert');
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
@@ -52,7 +52,7 @@ app.use('/', indexRouter)
 app.use('/products', productRouter)
 app.use('/customers', customerRouter)
 app.use('/invoices', invoiceRouter)
-app.use('/', bulkInsertRouter);
+app.use('/', bulkinsertRouter);
 
 //Connect to the database before listening
 connectDB().then(() => {
