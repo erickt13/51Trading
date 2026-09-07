@@ -395,7 +395,7 @@ function addItem(data, productItemNumber){
               input.type = "text";
               input.name = `items[${productIndex}][source]`; // array name notation
               input.classList.add("source");
-              input.placeholder = "Source";
+            //   input.placeholder = "Source";
               input.value = "Source";
               break;
           
