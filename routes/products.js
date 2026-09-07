@@ -55,7 +55,7 @@ router.get('/:description/search', async (req,res) => {
         searchOptions.description = new RegExp(req.params.description, 'i')
     }
     try {
-        const products = await Product.find(searchOptions).limit(50).sort({ description: 1 }) // 1 for ascending, -1 for descending
+        const products = await Product.find(searchOptions).sort({ description: 1 }) // 1 for ascending, -1 for descending
         res.json({
             products: products,
             searchOptions: req.query
