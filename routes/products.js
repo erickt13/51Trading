@@ -48,26 +48,50 @@ router.get('/', async (req,res) => {
 })
 
 // Search Product fetch route
-router.get('/:description/search', async (req,res) => {
-    let searchOptions = {}
+// router.get('/:description/search', async (req,res) => {
+//     let searchOptions = {}
+//     const { description } = req.params;
+//     if (req.params.description != null && req.params.description != '') {
+//         searchOptions.description = new RegExp(req.params.description, 'i')
+//     }
+//     try {
+//         const products = await Product.find(searchOptions).sort({ description: 1 }) // 1 for ascending, -1 for descending
+//         res.json({
+//             products: products,
+//             searchOptions: req.query
+//         })
+        
+//         console.log(description);
+//         console.log(searchOptions.description);
+//         console.log(products);
+//     } catch (err){
+//         res.redirect('/')
+//     }
+// })
+
+// Search Product fetch route
+router.get('/:description/search', async (req, res) => {
+    let searchOptions = {};
     const { description } = req.params;
-    if (req.params.description != null && req.params.description != '') {
-        searchOptions.description = new RegExp(req.params.description, 'i')
+    
+    if (description != null && description !== '') {
+        const words = description.trim().split(/\s+/);
+        searchOptions.$and = words.map(word => ({
+            description: new RegExp(word, 'i')
+        }));
     }
+    
     try {
-        const products = await Product.find(searchOptions).sort({ description: 1 }) // 1 for ascending, -1 for descending
+        const products = await Product.find(searchOptions).limit(50).sort({ description: 1 });
+
         res.json({
             products: products,
-            searchOptions: req.query
-        })
-        
-        console.log(description);
-        console.log(searchOptions.description);
-        console.log(products);
-    } catch (err){
-        res.redirect('/')
+            searchOptions: searchOptions
+        });
+    } catch (err) {
+        res.redirect('/');
     }
-})
+});
 
 // New product route
 router.get('/new', (req,res) => {
