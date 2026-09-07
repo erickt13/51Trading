@@ -396,7 +396,7 @@ function addItem(data, productItemNumber){
               input.name = `items[${productIndex}][source]`; // array name notation
               input.classList.add("source");
             //   input.placeholder = "Source";
-              input.value = "Source";
+            //   input.value = "Source";
               break;
           
           case 1: // mpn 
