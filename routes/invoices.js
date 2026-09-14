@@ -115,6 +115,7 @@ router.get('/:id/edit', async (req, res) => {
         // Format the dates to YYYY-MM-DD for rendering in the form
         // let formattedDate = invoice.date.toISOString().split('T')[0];  // 'YYYY-MM-DD'
         // let formattedShipDate = invoice.shipDate ? invoice.shipDate.toISOString().split('T')[0] : '';
+
      
         res.render('invoices/edit', {
             invoice : invoice,

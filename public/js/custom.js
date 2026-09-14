@@ -113,13 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 })
 
+//event listener for selecting quantity on focus
+
+document.querySelector('.tableBody').addEventListener('focus', function(e) {
+    if (e.target.classList.contains('quantity')) {
+        setTimeout(() => e.target.select(), 0);
+    }
+}, true); // "true" enables capture phase, needed because focus doesn't bubble
+
     const getSearchResults = (e) => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
 
         searchProductInput.value = ""; // clear it right away
-        
+
         fetch(`/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {

@@ -29,23 +29,59 @@ router.post('/bulk-insert', async (req, res) => {
 
 
 // All products route
-router.get('/', async (req,res) => {
-    let searchOptions = {}
-    if (req.query.description != null && req.query.description != '') {
-        searchOptions.description = new RegExp(req.query.description, 'i')
-    }
-    try {
-        const products = await Product.find(searchOptions).limit(20).sort({ description: 1 }) // 1 for ascending, -1 for descending
-        res.render('products/index', {
-            products: products, 
-            searchOptions: req.query
+// router.get('/', async (req,res) => {
+//     let searchOptions = {}
+//     if (req.query.description != null && req.query.description != '') {
+//         searchOptions.description = new RegExp(req.query.description, 'i')
+//     }
+//     try {
+//         const products = await Product.find(searchOptions).limit(5).sort({ description: 1 }) // 1 for ascending, -1 for descending
+//         res.render('products/index', {
+//             products: products, 
+//             searchOptions: req.query
             
-        })
-        console.log(products);
-    } catch (err){
-        res.redirect('/')
+//         })
+//         console.log(products);
+//     } catch (err){
+//         res.redirect('/')
+//     }
+// })
+
+// All products route
+router.get('/', async (req, res) => {
+    let searchOptions = {};
+    const description = req.query.description;
+
+    if (description != null && description !== '') {
+        const words = description.trim().split(/\s+/);
+        searchOptions.$and = words.map(word => ({
+            description: new RegExp(word, 'i')
+        }));
     }
-})
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = 50;
+    const skip = (page - 1) * limit;
+
+    try {
+        const totalProducts = await Product.countDocuments(searchOptions);
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        const products = await Product.find(searchOptions)
+            .sort({ description: 1 })
+            .skip(skip)
+            .limit(limit);
+
+        res.render('products/index', {
+            products: products,
+            searchOptions: req.query,
+            currentPage: page,
+            totalPages: totalPages
+        });
+    } catch (err) {
+        res.redirect('/');
+    }
+});
 
 // Search Product fetch route
 // router.get('/:description/search', async (req,res) => {
@@ -82,7 +118,7 @@ router.get('/:description/search', async (req, res) => {
     }
     
     try {
-        const products = await Product.find(searchOptions).limit(50).sort({ description: 1 });
+        const products = await Product.find(searchOptions).sort({ description: 1 });
 
         res.json({
             products: products,
