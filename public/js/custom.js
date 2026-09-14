@@ -117,11 +117,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //event listener for selecting quantity on focus
 
-document.querySelector('.tableBody').addEventListener('focus', function(e) {
-    if (e.target.classList.contains('quantity')) {
-        setTimeout(() => e.target.select(), 0);
+document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector('.tableBody');
+    if (!tableBody) {
+        return;
     }
-}, true); // "true" enables capture phase, needed because focus doesn't bubble
+
+    tableBody.addEventListener('focus', function(e) {
+        if (e.target.classList.contains('quantity')) {
+            setTimeout(() => e.target.select(), 0);
+        }
+    }, true);
+}); // "true" enables capture phase, needed because focus doesn't bubble
 
     const getSearchResults = (e) => {
         e.preventDefault();
