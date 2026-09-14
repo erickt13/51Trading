@@ -117,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let searchedProduct = searchProductInput.value;
         let searchResults = document.querySelector("select#selectedProduct");
+
+        searchProductInput.value = ""; // clear it right away
+        
         fetch(`/products/${searchedProduct}/search/`, {
             method: "GET",
             headers: {

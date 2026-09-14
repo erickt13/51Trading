@@ -152,7 +152,8 @@ router.put('/:id', async (req, res) => {
         product.description = req.body.description
         product.price = Math.round(parseFloat(req.body.price) * 100) / 100;
         await product.save()
-        res.redirect(`/products/${product.id}`)
+        res.redirect(`/products`)
+        
     } catch {
         if (product = null) {
             res.redirect('/')

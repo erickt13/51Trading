@@ -3,7 +3,7 @@
         <label for="customer">Customer</label>
         <select id="customer" name="customer" >
             <% customers.forEach(customer => { %>
-                <% if (customer.id === invoice.customer) { %>
+                        <% if (customer.id === invoice.customer.toString()) { %>
                     <option selected label= "<%= customer.companyName %>" value="<%= customer.id %>"></option>
                 <% } else {  %>
                     <option label= "<%= customer.companyName %>" value="<%= customer.id %>"></option>
