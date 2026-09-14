@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("select input not found");
     return; // Exit if scanned MPN Input doesn't exist
     }
+    
 
     searchProductBtn.addEventListener('click', getSearchResults);
     searchProductInput.addEventListener('keydown', (e) => {
@@ -112,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
     });
 })
+
 
 //event listener for selecting quantity on focus
 
