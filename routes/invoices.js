@@ -16,7 +16,7 @@ router.get('/', async (req,res) => {
         searchOptions.invoiceNumber = new RegExp(req.query.invoiceNumber, 'i')
     }
     try {
-        const invoices = await Invoice.find(searchOptions).populate('customer').populate('items')
+        const invoices = await Invoice.find(searchOptions).populate('customer').populate('items').sort({ date: -1 }); // newest invoice date first
        
         // console.log(invoices)
         res.render('invoices/index', {

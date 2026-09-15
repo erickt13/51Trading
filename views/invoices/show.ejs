@@ -81,7 +81,8 @@
                         <tr>
                             <td><%= item.itemNumber %></td>
                             <td><%= item.description %></td> 
-                            <td><svg id="id<%= item.mpn %>" class="barcode" data-mpn="<%= item.mpn %>"></svg></td>
+                            <td><%= item.mpn %></td> 
+                            <!-- <td><svg id="id<%= item.mpn %>" class="barcode" data-mpn="<%= item.mpn %>"></svg></td> -->
                             <td><%= item.quantity %></td>
                             <td>$<%= parseFloat(item.price).toFixed(2) %></td> 
                             <td>$<%= parseFloat(item.subTotal).toFixed(2) %></td> 
