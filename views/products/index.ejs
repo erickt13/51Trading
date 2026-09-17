@@ -14,16 +14,20 @@
 
 <table class="table-striped">
     <thead>
+        <th>Item Number</th>
         <th>Product Description</th>
         <th>MPN</th>
+        <th>Price</th>
         <th>Actions</th>
     </thead>
     <tbody>
         <% products.forEach(product => { %>
             <tr>
+                <td><%= product.itemNumber %></td>
                 <td><%= product.description %></td>
                 <!-- <td><svg id="id<%= product.mpn %>" class="barcode" data-mpn="<%= product.mpn %>"></svg></td> -->
                 <td><%= product.mpn %></td>
+                <td><%= product.price %></td>
                 <td><div class="btn-row no-margin">
                     <a class="btn btn-primary" href="/products/<%= product.id %>">View</a>
                      <a class="btn btn-primary" href="/products/<%= product.id %>/edit">Edit</a>

@@ -9,19 +9,18 @@
 <table class="table-striped">
     <thead>
         <tr>
-            <th>MPN number</th>
-            <th>Bar Code</th>
-            <th>Description</th>
             <th>Item Number</th>
+            <th>Description</th>
+            <th>MPN number</th>
             <th>Price</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><%= product.mpn %></td>
-            <td><svg id="id<%= product.mpn %>" class="barcode" data-mpn="<%= product.mpn %>"></svg></td>
-            <td><%= product.description %> </td>
             <td><%= product.itemNumber %></td>
+            <td><%= product.description %> </td>
+            <td><%= product.mpn %></td>
+            <!-- <td><svg id="id<%= product.mpn %>" class="barcode" data-mpn="<%= product.mpn %>"></svg></td> -->
             <td> <%= product.price %></td>
         </tr>
     </tbody>
