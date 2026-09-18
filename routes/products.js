@@ -50,12 +50,13 @@ router.post('/bulk-insert', async (req, res) => {
 // All products route
 router.get('/', async (req, res) => {
     let searchOptions = {};
-    const description = req.query.description;
+    // const description = req.query.description;
+    const itemNumber = req.query.itemNumber;
 
-    if (description != null && description !== '') {
-        const words = description.trim().split(/\s+/);
+    if (itemNumber != null && itemNumber !== '') {
+        const words = itemNumber.trim().split(/\s+/);
         searchOptions.$and = words.map(word => ({
-            description: new RegExp(word, 'i')
+            itemNumber: new RegExp(word, 'i')
         }));
     }
 
@@ -68,7 +69,7 @@ router.get('/', async (req, res) => {
         const totalPages = Math.ceil(totalProducts / limit);
 
         const products = await Product.find(searchOptions)
-            .sort({ description: 1 })
+            .sort({ itemNumber: 1 })
             .skip(skip)
             .limit(limit);
 
@@ -106,19 +107,19 @@ router.get('/', async (req, res) => {
 // })
 
 // Search Product fetch route
-router.get('/:description/search', async (req, res) => {
+router.get('/:itemNumber/search', async (req, res) => {
     let searchOptions = {};
-    const { description } = req.params;
+    const { itemNumber } = req.params;
     
-    if (description != null && description !== '') {
-        const words = description.trim().split(/\s+/);
+    if (itemNumber != null && itemNumber !== '') {
+        const words = itemNumber.trim().split(/\s+/);
         searchOptions.$and = words.map(word => ({
-            description: new RegExp(word, 'i')
+            itemNumber: new RegExp(word, 'i')
         }));
     }
     
     try {
-        const products = await Product.find(searchOptions).sort({ description: 1 });
+        const products = await Product.find(searchOptions).sort({ itemNumber: 1 });
 
         res.json({
             products: products,

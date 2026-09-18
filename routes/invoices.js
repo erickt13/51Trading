@@ -110,7 +110,7 @@ router.get('/:id/edit', async (req, res) => {
     
     try {
         const customers = await Customer.find({})
-        const products = await Product.find({}).limit(10).sort({ description: 1 })
+        const products = await Product.find({}).limit(10).sort({ itemNumber: 1 })
         const invoice = await Invoice.findById(req.params.id).populate('customer')
 
         // Format the dates to YYYY-MM-DD for rendering in the form
