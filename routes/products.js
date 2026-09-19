@@ -48,15 +48,18 @@ router.post('/bulk-insert', async (req, res) => {
 // })
 
 // All products route
+// All products route
 router.get('/', async (req, res) => {
     let searchOptions = {};
-    // const description = req.query.description;
-    const itemNumber = req.query.itemNumber;
+    const searchQuery = req.query.search;
 
-    if (itemNumber != null && itemNumber !== '') {
-        const words = itemNumber.trim().split(/\s+/);
+    if (searchQuery != null && searchQuery !== '') {
+        const words = searchQuery.trim().split(/\s+/);
         searchOptions.$and = words.map(word => ({
-            itemNumber: new RegExp(word, 'i')
+            $or: [
+                { itemNumber: new RegExp(word, 'i') },
+                { description: new RegExp(word, 'i') }
+            ]
         }));
     }
 
@@ -75,46 +78,28 @@ router.get('/', async (req, res) => {
 
         res.render('products/index', {
             products: products,
-            searchOptions: req.query,
+            searchOptions: { search: searchQuery },
             currentPage: page,
             totalPages: totalPages
         });
     } catch (err) {
+        console.error(err);
         res.redirect('/');
     }
 });
 
 // Search Product fetch route
-// router.get('/:description/search', async (req,res) => {
-//     let searchOptions = {}
-//     const { description } = req.params;
-//     if (req.params.description != null && req.params.description != '') {
-//         searchOptions.description = new RegExp(req.params.description, 'i')
-//     }
-//     try {
-//         const products = await Product.find(searchOptions).sort({ description: 1 }) // 1 for ascending, -1 for descending
-//         res.json({
-//             products: products,
-//             searchOptions: req.query
-//         })
-        
-//         console.log(description);
-//         console.log(searchOptions.description);
-//         console.log(products);
-//     } catch (err){
-//         res.redirect('/')
-//     }
-// })
-
-// Search Product fetch route
-router.get('/:itemNumber/search', async (req, res) => {
+router.get('/:searchedProduct/search', async (req, res) => {
     let searchOptions = {};
-    const { itemNumber } = req.params;
+    const { searchedProduct } = req.params;
     
-    if (itemNumber != null && itemNumber !== '') {
-        const words = itemNumber.trim().split(/\s+/);
+    if (searchedProduct != null && searchedProduct !== '') {
+        const words = searchedProduct.trim().split(/\s+/);
         searchOptions.$and = words.map(word => ({
-            itemNumber: new RegExp(word, 'i')
+            $or: [
+                { itemNumber: new RegExp(word, 'i') },
+                { description: new RegExp(word, 'i') }
+            ]
         }));
     }
     
@@ -126,7 +111,8 @@ router.get('/:itemNumber/search', async (req, res) => {
             searchOptions: searchOptions
         });
     } catch (err) {
-        res.redirect('/');
+        console.error(err);
+        res.status(500).json({ errorMessage: 'Search failed' });
     }
 });
 
