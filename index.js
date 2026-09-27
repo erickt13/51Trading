@@ -29,6 +29,8 @@ const productRouter = require('./routes/products')
 const customerRouter = require('./routes/customers') 
 const invoiceRouter = require('./routes/invoices') 
 const bulkinsertRouter = require('./routes/bulkinsert');
+const settingsRouter = require('./routes/settings')
+
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
@@ -36,6 +38,7 @@ app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
+app.use('/settings', settingsRouter)
 
 const connectDB = async () => {
   try {

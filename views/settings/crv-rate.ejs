@@ -1,0 +1,21 @@
+<h2 class="page-header">CRV Rate Settings</h2>
+
+<% if (message) { %>
+    <p><%= message %></p>
+<% } %>
+
+<form action="/settings/crv-rate" method="POST">
+    <div class="form-row">
+        <div class="form-item">
+            <label>Low Rate (small containers)</label>
+            <input type="text" name="lowRate" value="<%= settings.lowRate %>">
+        </div>
+        <div class="form-item">
+            <label>High Rate (large containers)</label>
+            <input type="text" name="highRate" value="<%= settings.highRate %>">
+        </div>
+    </div>
+    <div class="btn-row form-row-end">
+        <button class="btn btn-primary" type="submit">Update Rates</button>
+    </div>
+</form>

@@ -287,84 +287,47 @@ bcRender();
 
 const addProduct2 = (e) => {
     e.preventDefault();
-     // this just gets the MPN from the selected product to use it in the for loop to compare to the product.id which is also the mpn.
-     
-     let scannedMPN = document.querySelector("#selectedMPN").value;
-     let productSelect = document.querySelector("#selectedProduct");
-     let selectIndex = productSelect.selectedIndex;
-    //  let productId = document.querySelector("#selectedProduct").value;
-    //  let invoiceId = document.querySelector(".invoiceId").dataset.invoiceid;
-     let selectedProduct = productSelect[selectIndex];
-     let productMPN;
-     let productItemNumber;
- 
-     if (e.target.id === "addProduct") {
-       productMPN = selectedProduct.dataset.mpn;
-       productItemNumber = selectedProduct.dataset.itemnumber;
-       console.log ('The selected product Item Number is: ' + productItemNumber);
-     } else if (e.target.id === "addProductMPN"){
-       productMPN = scannedMPN;
-       console.log('the scanned MPN ID is: ' + productMPN);
-     }
-     
-    // fetch data from the server
+    let scannedMPN = document.querySelector("#selectedMPN").value;
+
     fetch(`/invoices/${scannedMPN}/addproductbympn`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }, 
+        headers: { "Content-Type": "application/json" },
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log("the scanned product to add is: " + data._id + data.description);
             if (data.errorMessage) {
-                // alert(data.errorMessage);
                 console.log(data.errorMessage);
                 return;
-            } else {
-                
-            addItem(data, productMPN);
+            }
+            addItem(data.product, data.product.itemNumber);
+            if (data.crvProduct) {
+                addItem(data.crvProduct, data.crvProduct.itemNumber);
             }
         });
 };
 
 const addProduct = (e) => {
     e.preventDefault();
-
-    // this just gets the MPN from the selected product to use it in the for loop to compare to the product.id which is also the mpn.
-    let scannedMPN = document.querySelector("#selectedMPN").value;
     let productSelect = document.querySelector("#selectedProduct");
     let selectIndex = productSelect.selectedIndex;
     let productId = document.querySelector("#selectedProduct").value;
-    
-    // let invoiceId = document.querySelector(".invoiceId").dataset.invoiceid;
     let selectedProduct = productSelect[selectIndex];
     let productItemNumber = selectedProduct.dataset.itemnumber;
-    let productMPN;
 
-    if (e.target.id === "addProduct") {
-    productMPN = selectedProduct.dataset.mpn;
-    productItemNumber = selectedProduct.dataset.itemnumber;
-    console.log ('The selected product Id is : ' + productId);
-    
-    } else if (e.target.id === "addProductMPN"){
-      productMPN = scannedMPN;
-    }
-
-    // fetch data from the server
     fetch(`/invoices/${productId}/addproductbyid`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data); // this gives back the product
-            //get the products that are on the invoice product list.
-            
-            addItem(data, productItemNumber);
-            
+            if (data.errorMessage) {
+                console.log(data.errorMessage);
+                return;
+            }
+            addItem(data.product, data.product.itemNumber);
+            if (data.crvProduct) {
+                addItem(data.crvProduct, data.crvProduct.itemNumber);
+            }
         })
         .catch((error) => console.error("Fetch error:", error));
 };
@@ -439,25 +402,24 @@ function addItem(data, productItemNumber){
               input.readOnly = true;
               break;
           case 3: // description
-              input = document.createElement("input");
-              input.type = "text";
-              input.name = `items[${productIndex}][description]`; // array name notation
-              input.id = data._id;
-              input.classList.add("description");
-              input.value = data.description;
-              input.readOnly = true;
-              td.classList.add('description');
-              break;
-          case 4: // price
-              input = document.createElement("input");
-              input.type = "text";
-            //   input.dataset[data.itemNumber + "price"] = data.itemNumber;
-              input.setAttribute(`data-${data.itemNumber}price`, data.itemNumber);
-              input.name = `items[${productIndex}][price]`; // array name notation
-              input.classList.add("price");
-              input.value = parseFloat(data.price).toFixed(2);
-              input.readOnly = true;
-              break;
+                input = document.createElement("input");
+                input.type = "text";
+                input.name = `items[${productIndex}][description]`;
+                input.id = data._id;
+                input.classList.add("description");
+                input.value = data.description;
+                // readOnly removed — now editable
+                td.classList.add('description');
+                break;
+            case 4: // price
+                input = document.createElement("input");
+                input.type = "text";
+                input.setAttribute(`data-${data.itemNumber}price`, data.itemNumber);
+                input.name = `items[${productIndex}][price]`;
+                input.classList.add("price");
+                input.value = parseFloat(data.price).toFixed(2);
+                // readOnly removed — now editable
+                break;
           case 5: // quantity
               input = document.createElement("input");
               input.type = "number";
@@ -557,40 +519,66 @@ function renderBarcode(){
 addProductButton.addEventListener("click", addProduct);
 addProductMPN.addEventListener("click", addProduct2);
 
-// Add event listener to the container of the product list
-productList.addEventListener("click", function (e) {
-    // Check if the clicked element is the dynamically added element
-    if (e.target && e.target.matches(".btn-danger")) {
-        // get the parent formRow and remove it.
-        const formRow = e.target.closest(".form-row");
-        formRow.remove();
-        addTotal();
-    }
-});
+
 
 // Add event listener to the container of the product list
 productList.addEventListener("click", function (e) {
-    // Check if the clicked element is the dynamically added element
     if (e.target && e.target.matches(".btn-danger")) {
-        // get the parent formRow and remove it.
         const tableRow = e.target.closest(".table-row");
+        const itemNumberInput = tableRow.querySelector(".itemNumber");
+        const itemNumber = itemNumberInput ? itemNumberInput.value : null;
+
         tableRow.remove();
+
+        // If this was a beverage row (not a CRV row itself), remove its linked CRV row too
+        if (itemNumber && !itemNumber.startsWith('CRV-')) {
+            document.querySelectorAll(".itemNumber").forEach(input => {
+                if (input.value.startsWith('CRV-') && input.value.endsWith(`-${itemNumber}`)) {
+                    const crvRow = input.closest(".table-row");
+                    if (crvRow) crvRow.remove();
+                }
+            });
+        }
+
         addTotal();
     }
 });
 
-// Add event listener to the container of the product list
+// quantity change listener (with CRV sync)
 productList.addEventListener("change", function (e) {
-    // Check if the element that changed is the quantity element
     if (e.target && e.target.matches(".quantity")) {
-        // get the price quantity and subTotal
         const tableRow = e.target.closest(".table-row");
-        const price = parseFloat(tableRow.querySelector(".price").value); 
-        const quantity = parseInt(e.target.value, 10);  
+        const beverageItemNumber = tableRow.querySelector(".itemNumber").value;
+        const price = parseFloat(tableRow.querySelector(".price").value);
+        const quantity = parseInt(e.target.value, 10);
         const subTotal = tableRow.querySelector(".subTotal");
-        let productTotal = 0;
-        productTotal = price * quantity;
-        subTotal.value = parseFloat(productTotal).toFixed(2);
+        subTotal.value = (price * quantity).toFixed(2);
+
+        // Find and sync any CRV row linked to this beverage (itemNumber ends in "-<beverageItemNumber>")
+        document.querySelectorAll(".itemNumber").forEach(input => {
+            if (input.value.startsWith('CRV-') && input.value.endsWith(`-${beverageItemNumber}`)) {
+                const crvRow = input.closest(".table-row");
+                const crvPrice = parseFloat(crvRow.querySelector(".price").value);
+                const crvQtyInput = crvRow.querySelector(".quantity");
+                const crvSubTotal = crvRow.querySelector(".subTotal");
+                crvQtyInput.value = quantity;
+                crvSubTotal.value = (crvPrice * quantity).toFixed(2);
+            }
+        });
+
+        addTotal();
+    }
+});
+
+// price change listener
+productList.addEventListener("change", function (e) {
+    if (e.target && e.target.matches(".price")) {
+        const tableRow = e.target.closest(".table-row");
+        const price = parseFloat(e.target.value) || 0;
+        const quantityInput = tableRow.querySelector(".quantity");
+        const quantity = parseInt(quantityInput.value, 10) || 0;
+        const subTotal = tableRow.querySelector(".subTotal");
+        subTotal.value = (price * quantity).toFixed(2);
 
         addTotal();
     }

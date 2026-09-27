@@ -3,10 +3,30 @@ const router = express.Router()
 const Invoice = require('../models/invoice')
 const Customer = require('../models/customer')
 const Product = require('../models/product')
+const CrvRate = require('../models/crvRate')
 const PDFDocument = require('pdfkit');
 const { createCanvas } = require('canvas');
 const JsBarcode = require('jsbarcode');
 
+// Build a synthetic CRV line item from a beverage product's crvTier/unitCount
+async function buildCrvLineItem(product) {
+    if (!product.crvTier || product.unitCount == null) return null;
+
+    const settings = await CrvRate.findOne({ key: 'current' });
+    if (!settings) return null;
+
+    const rate = product.crvTier === 'low' ? settings.lowRate : settings.highRate;
+    const amount = +(rate * product.unitCount).toFixed(2);
+    const crvItemNumber = `CRV-${product.crvTier === 'low' ? '05' : '10'}-${product.unitCount}-${product.itemNumber}`;
+
+    return {
+        _id: crvItemNumber,
+        itemNumber: crvItemNumber,
+        description: `CRV $${rate.toFixed(2)} X ${product.unitCount} (for ${product.itemNumber})`,
+        mpn: '',
+        price: amount
+    };
+}
  
 // All invoices route
 router.get('/', async (req,res) => {
@@ -32,38 +52,38 @@ router.get('/', async (req,res) => {
 
 // fetch api find product by mpn route
 router.get('/:mpn/addproductbympn', async (req, res) => {
-
     try {
-        // Get the mpn from the route params
         const { mpn } = req.params;
-
-        // Find the product by mpn
         const product = await Product.findOne({ mpn: mpn });
-        
 
         if (!product) {
             return res.json({ errorMessage: 'Product not found' });
         }
 
-        return res.status(200).json(product);
+        const crvProduct = await buildCrvLineItem(product);
 
-    }   
+        return res.status(200).json({ product, crvProduct });
+    }
     catch (error) {
-        res.redirect('/', errorMessage) // redirect to invoices index page.
-    } 
+        res.status(500).json({ errorMessage: 'Error adding product!' });
+    }
 });
 
 // fetch api find product by id route
 router.get('/:id/addproductbyid', async (req,res) => {
-
     try {
-        const product = await Product.findById(req.params.id); // get the selected product from req query string
-        res.json(product) // Send the product to the client via json.
-    
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.json({ errorMessage: 'Product not found' });
+        }
+
+        const crvProduct = await buildCrvLineItem(product);
+
+        res.json({ product, crvProduct });
     } catch (error) {
-        res.redirect('/', {errorMessage : 'Error adding product!'}) // redirect to invoices index page.
+        res.status(500).json({ errorMessage: 'Error adding product!' });
     }
-    })
+})
 
 // New invoice route
 router.get('/new', async (req,res) => {
@@ -110,7 +130,7 @@ router.get('/:id/edit', async (req, res) => {
     
     try {
         const customers = await Customer.find({})
-        const products = await Product.find({}).limit(10).sort({ itemNumber: 1 })
+        const products = await Product.find({}).limit(10).sort({ itemNumber: 1 }) 
         const invoice = await Invoice.findById(req.params.id).populate('customer')
 
         // Format the dates to YYYY-MM-DD for rendering in the form

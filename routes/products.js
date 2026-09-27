@@ -48,7 +48,6 @@ router.post('/bulk-insert', async (req, res) => {
 // })
 
 // All products route
-// All products route
 router.get('/', async (req, res) => {
     let searchOptions = {};
     const searchQuery = req.query.search;
@@ -122,12 +121,14 @@ router.get('/new', (req,res) => {
 }) 
 
 // Create product route
-router.post('/', async (req,res) => { 
+router.post('/', async (req, res) => { 
     const product = new Product({
         mpn: req.body.mpn,
         itemNumber: req.body.itemNumber,
         description: req.body.description,
-        price: parseFloat(req.body.price).toFixed(2) 
+        price: parseFloat(req.body.price).toFixed(2),
+        crvTier: req.body.crvTier || undefined,
+        unitCount: req.body.unitCount ? parseInt(req.body.unitCount) : undefined
     })
 
     try {
@@ -174,11 +175,13 @@ router.put('/:id', async (req, res) => {
         product.itemNumber = req.body.itemNumber
         product.description = req.body.description
         product.price = Math.round(parseFloat(req.body.price) * 100) / 100;
+        product.crvTier = req.body.crvTier || undefined;
+        product.unitCount = req.body.unitCount ? parseInt(req.body.unitCount) : undefined;
         await product.save()
         res.redirect(`/products`)
         
     } catch {
-        if (product = null) {
+        if (product == null) {
             res.redirect('/')
         } else {
             res.render('products/edit', {
@@ -191,19 +194,17 @@ router.put('/:id', async (req, res) => {
 
 // delete product route
 
+// delete product route
 router.delete('/:id', async (req, res) => {
     let product
     try {
         product = await Product.findByIdAndDelete(req.params.id)
-        // await product.deleteOne() 
         res.redirect('/products')
     } catch (e){
-        if (product = null) {
+        if (product == null) {
             res.redirect('/')
-            // console.log(e)
         } else {
             res.redirect(`/products/${product.id}`)
-            // console.log(e)
         }
     }
 })

@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
     },
     itemNumber: {
         type: String,
-        required:true
+        required: true
     },
     description: {
         type: String,
@@ -15,6 +15,15 @@ const productSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
+        required: false
+    },
+    crvTier: {
+        type: String,       // 'low' ($0.05) or 'high' ($0.10)
+        enum: ['low', 'high'],
+        required: false
+    },
+    unitCount: {
+        type: Number,       // e.g. 24
         required: false
     }
 })

@@ -16,25 +16,34 @@
         <thead>
             <th>Item Number</th>
             <th>Description</th>
+            <th>CRV</th>
+            <th>Unit Count</th>
             <th>MPN</th>
             <th>Price</th>
             <th>Actions</th>
         </thead>
         <tbody>
             <% products.forEach(product => { %>
-                <tr>
-                    <td><%= product.itemNumber %></td>
-                    <td><%= product.description %></td>
-                    <!-- <td><svg id="id<%= product.mpn %>" class="barcode" data-mpn="<%= product.mpn %>"></svg></td> -->
-                    <td><%= product.mpn %></td>
-                    <td><%= product.price %></td>
-                    <td><div class="btn-row no-margin">
-                        <a class="btn btn-primary" href="/products/<%= product.id %>">View</a>
-                        <a class="btn btn-primary" href="/products/<%= product.id %>/edit">Edit</a>
-                        <%- include('../partials/deleteForm', { url: `/products/${product.id}` }) %>
-                    </div></td>
-                </tr>
-            <%})%>
+    <tr>
+        <td><%= product.itemNumber %></td>
+        <td><%= product.description %></td>
+        <% if (product.crvTier === 'low') { %>
+            <td>Low (0.05)</td>
+        <% } else if (product.crvTier === 'high') { %>
+            <td>High (0.10)</td>
+        <% } else { %>
+            <td>—</td>
+        <% } %>
+        <td><%= product.unitCount || '' %></td>
+        <td><%= product.mpn %></td>
+        <td>$<%= product.price %></td>
+        <td><div class="btn-row no-margin">
+            <a class="btn btn-primary" href="/products/<%= product.id %>">View</a>
+            <a class="btn btn-primary" href="/products/<%= product.id %>/edit">Edit</a>
+            <%- include('../partials/deleteForm', { url: `/products/${product.id}` }) %>
+        </div></td>
+    </tr>
+<% }) %>
         </tbody>
     </table>
 </div>
