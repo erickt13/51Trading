@@ -1,5 +1,29 @@
   // http://localhost:3000/ production
   // https://five1trading.onrender.com/ production
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector('.tableBody');
+    if (!tableBody) return;
+
+    new Sortable(tableBody, {
+        handle: '.drag-handle',
+        animation: 150,
+        onEnd: function () {
+            renumberRowIndices();
+            addTotal();
+        }
+    });
+});
+
+function renumberRowIndices() {
+    const rows = document.querySelectorAll('.tableBody .table-row');
+    rows.forEach((row, index) => {
+        row.querySelectorAll('[name]').forEach(input => {
+            input.name = input.name.replace(/items\[\d+\]/, `items[${index}]`);
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Check if scanned MPN Input exists
@@ -334,163 +358,159 @@ const addProduct = (e) => {
 
 // addProduct was already defined for the button
 function addItem(data, productItemNumber){
-    console.log("inside addItem " + productItemNumber);
-  // This method returns a NodeList of all elements that match the specified selector
-  products = document.querySelectorAll(".itemNumber");
-  const productsArray = Array.from(products);
-  let productIndex = productsArray.length;
-  //   console.log(productsArray);
+    products = document.querySelectorAll(".itemNumber");
+    const productsArray = Array.from(products);
+    let productIndex = productsArray.length;
 
-  for (i = 0; i < products.length; i++) {
-      if (data.itemNumber === productsArray[i].id) {
-          //get the duplicate elements
-          console.log('the duplicate item number is: ' + productItemNumber);
-          let duplicatePrice = document.querySelector("[data-" + data.itemNumber + "price]");
-          let duplicateQty = document.querySelector("[data-" + data.itemNumber + "qty]");
-          let duplicateSubTotal = document.querySelector("[data-" + data.itemNumber + "subtotal]");
-          //add quantity and calculate sub total
-          duplicateQty.value = Number(duplicateQty.value) + 1;
-          console.log(duplicatePrice)
-          productTotal = duplicatePrice.value * duplicateQty.value;
-          duplicateSubTotal.value = productTotal;
+    for (i = 0; i < products.length; i++) {
+        if (data.itemNumber === productsArray[i].id) {
+            let duplicatePrice = document.querySelector("[data-" + data.itemNumber + "price]");
+            let duplicateQty = document.querySelector("[data-" + data.itemNumber + "qty]");
+            let duplicateSubTotal = document.querySelector("[data-" + data.itemNumber + "subtotal]");
+            duplicateQty.value = Number(duplicateQty.value) + 1;
+            productTotal = duplicatePrice.value * duplicateQty.value;
+            duplicateSubTotal.value = productTotal;
+            addTotal();
+            return;
+        }
+    }
 
-          addTotal();
-          return;
-      }
-  }
+    const tableBody = document.querySelector(".tableBody");
+    const row = document.createElement("tr");
+    row.classList.add("table-row");
+    const actions = document.createElement("div");
+    actions.classList.add("actions");
 
-  const tableBody = document.querySelector(".tableBody");
-  //create tr products
-  // Create a row (tr)
-  const row = document.createElement("tr");
-  row.classList.add("table-row");
-  const actions = document.createElement("div");
-  actions.classList.add("actions");
+    for (let i = 0; i < 11; i++) {
+        const td = document.createElement("td");
 
-  // Create 8 td elements and add form inputs to them
-  for (let i = 0; i < 10; i++) {
-      const td = document.createElement("td");
+        switch (i) {
+            case 0: // drag handle
+                input = document.createElement("span");
+                input.classList.add("drag-handle");
+                input.style.cursor = "grab";
+                input.innerHTML = "☰";
+                td.style.textAlign = "center";
+                break;
 
-      // Customize the input based on the index (use switch)
-      switch (i) {
-          case 0: // source
-              input = document.createElement("input");
-              input.type = "text";
-              input.name = `items[${productIndex}][source]`; // array name notation
-              input.classList.add("source");
-            //   input.placeholder = "Source";
-            //   input.value = "Source";
-              break;
-          
-          case 1: // mpn 
-              input = document.createElement("input");
-              input.type = "text";
-              input.dataset[data.mpn + "mpn"] = data.mpn;
-              input.name = `items[${productIndex}][mpn]`; // array name notation
-              input.classList.add("mpn");
-              input.id = data._id;
-              input.value = data.mpn;
-              input.readOnly = true;
-              break;
-          case 2: // Item Number 
-              input = document.createElement("input");
-              input.type = "text";
-              input.name = `items[${productIndex}][itemNumber]`; // array name notation
-              input.classList.add("itemNumber");
-              input.id = data.itemNumber;
-              input.value = data.itemNumber;
-              input.readOnly = true;
-              break;
-          case 3: // description
+            case 1: // source
+                input = document.createElement("input");
+                input.type = "text";
+                input.name = `items[${productIndex}][source]`;
+                input.classList.add("source");
+                break;
+
+            case 2: // mpn
+                input = document.createElement("input");
+                input.type = "text";
+                input.dataset[data.mpn + "mpn"] = data.mpn;
+                input.name = `items[${productIndex}][mpn]`;
+                input.classList.add("mpn");
+                input.id = data._id;
+                input.value = data.mpn;
+                input.readOnly = true;
+                break;
+
+            case 3: // Item Number
+                input = document.createElement("input");
+                input.type = "text";
+                input.name = `items[${productIndex}][itemNumber]`;
+                input.classList.add("itemNumber");
+                input.id = data.itemNumber;
+                input.value = data.itemNumber;
+                input.readOnly = true;
+
+                const productIdInput = document.createElement("input");
+                productIdInput.type = "hidden";
+                productIdInput.classList.add("productId");
+                productIdInput.name = `items[${productIndex}][productId]`;
+                productIdInput.value = data._id || '';
+                td.appendChild(productIdInput);
+                break;
+
+            case 4: // description
                 input = document.createElement("input");
                 input.type = "text";
                 input.name = `items[${productIndex}][description]`;
                 input.id = data._id;
                 input.classList.add("description");
                 input.value = data.description;
-                // readOnly removed — now editable
                 td.classList.add('description');
                 break;
-            case 4: // price
+
+            case 5: // price
                 input = document.createElement("input");
                 input.type = "text";
                 input.setAttribute(`data-${data.itemNumber}price`, data.itemNumber);
                 input.name = `items[${productIndex}][price]`;
                 input.classList.add("price");
                 input.value = parseFloat(data.price).toFixed(2);
-                // readOnly removed — now editable
                 break;
-          case 5: // quantity
-              input = document.createElement("input");
-              input.type = "number";
-              input.name = `items[${productIndex}][quantity]`; // array name notation
-            //   input.dataset[data.itemNumber + "qty"] = data.itemNumber;
-              input.setAttribute(`data-${data.itemNumber}qty`, data.itemNumber);
-              input.classList.add("quantity");
-              input.placeholder = 1;
-              input.value = parseFloat(1);
-              break;
-          case 6: // sub total
-              input = document.createElement("input");
-              input.type = "text";
-            //   input.dataset[data.itemNumber + "subtotal"] = data.itemNumber;
-              input.setAttribute(`data-${data.itemNumber}subtotal`, data.itemNumber);
-              input.name = `items[${productIndex}][subTotal]`; // array name notation
-              input.classList.add("subTotal");
-              input.readOnly = true;
 
-              const price = parseFloat(data.price);
-              const quantity = 1;
+            case 6: // quantity
+                input = document.createElement("input");
+                input.type = "number";
+                input.name = `items[${productIndex}][quantity]`;
+                input.setAttribute(`data-${data.itemNumber}qty`, data.itemNumber);
+                input.classList.add("quantity");
+                input.placeholder = 1;
+                input.value = parseFloat(1);
+                break;
 
-              if (isNaN(price) || isNaN(quantity)) {
-                  console.error("Invalid input: price or quantity is not a valid number.");
-              } else {
-                const subtotal = (price * quantity).toFixed(2);
-                  input.value = subtotal;
-                  // console.log = (input.value);
-              }
-              break;
-        case 7: // notes
-            input = document.createElement("input");
-            input.type = "text";
-            input.name = `items[${productIndex}][notes]`; // array name notation
-            input.classList.add("notes");
-            input.placeholder = "Enter Notes Here";
-            input.value = "Notes";
-            td.classList.add('notes');
-            break;
+            case 7: // sub total
+                input = document.createElement("input");
+                input.type = "text";
+                input.setAttribute(`data-${data.itemNumber}subtotal`, data.itemNumber);
+                input.name = `items[${productIndex}][subTotal]`;
+                input.classList.add("subTotal");
+                input.readOnly = true;
 
-          case 8: // done button
-              input = document.createElement("input");
-              input.type = "checkbox";
-              input.name = `items[${productIndex}][status]`;
-              input.value = "false";
-              input.classList.add("done");
-              input.id = `doneCheckbox_${productIndex}`; // Give it a unique ID
+                const price = parseFloat(data.price);
+                const quantity = 1;
+                if (isNaN(price) || isNaN(quantity)) {
+                    console.error("Invalid input: price or quantity is not a valid number.");
+                } else {
+                    input.value = (price * quantity).toFixed(2);
+                }
+                break;
 
-              // Append the checkbox and label to the td
-              td.appendChild(input);
-              // td.appendChild(label);
-              break;
-          case 9: // remove button
-              input = document.createElement("button");
-              input.type = "button";
-              input.classList.add("btn");
-              input.classList.add("btn-danger");
-              input.innerHTML = "X";
-              break;
-      }
-      addTotal();
+            case 8: // notes
+                input = document.createElement("input");
+                input.type = "text";
+                input.name = `items[${productIndex}][notes]`;
+                input.classList.add("notes");
+                input.placeholder = "Enter Notes Here";
+                input.value = "Notes";
+                td.classList.add('notes');
+                break;
 
-      // Append the input to the td
-      actions.appendChild(td);
-      td.appendChild(input);
-      // Append the td to the row
-      row.appendChild(td);
-      tableBody.appendChild(row);
-  }
-  // only need this if you are rendering barcode in the edit page.
-  // renderBarcode();
+            case 9: // done button
+                input = document.createElement("input");
+                input.type = "checkbox";
+                input.name = `items[${productIndex}][status]`;
+                input.value = "false";
+                input.classList.add("done");
+                input.id = `doneCheckbox_${productIndex}`;
+                td.appendChild(input);
+                break;
+
+            case 10: // remove button
+                input = document.createElement("button");
+                input.type = "button";
+                input.classList.add("btn");
+                input.classList.add("btn-danger");
+                input.innerHTML = "X";
+                break;
+        }
+        addTotal();
+
+        actions.appendChild(td);
+        td.appendChild(input);
+        row.appendChild(td);
+        tableBody.appendChild(row);
+    }
+
+    renumberRowIndices();
 }
 
 function renderBarcode(){
@@ -539,7 +559,7 @@ productList.addEventListener("click", function (e) {
                 }
             });
         }
-
+        renumberRowIndices();
         addTotal();
     }
 });
@@ -649,10 +669,10 @@ function sortTable(n, isCheckbox = false) {
 
 // Add click event listener for Source column sorting
 document.getElementById("source-header").addEventListener("click", () => {
-    sortTable(0); // 0 is the index for the "Source" column
+    sortTable(1); // was 0, now shifted by the new drag column
 });
 
 // Add click event listener for Done Status column sorting
 document.getElementById("status-header").addEventListener("click", () => {
-    sortTable(8, true); // 6 is the index for the "Done Status" column (checkbox)
+    sortTable(9, true); // was 8
 });
