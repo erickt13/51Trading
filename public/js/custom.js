@@ -386,11 +386,9 @@ function addItem(data, productItemNumber){
 
         switch (i) {
             case 0: // drag handle
+                td.classList.add("drag-handle");
                 input = document.createElement("span");
-                input.classList.add("drag-handle");
-                input.style.cursor = "grab";
                 input.innerHTML = "☰";
-                td.style.textAlign = "center";
                 break;
 
             case 1: // source

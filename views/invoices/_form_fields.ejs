@@ -81,7 +81,7 @@
         <tbody class="tableBody">
             <% invoice.items.forEach((item, index) => { %>
                 <tr class="table-row <%= !!item.status ? 'done' : '' %>">
-                        <td class="drag-handle" style="cursor: grab; text-align: center;">☰</td>
+                    <td class="drag-handle">☰</td>
                     <td class="source"><input class="source" id="<%= item.source %>" type="text" name="items[<%= index %>][source]" value="<%= item.source %>"></td>
                     <td class="mpn"><input class="mpn" id="<%= item.id %>" type="text" readonly name="items[<%= index %>][mpn]" value="<%= item.mpn %>"></td>
                     <td><input class="itemNumber" id="<%= item.itemNumber %>" type="text" readonly name="items[<%= index %>][itemNumber]" value="<%= item.itemNumber %>"></td>

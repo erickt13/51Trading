@@ -1,3 +1,28 @@
+#drag-header,
+td.drag-handle {
+  width: 36px;
+  min-width: 36px;
+}
+
+td.drag-handle {
+  cursor: grab;
+  font-size: 1.3em;
+  line-height: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+td.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* SortableJS adds this class to the row while it's being dragged */
+.sortable-ghost {
+  opacity: 0.4;
+  background-color: #cfe0ff;
+}
+
 .pagination {
     display: flex;
     align-items: center;
@@ -294,7 +319,7 @@ table.no-border > tbody > tr > th{
 }
 td {
   text-align: center;
-  font-size: 0.9em;
+  font-size: 1em;
 }
 th {
   font-size: 1em;
@@ -410,4 +435,27 @@ table.no-border thead tr th{
 border:none;
 }
 
+@media only screen and (max-width: 767.98px) {
+  table.invoice-table input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 34px;
+    font-size: 12px;
+  }
 
+  table.invoice-table input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    min-height: 0;
+  }
+
+  table.invoice-table .btn-danger {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  td.description { min-width: 180px; }
+  td.notes { min-width: 140px; }
+  td.mpn { min-width: 90px; }
+  td.source { min-width: 70px; }
+}
