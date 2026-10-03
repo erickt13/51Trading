@@ -20,34 +20,33 @@
 }
 
 .btn-primary{
-    /* color: var(--color-btn-primary-text); */
     color: white;
-    /* background-color: var(--color-btn-primary-background); */
     background-color: rgb(30, 64, 175);
 }
 
 .btn-primary:hover{
-    /* color: var(--color-btn-primary-text); */
     background-color: rgb(60, 102, 241);
 }
 
+.btn-primary:active{
+    background-color: rgb(60, 102, 241);
+}
 
 .btn-danger{
-    /* color: var(--color-btn-danger-text);
-    background-color: var(--color-btn-danger-background); */
     color: white;
     background-color: rgb(210, 8, 8);
 }
 
-
 .btn-danger:hover{
-    /* color: var(--color-btn-primary-text); */
+    background-color:  rgb(241, 11, 11);
+}
+
+.btn-danger:active{
     background-color:  rgb(241, 11, 11);
 }
 
 .btn-row {
     display: flex;
-    /* align-items: flex-start; */
     justify-content: center;
     margin-top: 2rem;
 }
@@ -60,4 +59,13 @@
 
 .btn-row > *:first-child {
     margin-left: 0rem;
+}
+
+@media only screen and (max-width: 767.98px) {
+  table.invoice-table .btn-danger {
+    padding: 0.4rem 0.6rem;
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 1rem;
+  }
 }

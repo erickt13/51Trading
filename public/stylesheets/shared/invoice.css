@@ -1,28 +1,3 @@
-#drag-header,
-td.drag-handle {
-  width: 36px;
-  min-width: 36px;
-}
-
-td.drag-handle {
-  cursor: grab;
-  font-size: 1.3em;
-  line-height: 1;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: none;
-}
-
-td.drag-handle:active {
-  cursor: grabbing;
-}
-
-/* SortableJS adds this class to the row while it's being dragged */
-.sortable-ghost {
-  opacity: 0.4;
-  background-color: #cfe0ff;
-}
-
 .pagination {
     display: flex;
     align-items: center;
@@ -59,11 +34,10 @@ td.drag-handle:active {
     align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 1rem;
-    /* align-items:center; */
 }
 
 .table-container {
-  flex: 1;  /* This allows the table to take up the remaining space */
+  flex: 1;
 }
 
 .fifty {
@@ -127,7 +101,6 @@ tfoot, tfoot > tr, tfoot > tr > td {
     display:flex;
   }
 
-  /* Hide footer and other elements */
   footer, header, .print-date-time, .print-url {
     display: none !important;
 }
@@ -138,21 +111,15 @@ tfoot, tfoot > tr, tfoot > tr > td {
   }
 
   @page {
-
-   
-    /* margin-bottom: 10px; */
-    margin: 0.25in; /* Standard margins on all sides */
-    margin-bottom: 0.25in; /* Extra space at bottom for footer */
+    margin: 0.25in;
+    margin-bottom: 0.25in;
   }
 
-  /* Ensure the table and fine print take the full height of the page */
   .table-container {
     width: 100%;
     position: relative;
-    /* border: 1px solid rgb(156 163 175); */
   }
 
-  /* Prevent page breaks in the middle of the table */
   table tr{
     page-break-inside: avoid;
   }
@@ -161,19 +128,16 @@ tfoot, tfoot > tr, tfoot > tr > td {
     padding: .1rem;
   }
 
-  /* You can also hide elements if they are unnecessary for printing */
   header, footer {
     display: none;
   }
 
-  /* If there's a specific area you don't want to print, hide it */
   .no-print {
     display: none;
   }
 
-  /* Customize other styles for the print version if needed */
   body {
-    font-size: 8pt;  /* Adjust text size for print */
+    font-size: 8pt;
   }
 
   tfoot > tr {
@@ -187,9 +151,8 @@ tfoot, tfoot > tr, tfoot > tr > td {
     box-sizing: border-box;
     width: 100%;
     padding: 10px;
-    /* background-color: white; Ensure text is readable */
     border: 1px solid #ddd;
-    height: 60px; /* Set appropriate height for your footer */
+    height: 60px;
   }
   .disclaimerp {
     width:70%
@@ -199,6 +162,7 @@ tfoot, tfoot > tr, tfoot > tr > td {
   }
 
 }
+
 /* Extra small devices (phones) */
 @media only screen and (max-width: 575.98px) { 
 
@@ -212,7 +176,6 @@ tfoot, tfoot > tr, tfoot > tr > td {
   .invoice-row {
     display: flex;
     flex-direction: row;
-    /* align-items: center; */
     justify-content: space-between;
     margin-bottom: 1rem;
   }
@@ -267,6 +230,9 @@ tfoot, tfoot > tr, tfoot > tr > td {
   padding: 5px;
 }
 
+#drag-header {
+  width: 36px;
+}
 #source-header {
   width: 10%;
 }
@@ -276,7 +242,7 @@ tfoot, tfoot > tr, tfoot > tr > td {
 #mpn-header {
   width: 10%;
 }
-#itemnumber-header {
+#itemNumber-header {
   width: 10%;
 }
 #description-header {
@@ -297,29 +263,34 @@ tfoot, tfoot > tr, tfoot > tr > td {
 #action-header {
   width: 10%;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   overflow-x: auto;
   border-radius: 5px;
-  box-shadow: 0 0 20px rgba(0 0 0 .15);
+  box-shadow: 0 0 20px rgba(0 0 0 / .15);
+}
+
+table.invoice-table {
+  table-layout: auto; /* columns size to content; #productList scrolls if needed */
 }
 
 td, th {
-  border: 1px solid transparent;  /* Set all borders to transparent */
-  border-top: 1px solid rgb(156 163 175);     /* Apply top border */
-  border-bottom: 1px solid rgb(156 163 175);  /* Apply bottom border */
-  border-left: none;              /* No left border */
-  border-right: none;        
+  border: 1px solid transparent;
+  border-top: 1px solid rgb(156 163 175);
+  border-bottom: 1px solid rgb(156 163 175);
+  border-left: none;
+  border-right: none;
   border-spacing: 0;
-  padding: .2rem;
+  padding: 0.2rem;
 }
 table.no-border > tbody > tr > th{
   border: none;
 }
 td {
   text-align: center;
-  font-size: 1em;
+  font-size: 0.9em;
 }
 th {
   font-size: 1em;
@@ -334,24 +305,84 @@ td.mpn {
   min-width: 100px;
 }
 
+/* Drag handle cell (SortableJS) */
+td.drag-handle {
+  cursor: grab;
+  font-size: 1.3em;
+  line-height: 1;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+td.drag-handle:active {
+  cursor: grabbing;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+  background-color: #cfe0ff;
+}
+
 #source-header:hover, #status-header:hover {
   cursor: pointer;
   color: var(--color-btn-primary-text);
   background-color: var(--color-btn-primary-background-dark);
 }
 
-input.productId {
-  min-width: 210px;
+/* ===== Invoice table inputs — applies at all screen sizes ===== */
 
+table.invoice-table input {
+  box-sizing: border-box;
+  min-height: 40px;
+  font-size: 16px; /* also prevents iOS Safari auto-zoom on focus */
 }
 
-
-input.price {
-  min-width: 65px;
+/* Short, predictable-length fields: fill the column, but never shrink below a usable floor */
+table.invoice-table input.price,
+table.invoice-table input.quantity,
+table.invoice-table input.subTotal {
+  width: 100%;
 }
 
-input.subTotal {
+table.invoice-table input.price {
   min-width: 70px;
+}
+
+table.invoice-table input.subTotal {
+  min-width: 75px;
+}
+
+table.invoice-table input.quantity {
+  min-width: 55px;
+}
+
+/* Variable-length fields: never shrink below column width, but grow if the value needs more room */
+table.invoice-table input.mpn,
+table.invoice-table input.itemNumber,
+table.invoice-table input.notes {
+  width: auto;
+  min-width: 100%;
+}
+
+/* Description: textarea so long text wraps instead of clipping */
+table.invoice-table textarea.description {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 220px;
+  min-height: 40px;
+  font-size: 16px;
+  font-family: inherit;
+  resize: vertical;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+table.invoice-table input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  min-height: 0;
 }
 
 /* signature pad */
@@ -388,72 +419,40 @@ input.subTotal {
     margin:10px 0px 10px 0px;
   }
 
-  checkbox.done {
-    display: inline-block; 
-    background-color: white;
-    width: 10px;
-    height: 10px;
-}
-
-
-/* tr.table-row {
-  background-color:white;
-} */
-
-
-
 tr.table-row.done {
-  background-color: #d4edda;  /* Light green background for 'done' rows */
-  text-decoration: line-through;  /* Strike-through for text */
-  color: #155724;  /* Dark green text color for completed tasks */
+  background-color: #d4edda;
+  text-decoration: line-through;
+  color: #155724;
 }
 
 table.table-striped thead tr {
-  background-color: #4b7de7; /* Slightly darker gray for even rows */
+  background-color: #4b7de7;
 }
 
 table.invoice-table thead tr {
-  background-color: #d2d2d2; /* Slightly darker gray for even rows */
+  background-color: #d2d2d2;
 }
 
 table.table-striped thead tr {
-  color: #ffffff; /* Slightly darker gray for even rows */
+  color: #ffffff;
 }
 
 table.table-striped tbody tr:nth-child(odd) {
-  background-color: #e0e0e0; /* Slightly darker gray for even rows */
+  background-color: #e0e0e0;
 }
 
 div#productList {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* This makes the scroll smooth on mobile devices */
-  width: 100%; /* You can set a fixed width if needed */
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
-
 
 table.no-border thead tr th{
 border:none;
 }
 
+/* ===== Mobile-only: tighter min-widths, since space is scarcer ===== */
 @media only screen and (max-width: 767.98px) {
-  table.invoice-table input {
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 34px;
-    font-size: 12px;
-  }
-
-  table.invoice-table input[type="checkbox"] {
-    width: 24px;
-    height: 24px;
-    min-height: 0;
-  }
-
-  table.invoice-table .btn-danger {
-    min-width: 40px;
-    min-height: 40px;
-  }
-
   td.description { min-width: 180px; }
   td.notes { min-width: 140px; }
   td.mpn { min-width: 90px; }
