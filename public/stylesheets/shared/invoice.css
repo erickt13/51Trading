@@ -38,6 +38,21 @@
 
 .table-container {
   flex: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+}
+
+.table-container table.table-striped td,
+.table-container table.table-striped th {
+  white-space: nowrap;
+}
+
+.table-container table.table-striped td:nth-child(2) {
+  white-space: normal;
+  min-width: 160px;
+  max-width: 220px;
 }
 
 .fifty {
@@ -96,14 +111,27 @@ tfoot, tfoot > tr, tfoot > tr > td {
 
 /* Disable browser's default print header and footer */
 @media print {
-
   .footer {
     display:flex;
   }
+  /* ...all your existing print rules stay here, unchanged... */
+  .disclaimert {
+    width:30%
+  }
 
-  footer, header, .print-date-time, .print-url {
-    display: none !important;
-}
+  /* new additions */
+  .table-container {
+    overflow-x: visible;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .table-container table.table-striped td,
+  .table-container table.table-striped th {
+    white-space: normal;
+    word-break: break-word;
+  }
+
 
   body {
     margin: 0;
@@ -457,4 +485,25 @@ border:none;
   td.notes { min-width: 140px; }
   td.mpn { min-width: 90px; }
   td.source { min-width: 70px; }
+}
+
+@media screen {
+  .table-container {
+    flex: 1;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .table-container table.table-striped td,
+  .table-container table.table-striped th {
+    white-space: nowrap;
+  }
+
+  .table-container table.table-striped td:nth-child(2) {
+    white-space: normal;
+    min-width: 160px;
+    max-width: 220px;
+  }
 }
