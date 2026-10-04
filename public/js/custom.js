@@ -410,6 +410,7 @@ function addItem(data, productItemNumber){
                 break;
 
             case 3: // Item Number
+                td.classList.add("itemNumber-cell");
                 input = document.createElement("input");
                 input.type = "text";
                 input.name = `items[${productIndex}][itemNumber]`;
@@ -456,6 +457,7 @@ function addItem(data, productItemNumber){
                 break;
 
             case 7: // sub total
+                td.classList.add("amount-cell");
                 input = document.createElement("input");
                 input.type = "text";
                 input.setAttribute(`data-${data.itemNumber}subtotal`, data.itemNumber);
@@ -483,6 +485,7 @@ function addItem(data, productItemNumber){
                 break;
 
             case 9: // done button
+                td.classList.add("status-cell");
                 input = document.createElement("input");
                 input.type = "checkbox";
                 input.name = `items[${productIndex}][status]`;

@@ -125,15 +125,12 @@ tfoot, tfoot > tr, tfoot > tr > td {
   }
 
   /* Rebalanced to sum to exactly 100% across the 9 visible print columns */
-  table.invoice-table #source-header { width: 8% !important; }
-  table.invoice-table #mpn-header { width: 12% !important; }
-  table.invoice-table #itemNumber-header { width: 10% !important; }
-  table.invoice-table #description-header { width: 24% !important; }
-  table.invoice-table #price-header { width: 7% !important; }
-  table.invoice-table #quantity-header { width: 7% !important; }
-  table.invoice-table #amount-header { width: 8% !important; }
-  table.invoice-table #notes-header { width: 19% !important; }
-  table.invoice-table #status-header { width: 5% !important; }
+    table.invoice-table #source-header { width: 10% !important; }
+    table.invoice-table #mpn-header { width: 15% !important; }
+    table.invoice-table #description-header { width: 35% !important; }
+    table.invoice-table #price-header { width: 10% !important; }
+    table.invoice-table #quantity-header { width: 10% !important; }
+    table.invoice-table #notes-header { width: 20% !important; }
 
   table.invoice-table th {
     font-size: 7pt !important;
@@ -238,11 +235,17 @@ tfoot, tfoot > tr, tfoot > tr > td {
     width:30%
   }
 
-  table.invoice-table th#drag-header,
+    table.invoice-table th#drag-header,
   table.invoice-table td.drag-handle,
   table.invoice-table th#action-header,
-  table.invoice-table td.action-cell {
-    display: none;
+  table.invoice-table td.action-cell,
+  table.invoice-table th#itemnumber-header,
+  table.invoice-table td.itemNumber-cell,
+  table.invoice-table th#amount-header,
+  table.invoice-table td.amount-cell,
+  table.invoice-table th#status-header,
+  table.invoice-table td.status-cell {
+    display: none !important;
   }
 
   table.invoice-table input,
@@ -428,8 +431,8 @@ td.drag-handle:active {
 
 table.invoice-table input {
   box-sizing: border-box;
-  min-height: 40px;
-  font-size: 16px; /* also prevents iOS Safari auto-zoom on focus */
+  min-height: 35px;
+  font-size: 11px; 
 }
 
 /* Short, predictable-length fields: fill the column, but never shrink below a usable floor */
