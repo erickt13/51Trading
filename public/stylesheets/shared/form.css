@@ -78,6 +78,13 @@ input.mpn, input.itemNumber, input.description, input.price, input.subTotal {
     
 }
 
+#totalSum {
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    font-size: 1rem; 
+}
+
 .form-item input:focus, .form-item select:focus {
     border-color: var(--form-input-border-color-light);
     /* box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); */
@@ -91,4 +98,30 @@ input.mpn, input.itemNumber, input.description, input.price, input.subTotal {
 
 .form-item select option {
     background-color:black;
+}
+
+#totalSum {
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.total-field {
+    position: relative;
+}
+
+.total-field::before {
+    content: "$";
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: black;
+    pointer-events: none;
+}
+
+.total-field input#totalSum {
+    padding-left: 1.5rem;
 }

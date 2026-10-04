@@ -1,3 +1,5 @@
+
+
 .pagination {
     display: flex;
     align-items: center;
@@ -111,6 +113,53 @@ tfoot, tfoot > tr, tfoot > tr > td {
 
 /* Disable browser's default print header and footer */
 @media print {
+
+  #productList {
+    overflow-x: visible !important;
+  }
+
+  table.invoice-table {
+    table-layout: fixed !important;
+    width: 100% !important;
+    font-size: 8pt !important;
+  }
+
+  /* Rebalanced to sum to exactly 100% across the 9 visible print columns */
+  table.invoice-table #source-header { width: 8% !important; }
+  table.invoice-table #mpn-header { width: 12% !important; }
+  table.invoice-table #itemNumber-header { width: 10% !important; }
+  table.invoice-table #description-header { width: 24% !important; }
+  table.invoice-table #price-header { width: 7% !important; }
+  table.invoice-table #quantity-header { width: 7% !important; }
+  table.invoice-table #amount-header { width: 8% !important; }
+  table.invoice-table #notes-header { width: 19% !important; }
+  table.invoice-table #status-header { width: 5% !important; }
+
+  table.invoice-table th {
+    font-size: 7pt !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    padding: 0.15rem !important;
+  }
+
+  table.invoice-table td {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  table.invoice-table input,
+  table.invoice-table textarea {
+    min-width: 0 !important;
+    width: 100% !important;
+    min-height: auto !important;
+    font-size: 8pt !important;
+  }
+  
+   .no-print {
+    display: none !important;
+  }
   .footer {
     display:flex;
   }
@@ -160,9 +209,9 @@ tfoot, tfoot > tr, tfoot > tr > td {
     display: none;
   }
 
-  .no-print {
+  /* .no-print {
     display: none;
-  }
+  } */
 
   body {
     font-size: 8pt;
@@ -187,6 +236,22 @@ tfoot, tfoot > tr, tfoot > tr > td {
   }
   .disclaimert {
     width:30%
+  }
+
+  table.invoice-table th#drag-header,
+  table.invoice-table td.drag-handle,
+  table.invoice-table th#action-header,
+  table.invoice-table td.action-cell {
+    display: none;
+  }
+
+  table.invoice-table input,
+  table.invoice-table textarea {
+    border: none !important;
+    background: transparent !important;
+    padding: 0.1rem !important;
+    font-size: 10pt !important;
+    resize: none;
   }
 
 }

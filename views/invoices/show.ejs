@@ -123,8 +123,12 @@
         </div>
     </div>
 
-    <div id="signatureWrapper no-print">
-        <img id="customerSignature" src="<%= invoice.signature %>" alt="customer signature">
+    <div id="signatureWrapper" class="no-print">
+        <% if (invoice.signature) { %>
+            <img id="customerSignature" src="<%= invoice.signature %>" alt="customer signature">
+        <% } else { %>
+            <img id="customerSignature" src="" alt="" style="display: none;">
+        <% } %>
     </div>
     
     

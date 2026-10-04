@@ -1,4 +1,4 @@
-<div class="form-row">
+<div class="form-row no-print">
     <div class="form-item">
         <label for="customer">Customer</label>
         <select id="customer" name="customer">
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<div class="form-row">
+<div class="form-row no-print">
     <div class="form-item">
         <label for="date">Invoice Date</label>
         <!-- Books Index/Create/New Routes - Node.js/Express/MongoDB Course #3  -->
@@ -25,7 +25,7 @@
     </div>
 </div>
 
-<div class="form-row">
+<div class="form-row no-print">
     <div class="form-item">
         <label>Search Product</label>
         <input type="text" id="searchProductInput" name="itemNumber" value= "" >
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<div class="form-row">
+<div class="form-row no-print">
     
     <div class="form-item">
         <div id='datatest' data-mydata="<%= products %>"></div>
@@ -58,7 +58,7 @@
    
 </div>
 
-<h2>Product List</h2>
+<h2 class="no-print">Product List</h2>
 
 <div id="productList">
     <table class="invoice-table">
@@ -92,7 +92,7 @@
                     <td><input class="subTotal" type="text" readonly name="items[<%= index %>][subTotal]" data-<%= item.itemNumber %>subtotal="<%= item.id %>" value="<%= parseFloat(item.subTotal).toFixed(2) %>"></td>
                     <td class="notes"><input class="notes" id="<%= item.notes %>" type="text" name="items[<%= index %>][notes]" value="<%= item.notes %>"></td>
                     <td><input type="checkbox" name="items[<%= index %>][status]" value="true" class="done" id="doneCheckbox_<%= index %>" <%= item.status ? 'checked' : '' %>></td>
-                    <td><button type="button" class="btn btn-danger">X</button></td>
+                    <td class="action-cell"><button type="button" class="btn btn-danger">X</button></td>
                  </tr>
                <% }) %>
         </tbody>
@@ -103,12 +103,10 @@
     <div class="form-item">
 
     </div>
-    <div class="form-item"><br>
-        <label for="totalSum">Total</label> 
-        <div class="form-row">
-            <div class="form-item">
-                <input type="text" id="totalSum" readonly name="totalAmount" value="<%= parseFloat(invoice.totalAmount).toFixed(2) %>">
-            </div>
-        </div>
+    <div class="form-item">
+    <label for="totalSum">Total</label>
+    <div class="total-field">
+        <input type="text" id="totalSum" readonly name="totalAmount" value="<%= parseFloat(invoice.totalAmount).toFixed(2) %>">
     </div>
+</div>
 </div>

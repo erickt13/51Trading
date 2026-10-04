@@ -498,6 +498,7 @@ function addItem(data, productItemNumber){
                 input.classList.add("btn");
                 input.classList.add("btn-danger");
                 input.innerHTML = "X";
+                td.classList.add('action-cell');
                 break;
         }
         addTotal();
