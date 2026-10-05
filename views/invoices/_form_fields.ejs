@@ -98,14 +98,17 @@
     </table>
 </div>
 
-<div class="form-row">
+<div class="form-row no-print">
+
     <div class="form-item">
 
     </div>
+
     <div class="form-item">
-    <label for="totalSum">Total</label>
-    <div class="total-field">
-        <input type="text" id="totalSum" readonly name="totalAmount" value="<%= parseFloat(invoice.totalAmount).toFixed(2) %>">
+        <label for="totalSum">Total</label>
+        <div class="total-field">
+            <input type="text" id="totalSum" readonly name="totalAmount" value="<%= parseFloat(invoice.totalAmount).toFixed(2) %>">
+        </div>
     </div>
-</div>
+    
 </div>

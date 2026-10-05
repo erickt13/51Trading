@@ -146,12 +146,22 @@ tfoot, tfoot > tr, tfoot > tr > td {
     overflow-wrap: break-word !important;
   }
 
-  table.invoice-table input,
+    table.invoice-table input,
   table.invoice-table textarea {
     min-width: 0 !important;
     width: 100% !important;
     min-height: auto !important;
+    height: auto !important;
+    line-height: 1.2 !important;
     font-size: 8pt !important;
+    padding: 0.05rem 0.15rem !important;
+  }
+
+  table.invoice-table td,
+  table.invoice-table th {
+    padding: 0.1rem !important;
+    border-top-width: 0.5px !important;
+    border-bottom-width: 0.5px !important;
   }
   
    .no-print {
