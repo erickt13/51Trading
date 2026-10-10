@@ -45,6 +45,12 @@
   width: 100%;
   max-width: 100%;
 }
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+}
 
 .table-container table.table-striped td,
 .table-container table.table-striped th {
@@ -181,6 +187,8 @@ tfoot, tfoot > tr, tfoot > tr > td {
     width: 100%;
     max-width: 100%;
   }
+
+  
 
   .table-container table.table-striped td,
   .table-container table.table-striped th {
