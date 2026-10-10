@@ -328,7 +328,7 @@ const addProduct2 = (e) => {
                 addItem(data.crvProduct, data.crvProduct.itemNumber);
             }
         });
-};
+}; 
 
 const addProduct = (e) => {
     e.preventDefault();
@@ -356,30 +356,47 @@ const addProduct = (e) => {
         .catch((error) => console.error("Fetch error:", error));
 };
 
+function isDedicatedCrvProduct(itemNumber) {
+    const match = /^U(\d{4})$/.exec(itemNumber);
+    if (!match) return false;
+    const num = parseInt(match[1], 10);
+    return num >= 1 && num <= 23;
+}
+
 // addProduct was already defined for the button
 function addItem(data, productItemNumber){
-    products = document.querySelectorAll(".itemNumber");
-    const productsArray = Array.from(products);
-    let productIndex = productsArray.length;
+    console.log("inside addItem " + productItemNumber);
 
-    for (i = 0; i < products.length; i++) {
-        if (data.itemNumber === productsArray[i].id) {
-            let duplicatePrice = document.querySelector("[data-" + data.itemNumber + "price]");
-            let duplicateQty = document.querySelector("[data-" + data.itemNumber + "qty]");
-            let duplicateSubTotal = document.querySelector("[data-" + data.itemNumber + "subtotal]");
-            duplicateQty.value = Number(duplicateQty.value) + 1;
-            productTotal = duplicatePrice.value * duplicateQty.value;
-            duplicateSubTotal.value = productTotal;
-            addTotal();
-            return;
+    const isCrv = isDedicatedCrvProduct(data.itemNumber);
+
+    if (!isCrv) {
+        products = document.querySelectorAll(".itemNumber");
+        const productsArray = Array.from(products);
+
+        for (i = 0; i < products.length; i++) {
+            if (data.itemNumber === productsArray[i].id) {
+                let duplicatePrice = document.querySelector("[data-" + data.itemNumber + "price]");
+                let duplicateQty = document.querySelector("[data-" + data.itemNumber + "qty]");
+                let duplicateSubTotal = document.querySelector("[data-" + data.itemNumber + "subtotal]");
+                duplicateQty.value = Number(duplicateQty.value) + 1;
+                productTotal = duplicatePrice.value * duplicateQty.value;
+                duplicateSubTotal.value = productTotal;
+                addTotal();
+                return;
+            }
         }
     }
+
+    const existingRows = document.querySelectorAll(".itemNumber");
+    let productIndex = existingRows.length;
 
     const tableBody = document.querySelector(".tableBody");
     const row = document.createElement("tr");
     row.classList.add("table-row");
     const actions = document.createElement("div");
     actions.classList.add("actions");
+
+    // ...rest of the function (the for-loop building each <td>/case) stays exactly as it is...
 
     for (let i = 0; i < 11; i++) {
         const td = document.createElement("td");

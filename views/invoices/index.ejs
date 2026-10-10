@@ -13,25 +13,27 @@
    
 </form>
 <br>
-<table class="table-striped">
-    <thead>
-        <th>Invoice Number</th>
-        <th>Company</th>
-        <th>Date</th>
-        <th>Actions</th>
-    </thead>
-    <tbody>
-        <% invoices.forEach(invoice => { %>
-            <tr>
-                <td><%= invoice.invoiceNumber %></td>
-                <td><%= invoice.customer.companyName %></td>
-                <td><%= invoice.date.toDateString() %></td>
-                <td><div class="btn-row no-margin">
-                    <a class="btn btn-primary" href="/invoices/<%= invoice.id %>">View</a>
-                    <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
-                    <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
-                </div></td>
-            </tr>
-        <%})%>
-    </tbody>
-</table>
+<div class="table-scroll">
+    <table class="table-striped">
+        <thead>
+            <th>Invoice Number</th>
+            <th>Company</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            <% invoices.forEach(invoice => { %>
+                <tr>
+                    <td><%= invoice.invoiceNumber %></td>
+                    <td><%= invoice.customer.companyName %></td>
+                    <td><%= invoice.date.toDateString() %></td>
+                    <td><div class="btn-row no-margin">
+                        <a class="btn btn-primary" href="/invoices/<%= invoice.id %>">View</a>
+                        <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
+                        <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
+                    </div></td>
+                </tr>
+            <%})%>
+        </tbody>
+    </table>
+</div>
