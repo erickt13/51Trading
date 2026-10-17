@@ -99,7 +99,7 @@ router.post('/', async (req,res) => {
         totalAmount, // Initialize totalAmount
         date: date ? new Date(date) : Date.now(), // Ensure date is a Date object
         shipDate: shipDate ? new Date(shipDate) : Date.now(), // Ensure date is a Date object
-        signature: "#"
+        signature: ""
     });
 
     try {

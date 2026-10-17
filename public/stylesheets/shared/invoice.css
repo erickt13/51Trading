@@ -1,4 +1,27 @@
+.table-container table.table-striped {
+  table-layout: fixed;
+  width: 100%;
+}
 
+.table-container table.table-striped td,
+.table-container table.table-striped th {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  font-size: 0.75em;
+  padding: 0.25rem;
+}
+
+.table-container table.table-striped td:nth-child(1) {
+  word-break: break-all;
+}
+
+.table-container table.table-striped th:nth-child(1) { width: 12%; } /* Item */
+.table-container table.table-striped th:nth-child(2) { width: 30%; } /* Description */
+.table-container table.table-striped th:nth-child(3) { width: 18%; } /* MPN */
+.table-container table.table-striped th:nth-child(4) { width: 10%; } /* Qty */
+.table-container table.table-striped th:nth-child(5) { width: 15%; } /* Price */
+.table-container table.table-striped th:nth-child(6) { width: 15%; } /* Amount */
 
 .pagination {
     display: flex;
@@ -52,17 +75,6 @@
   max-width: 100%;
 }
 
-.table-container table.table-striped td,
-.table-container table.table-striped th {
-  white-space: nowrap;
-}
-
-.table-container table.table-striped td:nth-child(2) {
-  white-space: normal;
-  min-width: 160px;
-  max-width: 220px;
-}
-
 .fifty {
   width: 50%;
   min-width: 260px;
@@ -108,7 +120,8 @@
 
 tfoot, tfoot > tr, tfoot > tr > td {
   box-sizing: border-box;
-  height: 60px;
+  height: auto;
+  min-height: 60px;
   padding:10px;
   border:0px;
 }
@@ -187,8 +200,6 @@ tfoot, tfoot > tr, tfoot > tr > td {
     width: 100%;
     max-width: 100%;
   }
-
-  
 
   .table-container table.table-striped td,
   .table-container table.table-striped th {
@@ -580,16 +591,5 @@ border:none;
     -webkit-overflow-scrolling: touch;
     width: 100%;
     max-width: 100%;
-  }
-
-  .table-container table.table-striped td,
-  .table-container table.table-striped th {
-    white-space: nowrap;
-  }
-
-  .table-container table.table-striped td:nth-child(2) {
-    white-space: normal;
-    min-width: 160px;
-    max-width: 220px;
   }
 }

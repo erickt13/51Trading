@@ -34,12 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     scannedMpnInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            // console.log('You have hit Enter on your keypad and the MPN is: ' + scannedMpnInput.value);
-            // console.log(e.key);
             addProduct2(e);
             scannedMpnInput.value = ''; // Clears the field for the next scan
         } else {
-            // All other keys work normally
             return true;
           }
     })
@@ -102,12 +99,9 @@ const copyInvoice = (e) => {
         headers: {
           'Content-Type': 'application/json'
         }
-        // Add body if you need to send data
-        // body: JSON.stringify({ customer: newCustomerId })
       })
       .then((response) => response.json() )
       .then((data) => {
-        // console.log(data);
         window.location.href = `/invoices/${data._id}`;
       })    
 }
@@ -118,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
    const searchProductInput = document.querySelector('#searchProductInput');
    const searchProductBtn = document.querySelector('#searchProductBtn')
    let searchResults = document.querySelector("select#selectedProduct");
-//    console.log(searchResults);
 
    if (!searchProductInput || !searchProductBtn || !searchResults) {
     console.log("select input not found");
@@ -132,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             getSearchResults(e);
         } else {
-            // All other keys work normally
             return true;
           }
     });
@@ -171,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((data) => {
             
             if (data.errorMessage) {
-                // alert(data.errorMessage);
                 console.log(data.errorMessage);
                 return;
             } else {
@@ -238,19 +229,23 @@ document.addEventListener('DOMContentLoaded', () => {
     saveButton.addEventListener("click", function (e) {
         e.preventDefault();
         const data = signaturePad.toDataURL("image/png");
-        
+
         customerSignatureImage.src = data;
+        customerSignatureImage.classList.remove('hide');
+
+        const deleteSignatureRow = document.getElementById('deleteSignatureRow');
+        if (deleteSignatureRow) {
+            deleteSignatureRow.classList.remove('hide');
+        }
+
         signatureInput.value = data;
-        
+
         const updatedSignature = {
             signature: customerSignatureImage.src
         };
-        
+
         signaturePad.clear();
 
-        // fetch updating the signature
-      
-        //  development
         fetch(`/invoices/${invoiceId}/signature`, {
             method: "PUT",
             headers: {
@@ -281,6 +276,32 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         signaturePad.clear();
     });
+
+    // Delete signature button
+    const deleteSignatureBtn = document.querySelector('#deleteSignatureBtn');
+    if (deleteSignatureBtn) {
+        deleteSignatureBtn.addEventListener('click', () => {
+            if (!confirm('Delete this signature? This cannot be undone.')) return;
+
+            fetch(`/invoices/${invoiceId}/signature`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ signature: '' })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .then(() => {
+                customerSignatureImage.src = '';
+                customerSignatureImage.classList.add('hide');
+                const row = document.getElementById('deleteSignatureRow');
+                if (row) row.classList.add('hide');
+            })
+            .catch(error => console.error('Error deleting signature:', error));
+        });
+    }
+
 });
 
 const addProductMPN = document.querySelector("#addProductMPN"); // Added variable definition
@@ -295,7 +316,6 @@ function bcRender() {
         let mpn = item.dataset.mpn;
 
         if (mpn !== "" && mpn !== null) {
-            // JsBarcode(upcId, mpn, { format: "ean13" });
             JsBarcode(upcId, mpn, {
                 format: 'CODE128',
                 width: 1.5,
@@ -395,8 +415,6 @@ function addItem(data, productItemNumber){
     row.classList.add("table-row");
     const actions = document.createElement("div");
     actions.classList.add("actions");
-
-    // ...rest of the function (the for-loop building each <td>/case) stays exactly as it is...
 
     for (let i = 0; i < 11; i++) {
         const td = document.createElement("td");
@@ -533,24 +551,20 @@ function addItem(data, productItemNumber){
 }
 
 function renderBarcode(){
-  // Define the SVG namespace
   const svgNamespace = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNamespace, "svg");
-  // const textNode = document.createTextNode(data.description + ' ' + data.price);
 
-  // Add id class and dataset to svg and get the upc id and mpn to render the svg
-  svg.id = "id" + data.mpn; // Can't start ID name with a number, so we use id + number
-  svg.classList.add("barcode"); // Corrected this line
+  svg.id = "id" + data.mpn;
+  svg.classList.add("barcode");
   svg.dataset.mpn = data.mpn;
-  let upcId = "#" + svg.id; // id of div to render svg
-  let mpn = svg.dataset.mpn; //mpn number to render the barcode
+  let upcId = "#" + svg.id;
+  let mpn = svg.dataset.mpn;
 
-  // render the svg barcode in the upcId div with the mpn number
   JsBarcode(upcId, mpn, {
     format: 'CODE128',
     width: 1.5,
-    height: 20, // Shorter barcode height
-    displayValue: false, // Remove text display
+    height: 20,
+    displayValue: false,
     margin: 0 });
 }
 
@@ -666,32 +680,29 @@ function sortTable(n, isCheckbox = false) {
     let sortedRows;
 
     if (isCheckbox) {
-        // Sorting for Done Status (checkbox)
         sortedRows = rows.sort((a, b) => {
             let aChecked = a.cells[n].querySelector("input[type='checkbox']").checked;
             let bChecked = b.cells[n].querySelector("input[type='checkbox']").checked;
-            return aChecked - bChecked; // Sort by checked status (false -> 0, true -> 1)
+            return aChecked - bChecked;
         });
     } else {
-        // Sorting for Source (text) column
         sortedRows = rows.sort((a, b) => {
             let aText = a.cells[n].querySelector("input[type='text']").value.toLowerCase();
             let bText = b.cells[n].querySelector("input[type='text']").value.toLowerCase();
-            return aText.localeCompare(bText); // Sort by alphabetic order
+            return aText.localeCompare(bText);
         });
     }
 
-    // Reorder the rows in the table
-    table.tBodies[0].innerHTML = ""; // Clear existing rows
-    table.tBodies[0].append(...sortedRows); // Append sorted rows
+    table.tBodies[0].innerHTML = "";
+    table.tBodies[0].append(...sortedRows);
 }
 
 // Add click event listener for Source column sorting
 document.getElementById("source-header").addEventListener("click", () => {
-    sortTable(1); // was 0, now shifted by the new drag column
+    sortTable(1);
 });
 
 // Add click event listener for Done Status column sorting
 document.getElementById("status-header").addEventListener("click", () => {
-    sortTable(9, true); // was 8
+    sortTable(9, true);
 });

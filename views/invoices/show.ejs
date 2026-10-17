@@ -124,21 +124,20 @@
     </div>
 
     <div id="signatureWrapper" class="no-print">
-        <% if (invoice.signature) { %>
-            <img id="customerSignature" src="<%= invoice.signature %>" alt="customer signature">
-        <% } else { %>
-            <img id="customerSignature" src="" alt="" style="display: none;">
-        <% } %>
+        <img id="customerSignature" class="<%= invoice.signature ? '' : 'hide' %>" src="<%= invoice.signature || '' %>" alt="<%= invoice.signature ? 'customer signature' : '' %>">
     </div>
-    
-    
+
+    <div class="btn-row no-print <%= invoice.signature ? '' : 'hide' %>" id="deleteSignatureRow" style="margin-top: 0.75rem;">
+        <button id="deleteSignatureBtn" class="btn btn-secondary-danger" type="button">Delete Signature</button>
+    </div>
+
     <div class="invoice-row no-print">
-        <div class="btn-row">
-            <button id="signInvoiceBtn" class="btn btn-primary" type="button">Sign</button>
+        <div class="btn-row btn-row-wrap">
             <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/edit">Edit</a>
-            <button id="copyInvoiceBtn" class="btn btn-primary" type="button">Copy</button>
-            <a class="btn btn-primary" href="/invoices/<%= invoice.id %>/pdf">Download PDF</a>
-            <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}` }) %>
+            <button id="signInvoiceBtn" class="btn btn-secondary" type="button">Sign</button>
+            <button id="copyInvoiceBtn" class="btn btn-secondary" type="button">Copy</button>
+            <a class="btn btn-secondary" href="/invoices/<%= invoice.id %>/pdf">Download PDF</a>
+            <%- include('../partials/deleteForm', { url: `/invoices/${invoice.id}`, label: 'Delete Invoice' }) %>
         </div>
     </div>
 
