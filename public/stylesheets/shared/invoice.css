@@ -550,6 +550,16 @@ tr.table-row.done {
   color: #155724;
 }
 
+tr.table-row.crv-row {
+  background-color: #eef3fb;
+  font-style: italic;
+}
+
+tr.table-row.crv-row input,
+tr.table-row.crv-row textarea {
+  background-color: transparent;
+}
+
 table.table-striped thead tr {
   background-color: #4b7de7;
 }

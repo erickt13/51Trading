@@ -24,6 +24,25 @@ function renumberRowIndices() {
     });
 }
 
+function showToast(message, type = 'success') {
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('toast-hide');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Check if scanned MPN Input exists
@@ -260,10 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // console.log("Updated signature response:", data);
+            showToast('Signature saved.', 'success');
         })
         .catch(error => {
             console.error("Error:", error);
+            showToast('Failed to save signature.', 'error');
         });
 
         signInvoiceContainer.classList.remove("show");
@@ -297,8 +317,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 customerSignatureImage.classList.add('hide');
                 const row = document.getElementById('deleteSignatureRow');
                 if (row) row.classList.add('hide');
+                showToast('Signature deleted.', 'success');
             })
-            .catch(error => console.error('Error deleting signature:', error));
+            .catch(error => {
+                console.error('Error deleting signature:', error);
+                showToast('Failed to delete signature.', 'error');
+            });
         });
     }
 
@@ -340,13 +364,17 @@ const addProduct2 = (e) => {
         .then((response) => response.json())
         .then((data) => {
             if (data.errorMessage) {
-                console.log(data.errorMessage);
+                showToast(data.errorMessage, 'error');
                 return;
             }
             addItem(data.product, data.product.itemNumber);
             if (data.crvProduct) {
                 addItem(data.crvProduct, data.crvProduct.itemNumber);
             }
+        })
+        .catch((error) => {
+            console.error("Fetch error:", error);
+            showToast('Could not add product. Please try again.', 'error');
         });
 }; 
 
@@ -366,6 +394,7 @@ const addProduct = (e) => {
         .then((data) => {
             if (data.errorMessage) {
                 console.log(data.errorMessage);
+                showToast(data.errorMessage, 'error');
                 return;
             }
             addItem(data.product, data.product.itemNumber);
@@ -373,7 +402,10 @@ const addProduct = (e) => {
                 addItem(data.crvProduct, data.crvProduct.itemNumber);
             }
         })
-        .catch((error) => console.error("Fetch error:", error));
+        .catch((error) => {
+            console.error("Fetch error:", error);
+            showToast('Could not add product. Please try again.', 'error');
+        });
 };
 
 function isDedicatedCrvProduct(itemNumber) {
@@ -413,6 +445,9 @@ function addItem(data, productItemNumber){
     const tableBody = document.querySelector(".tableBody");
     const row = document.createElement("tr");
     row.classList.add("table-row");
+    if (isCrv) {
+    row.classList.add("crv-row");
+    }
     const actions = document.createElement("div");
     actions.classList.add("actions");
 
@@ -515,7 +550,6 @@ function addItem(data, productItemNumber){
                 input.name = `items[${productIndex}][notes]`;
                 input.classList.add("notes");
                 input.placeholder = "Enter Notes Here";
-                input.value = "Notes";
                 td.classList.add('notes');
                 break;
 
@@ -580,11 +614,21 @@ productList.addEventListener("click", function (e) {
         const tableRow = e.target.closest(".table-row");
         const itemNumberInput = tableRow.querySelector(".itemNumber");
         const itemNumber = itemNumberInput ? itemNumberInput.value : null;
+        const isCrvRow = itemNumber && itemNumber.startsWith('CRV-');                         // NEW
+
+        const hasLinkedCrv = !isCrvRow && itemNumber && Array.from(document.querySelectorAll(".itemNumber"))  // NEW
+            .some(input => input.value.startsWith('CRV-') && input.value.endsWith(`-${itemNumber}`));          // NEW
+
+        const confirmMessage = hasLinkedCrv                                                    // NEW
+            ? `Remove ${itemNumber} and its linked CRV charge?`                                // NEW
+            : `Remove this line item${itemNumber ? ` (${itemNumber})` : ''}?`;                 // NEW
+
+        if (!confirm(confirmMessage)) return;                                                  // NEW
 
         tableRow.remove();
 
         // If this was a beverage row (not a CRV row itself), remove its linked CRV row too
-        if (itemNumber && !itemNumber.startsWith('CRV-')) {
+        if (itemNumber && !isCrvRow) {                                                         // CHANGED: reuses isCrvRow instead of re-checking itemNumber.startsWith('CRV-')
             document.querySelectorAll(".itemNumber").forEach(input => {
                 if (input.value.startsWith('CRV-') && input.value.endsWith(`-${itemNumber}`)) {
                     const crvRow = input.closest(".table-row");
